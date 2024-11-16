@@ -1,0 +1,150 @@
+<style>
+    .search-hover input.custom-hover:focus {
+        box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.808);
+        transition: all 0.1s linear;
+    }
+    .form-control {
+        border: none;
+    }
+    .form-control:focus {
+        border: none;
+    }
+</style>
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Danh sách tài khoản</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">
+            Bảng chi tiết thông tin tài khoản
+        </li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header bg-white">
+            <div class="my-2 d-flex justify-content-between align-items-center">
+                <div class="position-relative search-hover w-100">
+                    <form action="" method="">
+                        <span class="position-absolute search"
+                            ><i class="fa fa-search"></i
+                        ></span>
+                        <input
+                            class="form-control custom-hover"
+                            placeholder="Nhập tài khoản người dùng..."
+                        />
+                    </form>
+                </div>
+                <div class="px-2">
+                    <span
+                        id="filterToggle"
+                        class="dropdown-toggle fw-normal"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        Sắp xếp theo tên
+
+                        <!-- Menu Dropdown -->
+                        <ul
+                            id="filterMenu"
+                            class="dropdown-menu shadow-lg rounded"
+                        >
+                            <li>
+                                <a class="dropdown-item" href="#"
+                                    >Từ A
+                                    <i class="fa-solid fa-arrow-right"></i> Z</a
+                                >
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#"
+                                    >Từ Z
+                                    <i class="fa-solid fa-arrow-right"></i> A</a
+                                >
+                            </li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="card-body bg-light">
+            <div class="table-responsive">
+                <table class="table table-responsive table-borderless mb-0">
+                    <thead>
+                        <tr class="border-bottom">
+                            <th scope="col" width="5%">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                />
+                            </th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Ảnh đại diện</th>
+                            <th scope="col">Tài khoản</th>
+                            <th scope="col">Họ tên</th>
+                            <th scope="col">Địa chỉ</th>
+                            <th scope="col">Số điện thoại</th>
+                            <th scope="col">Vai trò</th>
+                            <th scope="col" class="text-center">
+                                <span>Cài đặt</span>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% for(let i = 0; i < data.users.length; i++) { %>
+                        <tr>
+                            <th scope="row">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                />
+                            </th>
+                            <td><%= data.users[i].id %></td>
+                            <td>
+                                <img
+                                    src="<%= data.users[i].imageUrl %>"
+                                    alt=""
+                                    style="
+                                        width: 50px;
+                                        height: 50px;
+                                        border-radius: 50%;
+                                    "
+                                />
+                            </td>
+                            <td><%= data.users[i].username %></td>
+                            <td><%= data.users[i].fullname %></td>
+                            <td><%= data.users[i].address %></td>
+                            <td><%= data.users[i].phone %></td>
+                            <td><%= data.users[i].role %></td>
+                            <td
+                                class="d-flex align-items-center justify-content-center"
+                            >
+                                <a
+                                    class="mx-2"
+                                    href="/PAGE_Edit_User/<%= data.users[i].id %>"
+                                >
+                                    <i
+                                        class="fa-solid fa-user-pen text-info fs-5"
+                                    ></i>
+                                </a>
+                                <form action="/delete-user" method="POST">
+                                    <input
+                                        type="hidden"
+                                        name="userId"
+                                        value="<%= data.users[i].id %>"
+                                    />
+                                    <button
+                                        type="submit"
+                                        class="border-0 me-2 bg-transparent"
+                                    >
+                                        <i
+                                            class="fa-solid fa-circle-minus text-danger fs-5"
+                                        ></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

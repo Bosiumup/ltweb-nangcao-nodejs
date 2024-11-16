@@ -1,0 +1,344 @@
+import express from "express";
+import Fuse from "fuse.js";
+
+const app = express();
+const port = 3000;
+
+// Dữ liệu mẫu
+const users = [
+    { name: "Minh Thiện" },
+    { name: "Thiện Minh" },
+    { name: "Quang Hieu" },
+    { name: "Anh Tuan" },
+    { name: "Tuan Anh" },
+    { name: "Hieu Quang" },
+];
+
+// Cấu hình Fuse.js
+const fuseOptions = {
+    keys: ["name"], // Chỉ tìm kiếm trong trường 'name'
+    threshold: 0.3, // Độ chính xác tìm kiếm (0.0 khớp hoàn hảo)
+};
+
+// Tạo đối tượng Fuse.js
+const fuse = new Fuse(users, fuseOptions);
+
+// Middleware để phục vụ các file tĩnh từ thư mục public (chẳng hạn HTML, CSS, JS)
+app.use(express.static("public"));
+
+// API tìm kiếm
+app.get("/search", (req, res) => {
+    const query = req.query.q || ""; // Lấy từ khóa tìm kiếm từ query parameter
+
+    if (query) {
+        const results = fuse.search(query).map((result) => result.item); // Tìm kiếm và lấy các kết quả
+        res.json(results); // Trả về kết quả tìm kiếm dưới dạng JSON
+    } else {
+        res.json([]); // Nếu không có query, trả về mảng rỗng
+    }
+});
+
+// Bắt đầu server
+app.listen(port, () => {
+    console.log(`Server đang chạy tại http://localhost:${port}`);
+});
+
+
+import React, { useState } from 'react';
+import axios from 'axios';
+
+function App() {
+  const [searchTerm, setSearchTerm] = useState(''); // Trạng thái lưu từ khóa tìm kiếm
+  const [results, setResults] = useState([]); // Trạng thái lưu kết quả tìm kiếm
+
+  // Hàm xử lý sự kiện nhập liệu tìm kiếm
+  const handleSearch = async (event) => {
+    const query = event.target.value; // Lấy từ khóa tìm kiếm từ input
+    setSearchTerm(query); // Cập nhật trạng thái từ khóa tìm kiếm
+
+    if (query) {
+      try {
+        // Gửi yêu cầu đến API Express
+        const response = await axios.get(`http://localhost:3000/search?q=${encodeURIComponent(query)}`);
+        setResults(response.data); // Cập nhật kết quả tìm kiếm
+      } catch (error) {
+        console.error('Lỗi khi gọi API:', error);
+      }
+    } else {
+      setResults([]); // Nếu không có từ khóa, xóa kết quả tìm kiếm
+    }
+  };
+
+  return (
+    <div className="App">
+      <h1>Tìm kiếm người dùng</h1>
+      {/* Ô input tìm kiếm */}
+      <input
+        type="text"
+        placeholder="Tìm kiếm tên người dùng..."
+        value={searchTerm}
+        onChange={handleSearch}
+      />
+      {/* Hiển thị kết quả tìm kiếm */}
+      <div id="user-list">
+        {results.length > 0 ? (
+          results.map((user, index) => (
+            <div key={index} className="user-item">
+              {user.name}
+            </div>
+          ))
+        ) : (
+          <p>Không có kết quả tìm kiếm</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+
+<!-- views/index.ejs -->
+<%- include('layouts/header') %>
+
+<!-- Hiển thị thông báo từ Flash -->
+<% if (messages.success) { %>
+  <script>
+    const notyf = new Notyf();
+    notyf.success('<%= messages.success %>');
+  </script>
+<% } %>
+
+<% if (messages.error) { %>
+  <script>
+    const notyf = new Notyf();
+    notyf.error('<%= messages.error %>');
+  </script>
+<% } %>
+
+<h2>Chào mừng đến với trang quản lý!</h2>
+<p>Đây là trang chủ của bạn.</p>
+
+<%- include('layouts/footer') %>
+
+
+<!-- views/layouts/main.ejs -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title> <!-- Tiêu đề trang có thể thay đổi động -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Quản lý cửa hàng</h1>
+  </header>
+
+  <div id="wrapper">
+    <aside id="sidebar">
+      <ul>
+        <li><a href="/admin">Trang chủ</a></li>
+        <li><a href="/admin/products">Sản phẩm</a></li>
+        <li><a href="/admin/orders">Đơn hàng</a></li>
+        <!-- Các liên kết khác -->
+      </ul>
+    </aside>
+
+    <main id="content">
+      <%- body %>  <!-- Đây là nơi nội dung sẽ được chèn vào -->
+    </main>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Quản lý cửa hàng</p>
+  </footer>
+</body>
+</html>
+
+
+
+const User = sequelize.define("User", {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true, // Để tự động tăng id
+    },
+    username: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+        unique: true,
+    },
+    password: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+    },
+    fullname: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+    },
+    address: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+    },
+    email: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+    },
+    role: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+    },
+}, {
+    tableName: 'custom_users_table_name', // Chỉ định tên bảng tùy chỉnh
+});
+
+export default User;
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Dữ liệu người dùng lấy từ Express (EJS sẽ tự động chèn dữ liệu vào)
+    const usersData = <%- JSON.stringify(usersData) %>;
+
+    // Giả sử bạn muốn phân loại người dùng theo giới tính (Nam, Nữ)
+    const genderLabels = ['Nam', 'Nữ'];  // Nhãn cho biểu đồ (có thể là các danh mục khác)
+    const genderCounts = [10, 15];  // Dữ liệu cho từng danh mục (số lượng người dùng Nam và Nữ)
+
+    // Khởi tạo biểu đồ tròn (Pie Chart)
+    const ctx = document.getElementById('myPieChart').getContext('2d');
+    const myPieChart = new Chart(ctx, {
+        type: 'pie',  // Loại biểu đồ là "pie"
+        data: {
+            labels: genderLabels, // Nhãn cho các phần trong biểu đồ
+            datasets: [{
+                label: 'Số lượng người dùng theo giới tính',
+                data: genderCounts,  // Số lượng người dùng cho từng phần trong biểu đồ
+                backgroundColor: ['#FF5733', '#33FF57'],  // Màu sắc của từng phần trong biểu đồ
+                borderColor: ['#FF5733', '#33FF57'], // Màu viền của từng phần trong biểu đồ
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,  // Tạo biểu đồ có thể phản hồi với các thay đổi kích thước màn hình
+            plugins: {
+                legend: {
+                    position: 'top',  // Vị trí của legend (chú thích)
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ': ' + tooltipItem.raw + ' người';
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+Giải thích mã:
+Dữ liệu đầu vào:
+
+genderLabels là một mảng chứa các danh mục bạn muốn hiển thị (ví dụ: "Nam", "Nữ").
+genderCounts là mảng chứa số lượng người dùng trong mỗi danh mục.
+Biểu đồ tròn:
+
+type: 'pie': Chỉ định loại biểu đồ là biểu đồ tròn.
+labels: Là các danh mục (chẳng hạn "Nam", "Nữ") mà bạn sẽ sử dụng trên biểu đồ.
+datasets: Đây là các dữ liệu bạn sẽ vẽ, bao gồm:
+data: Số liệu thực tế cho các phần trong biểu đồ (số lượng người dùng).
+backgroundColor: Màu sắc của từng phần trong biểu đồ (bạn có thể tùy chỉnh nhiều màu).
+borderColor: Màu viền của các phần trong biểu đồ.
+borderWidth: Độ dày của viền.
+Các tùy chọn trong options:
+
+responsive: true: Đảm bảo biểu đồ tự động điều chỉnh kích thước khi thay đổi độ phân giải màn hình.
+legend: Điều chỉnh vị trí của legend (chú thích biểu đồ).
+tooltip: Cài đặt cách hiển thị thông tin khi người dùng hover qua các phần trong biểu đồ.
+Bước 3: Kiểm tra kết quả
+Khi bạn truy cập vào trang dashboard, biểu đồ tròn sẽ hiển thị dữ liệu người dùng theo các danh mục mà bạn đã định nghĩa (ví dụ: Nam và Nữ). Biểu đồ sẽ tự động cập nhật dựa trên dữ liệu mà bạn truyền vào từ Express.js.
+
+Tùy chỉnh thêm:
+Bạn có thể thay đổi backgroundColor để sử dụng các màu sắc khác nhau cho từng phần của biểu đồ.
+Bạn có thể thêm nhiều datasets nếu muốn hiển thị nhiều loại dữ liệu trên cùng một biểu đồ (ví dụ: phân loại theo tuổi, thành phố, v.v.).
+Các plugins như legend hoặc tooltip có thể được tùy chỉnh thêm để cải thiện giao diện và trải nghiệm người dùng.
+
+
+const express = require('express');
+const mysql = require('mysql2');
+const multer = require('multer');
+const cloudinary = require('./cloudinaryConfig');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const app = express();
+const port = 3000;
+
+// Kết nối với MySQL
+const db = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+});
+
+// Kiểm tra kết nối MySQL
+db.connect((err) => {
+  if (err) {
+    console.error('Could not connect to the database:', err);
+    return;
+  }
+  console.log('Connected to the MySQL database');
+});
+
+// Cấu hình Multer để lưu trữ file tạm thời
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// Route để update hình ảnh
+app.post('/update-image/:id', upload.single('image'), (req, res) => {
+  const userId = req.params.id;
+  const file = req.file;
+
+  if (!file) {
+    return res.status(400).send('No file uploaded');
+  }
+
+  // Upload file lên Cloudinary
+  cloudinary.uploader.upload_stream(
+    {
+      resource_type: 'auto', // tự động xác định loại file (image, video...)
+      folder: 'your-folder', // Nếu bạn muốn sắp xếp hình ảnh vào một thư mục trong Cloudinary
+    },
+    (error, result) => {
+      if (error) {
+        return res.status(500).send('Cloudinary upload failed');
+      }
+
+      // Lưu đường dẫn hình ảnh vào CSDL
+      const imageUrl = result.secure_url;
+
+      const query = 'UPDATE users SET image_url = ? WHERE id = ?';
+      db.query(query, [imageUrl, userId], (err, results) => {
+        if (err) {
+          return res.status(500).send('Error updating database');
+        }
+
+        // Trả về kết quả cho client
+        res.status(200).send({
+          message: 'Image updated successfully',
+          imageUrl: imageUrl,
+        });
+      });
+    }
+  ).end(file.buffer);
+});
+
+// Khởi động server
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+});

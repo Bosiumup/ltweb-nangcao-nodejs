@@ -1,0 +1,91 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4"><%= data.title %></h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">
+            Trang chỉnh sửa chi tiết người dùng
+        </li>
+    </ol>
+    <div class="registration-form d-flex justify-content-around align-items-center">
+        <!-- Form Cập Nhật Avatar (Hình ảnh) -->
+        <div class="card-left w-100">
+            <form id="update-user-form" action="/update-user" method="POST">
+                <input type="hidden" name="id" value="<%= data.user.id %>" />
+                <!-- Form input: Tên đầy đủ -->
+                <div class="form-group">
+                    <label for="fullname" class="form-label">Họ tên</label>
+                    <input type="text" class="form-control item" id="fullname" name="fullname" value="<%= data.user.fullname %>" />
+                </div>
+                <!-- Form input: Địa chỉ -->
+                <div class="form-group">
+                    <label for="address" class="form-label">Địa chỉ</label>
+                    <input type="text" class="form-control item" id="address" name="address" value="<%= data.user.address %>" />
+                </div>
+                <!-- Form input: Số điện thoại -->
+                <div class="form-group">
+                    <label for="phone" class="form-label">Số điện thoại</label>
+                    <input type="text" class="form-control item" id="phone" name="phone" value="<%= data.user.phone %>" />
+                </div>
+                <!-- Form input: Quyền -->
+                <div class="form-group">
+                    <label for="role" class="form-label">Quyền</label>
+                    <select id="role" name="role" class="form-select">
+                        <option value="admin" <%= data.user.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                        <option value="user" <%= data.user.role === 'user' ? 'selected' : '' %>>User</option>
+                    </select>
+                </div>
+                <div class="form-group mt-3">
+                    <button type="submit" class="btn btn-block create-account w-100">
+                        Cập nhật
+                    </button>
+                    <a class="text-decoration-none text-end w-100 d-inline-block mt-3 text-secondary" href="/PAGE_List_User">
+                        <i class="fas fa-arrow-left me-1"></i>
+                        Hủy bỏ
+                    </a>
+                </div>
+            </form>
+        </div>
+        <!-- Form Cập Nhật Thông Tin Người Dùng (Text) -->
+        <div class="cart-right w-100">
+            <form id="update-avatar-form" action="/update-avatar" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="<%= data.user.id %>" />
+                <div class="form-group d-flex justify-content-center">
+                    <div class="avatar-container" onclick="document.getElementById('avatar').click();">
+                        <div class="avatar-overlay">Chọn hình ảnh</div>
+                        <input type="hidden" name="currentImageUrl" value="<%= data.user.imageUrl %>" />
+                        <input type="file" id="avatar" name="avatar" class="file-input" />
+                        <div class="avatar-preview">
+                            <img src="<%= data.user.imageUrl %>" alt="Avatar" id="avatar-img" class="avatar-img" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mt-3">
+                    <button type="submit" class="btn btn-block create-account w-100">
+                        Cập nhật Avatar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Hiển thị thông báo -->
+<% if (data.successMessage) { %>
+    <div id="success-message" class="mt-3 alert alert-success">
+        <%= data.successMessage %>
+    </div>
+    <% } %>
+<script>
+    // Lắng nghe sự kiện khi người dùng chọn file ảnh
+    document.getElementById("avatar").addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const avatarImg = document.getElementById("avatar-img");
+                avatarImg.src = e.target.result;
+                avatarImg.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+

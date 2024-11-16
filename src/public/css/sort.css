@@ -1,0 +1,36 @@
+/* Chỉnh sửa Bootstrap dropdown */
+#filterToggle {
+    position        : relative !important;
+    cursor          : pointer;
+    font-size       : 16px;
+    font-weight     : bold;
+    color           : #333;
+    padding         : 8px 12px;
+    background-color: #f8f9fa;
+    border-radius   : 5px;
+    border          : 1px solid #ccc;
+}
+
+#filterMenu {
+    position        : absolute !important;
+    top             : -6rem;
+    left            : 0;
+    background-color: #ffffff;
+    border          : 1px solid #ddd;
+    box-shadow      : 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius   : 8px;
+    padding         : 10px;
+    transition      : all 0.1s linear;
+}
+
+/* Thêm hiệu ứng hover cho các item trong dropdown */
+#filterMenu .dropdown-item {
+    padding      : 10px 15px;
+    border-radius: 5px;
+}
+
+
+/* Cải thiện góc nhìn và khoảng cách khi hover */
+.dropdown-menu.show {
+    display: block !important;
+}

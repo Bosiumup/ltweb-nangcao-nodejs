@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Coolmate Admin</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
+            rel="stylesheet"
+        />
+        <link href="/css/styles.css" rel="stylesheet" />
+        <link href="/css/table.css" rel="stylesheet" />
+        <link href="/css/sort.css" rel="stylesheet" />
+        <link href="/css/form.css" rel="stylesheet" />
+        <link href="/css/img.css" rel="stylesheet" />
+        <link href="/css/noti.css" rel="stylesheet" />
+        <script
+            src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+            crossorigin="anonymous"
+        ></script>
+    </head>
+    <body>
+        <header id="header"><%- include('../components/header') %></header>
+        <main id="main-content">
+            <div id="layoutSidenav">
+                <div id="layoutSidenav_nav">
+                    <%- include('../components/sidebar') %>
+                </div>
+                <div id="layoutSidenav_content">
+                    <main><%- body %></main>
+                    <footer class="py-4 bg-light mt-auto">
+                        <div class="container-fluid px-4">
+                            <div class="text-center text-muted">
+                                Thiết kế bởi các thành viên báo cáo
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </main>
+        <!-- <% if (session && session.user.role === "admin") { %> <% } else { %> <%-
+        include('../errs/PAGE_401') %> <% } %> -->
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"
+        ></script>
+        <script src="/js/scripts.js"></script>
+        <script src="/js/noti.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
+            crossorigin="anonymous"
+        ></script>
+        <script src="/assets/demo/chart-pie-demo.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+            crossorigin="anonymous"
+        ></script>
+        <script src="/js/datatables-simple-demo.js"></script>
+    </body>
+</html>

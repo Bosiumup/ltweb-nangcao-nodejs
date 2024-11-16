@@ -1,0 +1,43 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4"><%= title %></h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Trang cấp tài khoản người dùng</li>
+    </ol>
+    <div class="registration-form">
+        <form action="create-new-user" method="POST">
+            <div class="form-group">
+                <input
+                    type="text"
+                    class="form-control item"
+                    name="username"
+                    id="username"
+                    placeholder="Tên tài khoản"
+                />
+            </div>
+            <div class="form-group">
+                <input
+                    type="password"
+                    class="form-control item"
+                    name="password"
+                    id="password"
+                    placeholder="Mật khẩu"
+                />
+            </div>
+            <div class="form-group">
+                <button
+                    type="submit"
+                    class="btn btn-block create-account w-100"
+                >
+                    Tạo tài khoản
+                </button>
+                <a
+                    class="text-decoration-none text-center w-100 d-inline-block mt-3"
+                    href="/PAGE_List_User"
+                >
+                    <i class="fas fa-arrow-left me-1"></i>
+                    Trang danh sách người dùng
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
