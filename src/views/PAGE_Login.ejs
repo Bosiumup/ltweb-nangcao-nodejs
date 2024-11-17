@@ -3,26 +3,36 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Đăng nhập Coolmate Admin</title>
-        <link rel="stylesheet" href="css/auth.css" />
-        <!-- Font Awesome CDN link for icons -->
+        <title>Đăng nhập</title>
+        <link rel="stylesheet" href="/css/auth.css" />
+        <link rel="stylesheet" href="/css/noti.css" />
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         />
-        <link href="css/styles.css" rel="stylesheet" />
+        <link href="/css/styles.css" rel="stylesheet" />
     </head>
     <body>
         <div class="wrapper">
             <div class="title"><span>Coolmate Admin</span></div>
-            <form action="#">
+            <form action="/login" method="POST">
                 <div class="row">
                     <i class="fas fa-user"></i>
-                    <input type="text" placeholder="Tên tài khoản" required />
+                    <input
+                        name="username"
+                        type="text"
+                        placeholder="Tên tài khoản"
+                        required
+                    />
                 </div>
                 <div class="row">
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Mật khẩu" required />
+                    <input
+                        name="password"
+                        type="password"
+                        placeholder="Mật khẩu"
+                        required
+                    />
                 </div>
                 <div class="row button">
                     <input type="submit" value="Đăng nhập" />
@@ -36,5 +46,15 @@
                 Quay lại Dashboard
             </a>
         </div>
+        <!-- Hiển thị thông báo -->
+        <% if (data.successMessage && data.typeMessage) { %>
+        <div
+            id="message"
+            class="text-center mt-3 alert message <%= data.typeMessage === 'success' ? 'alert-success' : 'alert-danger' %>"
+        >
+            <%= data.successMessage %>
+        </div>
+        <% } %>
+        <script src="/js/noti.js"></script>
     </body>
 </html>

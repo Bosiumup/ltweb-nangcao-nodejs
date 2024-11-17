@@ -21,6 +21,7 @@
     </head>
     <body>
         <header id="header"><%- include('../components/header') %></header>
+        <% if (session && session.role === "admin") { %>
         <main id="main-content">
             <div id="layoutSidenav">
                 <div id="layoutSidenav_nav">
@@ -38,8 +39,7 @@
                 </div>
             </div>
         </main>
-        <!-- <% if (session && session.user.role === "admin") { %> <% } else { %> <%-
-        include('../errs/PAGE_401') %> <% } %> -->
+        <% } else { %> <%- include('../errs/PAGE_401') %> <% } %>
 
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

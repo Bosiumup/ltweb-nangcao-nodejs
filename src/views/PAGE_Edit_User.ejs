@@ -2,7 +2,7 @@
     <h1 class="mt-4"><%= data.title %></h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item active">
-            Trang chỉnh sửa chi tiết người dùng
+            Trang chỉnh sửa thông tin chi tiết
         </li>
     </ol>
     <div class="registration-form d-flex justify-content-around align-items-center">
@@ -68,11 +68,12 @@
     </div>
 </div>
 <!-- Hiển thị thông báo -->
-<% if (data.successMessage) { %>
-    <div id="success-message" class="mt-3 alert alert-success">
+<% if (data.successMessage && data.typeMessage) { %>
+    <div id="message" class="text-center mt-3 alert message <%= data.typeMessage === 'success' ? 'alert-success' : 'alert-danger' %>">
         <%= data.successMessage %>
     </div>
-    <% } %>
+<% } %>
+
 <script>
     // Lắng nghe sự kiện khi người dùng chọn file ảnh
     document.getElementById("avatar").addEventListener("change", function (event) {

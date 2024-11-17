@@ -39,7 +39,9 @@
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                     >
-                        Sắp xếp theo tên
+                        <% if (data.sortOrder === 'asc') { %> Sắp xếp từ A -> Z
+                        <% } else if (data.sortOrder === 'desc') { %> Sắp xếp từ
+                        Z -> A <% } else { %> Sắp xếp theo tên <% } %>
 
                         <!-- Menu Dropdown -->
                         <ul
@@ -47,16 +49,26 @@
                             class="dropdown-menu shadow-lg rounded"
                         >
                             <li>
-                                <a class="dropdown-item" href="#"
-                                    >Từ A
-                                    <i class="fa-solid fa-arrow-right"></i> Z</a
+                                <!-- Sử dụng button thay vì a -->
+                                <button
+                                    type="button"
+                                    class="dropdown-item"
+                                    onclick="window.location.href='/PAGE_List_User/asc'"
                                 >
+                                    Từ A
+                                    <i class="fa-solid fa-arrow-right"></i> Z
+                                </button>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#"
-                                    >Từ Z
-                                    <i class="fa-solid fa-arrow-right"></i> A</a
+                                <!-- Sử dụng button thay vì a -->
+                                <button
+                                    type="button"
+                                    class="dropdown-item"
+                                    onclick="window.location.href='/PAGE_List_User/desc'"
                                 >
+                                    Từ Z
+                                    <i class="fa-solid fa-arrow-right"></i> A
+                                </button>
                             </li>
                         </ul>
                     </span>
@@ -88,7 +100,7 @@
                     </thead>
 
                     <tbody>
-                        <% for(let i = 0; i < data.users.length; i++) { %>
+                        <% data.users.forEach(user => { %>
                         <tr>
                             <th scope="row">
                                 <input
@@ -96,10 +108,10 @@
                                     type="checkbox"
                                 />
                             </th>
-                            <td><%= data.users[i].id %></td>
+                            <td><%= user.id %></td>
                             <td>
                                 <img
-                                    src="<%= data.users[i].imageUrl %>"
+                                    src="<%= user.imageUrl %>"
                                     alt=""
                                     style="
                                         width: 50px;
@@ -108,17 +120,17 @@
                                     "
                                 />
                             </td>
-                            <td><%= data.users[i].username %></td>
-                            <td><%= data.users[i].fullname %></td>
-                            <td><%= data.users[i].address %></td>
-                            <td><%= data.users[i].phone %></td>
-                            <td><%= data.users[i].role %></td>
+                            <td><%= user.username %></td>
+                            <td><%= user.fullname %></td>
+                            <td><%= user.address %></td>
+                            <td><%= user.phone %></td>
+                            <td><%= user.role %></td>
                             <td
                                 class="d-flex align-items-center justify-content-center"
                             >
                                 <a
                                     class="mx-2"
-                                    href="/PAGE_Edit_User/<%= data.users[i].id %>"
+                                    href="/PAGE_Edit_User/<%= user.id %>"
                                 >
                                     <i
                                         class="fa-solid fa-user-pen text-info fs-5"
@@ -128,7 +140,7 @@
                                     <input
                                         type="hidden"
                                         name="userId"
-                                        value="<%= data.users[i].id %>"
+                                        value="<%= user.id %>"
                                     />
                                     <button
                                         type="submit"
@@ -141,10 +153,19 @@
                                 </form>
                             </td>
                         </tr>
-                        <% } %>
+                        <% }) %>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+<% if (data.successMessage && data.typeMessage) { %>
+<div
+    id="message"
+    class="text-center mt-3 alert message <%= data.typeMessage === 'success' ? 'alert-success' : 'alert-danger' %>"
+>
+    <%= data.successMessage %>
+</div>
+<% } %>

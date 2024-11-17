@@ -1,55 +1,28 @@
 import bcrypt from "bcryptjs";
 import User from "../models/User";
 
-let authUser = async (username, password) => {
-    let user = await getUsername(username);
-    if (!user) {
-        return { success: false, errMessage: "Tài khoản không tồn tại." };
-    }
-    let match = await bcrypt.compare(password, user.password);
-    if (match) {
-        delete user.password;
-        return { success: true, user: user };
-    } else {
-        return { success: false, errMessage: "Mật khẩu không đúng." };
-    }
+let serviceGetAllUser = async () => {
+    return await User.findAll({
+        where: { role: "user" },
+        order: [["fullname", "DESC"]],
+    });
 };
 
-let modelGetAllUser = async () => {
-    return await User.findAll({ where: { role: "user" } });
-};
-
-// let getUsername = async (username) => {
-//     let [rows, fields] = await pool.query(
-//         "SELECT * FROM users WHERE username = ?",
-//         [username]
-//     );
-//     return rows.length > 0 ? rows[0] : null;
-// };
-
-// sequelize get username
-let getUsername = async (username) => {
+let serviceGetUsername = async (username) => {
     return await User.findOne({ where: { username } });
 };
 
-let modelHashPassword = async (password) => {
+let serviceHashPassword = async (password) => {
     let salt = bcrypt.genSaltSync(10);
     return await bcrypt.hashSync(password, salt);
 };
 
-let modelCreateNewUser = async (username, password) => {
-    let checkUsername = await getUsername(username);
+let serviceCreateNewUser = async (username, password) => {
+    let checkUsername = await serviceGetUsername(username);
     if (checkUsername) {
         return false;
     }
-    let hashPassword = await modelHashPassword(password);
-
-    // return await pool.query(
-    //     "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
-    //     [username, hashPassword, "user"]
-    // );
-
-    // sequelize create
+    let hashPassword = await serviceHashPassword(password);
     return await User.create({
         username: username,
         password: hashPassword,
@@ -61,12 +34,7 @@ let modelCreateNewUser = async (username, password) => {
     });
 };
 
-// let modelDeleteUserById = async (id) => {
-//     return await pool.query("DELETE FROM users WHERE id = ?", [id]);
-// };
-
-// sequelize delete
-let modelDeleteUserById = async (id) => {
+let serviceDeleteUserById = async (id) => {
     return await User.destroy({
         where: {
             id: id,
@@ -74,13 +42,13 @@ let modelDeleteUserById = async (id) => {
     });
 };
 
-let modelGetUserById = async (id) => {
+let serviceGetUserById = async (id) => {
     return await User.findOne({
         where: { id: id },
     });
 };
 
-let modelUpdateUserById = async (id, fullname, address, phone, role) => {
+let serviceUpdateUserById = async (id, fullname, address, phone, role) => {
     if (!id) {
         console.log("ID không hợp lệ.");
     }
@@ -101,7 +69,7 @@ let modelUpdateUserById = async (id, fullname, address, phone, role) => {
     }
 };
 
-let modelUpdateAvatar = async (id, newAvatarUrl) => {
+let serviceUpdateAvatar = async (id, newAvatarUrl) => {
     if (!id) {
         console.log("ID không hợp lệ.");
     }
@@ -119,13 +87,20 @@ let modelUpdateAvatar = async (id, newAvatarUrl) => {
     }
 };
 
+let serviceOrderUser = async (sortOrder) => {
+    return await User.findAll({
+        where: { role: "user" },
+        order: [["fullname", sortOrder]],
+    });
+};
+
 export default {
-    modelGetAllUser,
-    modelCreateNewUser,
-    modelDeleteUserById,
-    modelGetUserById,
-    modelUpdateUserById,
-    getUsername,
-    authUser,
-    modelUpdateAvatar,
+    serviceGetAllUser,
+    serviceCreateNewUser,
+    serviceDeleteUserById,
+    serviceGetUserById,
+    serviceUpdateUserById,
+    serviceGetUsername,
+    serviceUpdateAvatar,
+    serviceOrderUser,
 };

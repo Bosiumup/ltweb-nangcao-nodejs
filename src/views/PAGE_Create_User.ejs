@@ -1,26 +1,28 @@
 <div class="container-fluid px-4">
-    <h1 class="mt-4"><%= title %></h1>
+    <h1 class="mt-4"><%= data.title %></h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item active">Trang cấp tài khoản người dùng</li>
     </ol>
     <div class="registration-form">
         <form action="create-new-user" method="POST">
             <div class="form-group">
+                <label for="username" class="form-label">Tên tài khoản</label>
                 <input
                     type="text"
                     class="form-control item"
                     name="username"
                     id="username"
-                    placeholder="Tên tài khoản"
+                    value="<%= data.username %>"
                 />
             </div>
             <div class="form-group">
+                <label for="password" class="form-label">Mật khẩu</label>
                 <input
                     type="password"
                     class="form-control item"
                     name="password"
                     id="password"
-                    placeholder="Mật khẩu"
+                    value="<%= data.password %>"
                 />
             </div>
             <div class="form-group">
@@ -41,3 +43,12 @@
         </form>
     </div>
 </div>
+<!-- Hiển thị thông báo -->
+<% if (data.successMessage && data.typeMessage) { %>
+<div
+    id="message"
+    class="text-center mt-3 alert message <%= data.typeMessage === 'success' ? 'alert-success' : 'alert-danger' %>"
+>
+    <%= data.successMessage %>
+</div>
+<% } %>

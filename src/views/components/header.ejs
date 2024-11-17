@@ -15,7 +15,12 @@
     </div>
     <!-- Navbar-->
     <% if (session && session.role === "admin") { %>
-    <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+    <ul
+        class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4 d-flex align-items-center"
+    >
+        <span class="text-secondary me-1"
+            >Xin chào, <%= session.username %></span
+        >
         <li class="nav-item dropdown">
             <a
                 class="nav-link dropdown-toggle"
@@ -30,10 +35,16 @@
                 class="dropdown-menu dropdown-menu-end"
                 aria-labelledby="navbarDropdown"
             >
-                <li><a class="dropdown-item" href="#">Trang cá nhân</a></li>
+                <li>
+                    <a
+                        class="dropdown-item"
+                        href="/PAGE_Edit_User/<%= session.id %>"
+                        >Trang cá nhân</a
+                    >
+                </li>
                 <li><hr class="dropdown-divider" /></li>
                 <li>
-                    <a class="dropdown-item" href="/getLogout">Đăng xuất</a>
+                    <a class="dropdown-item" href="/logout">Đăng xuất</a>
                 </li>
             </ul>
         </li>

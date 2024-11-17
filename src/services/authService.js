@@ -1,18 +1,22 @@
 import bcrypt from "bcryptjs";
-import User from "../models/User";
-
-let authUser = async (username, password) => {
-    let user = await getUsername(username);
+import userService from "./userService";
+let serviceAuthLogin = async (username, password) => {
+    // Tìm người dùng theo tên tài khoản
+    let user = await userService.serviceGetUsername(username);
     if (!user) {
-        return { success: false, errMessage: "Tài khoản không tồn tại." };
+        // Trả về một giá trị đặc biệt khi không tìm thấy tài khoản
+        return { error: "user_not_found" };
     }
+
+    // Kiểm tra mật khẩu
     let match = await bcrypt.compare(password, user.password);
     if (match) {
-        delete user.password;
-        return { success: true, user: user };
+        delete user.password; // Xóa mật khẩu trước khi trả về
+        return { user: user }; // Trả về đối tượng user nếu mật khẩu đúng
     } else {
-        return { success: false, errMessage: "Mật khẩu không đúng." };
+        // Nếu mật khẩu không khớp
+        return { error: "incorrect_password" };
     }
 };
 
-export default authUser;
+export default serviceAuthLogin;

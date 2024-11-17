@@ -1,48 +1,69 @@
-import userModel from "../services/userService";
+import serviceAuthLogin from "../services/authService";
 
-let getMainPage = (req, res) => {
+let controllerGetMainPage = (req, res) => {
     res.redirect("/dashboard");
 };
-let getDashboard = (req, res) => {
+let controllerGetDashboard = (req, res) => {
     return res.render("PAGE_Dashboard", { session: req.session.user });
 };
 
-let loginGet = (req, res) => {
+let controllerGetLogin = (req, res) => {
     let message = req.query.message || null;
-    let errMessage = req.query.errMessage || null;
+    let type = req.query.type || null;
     return res.render("PAGE_Login", {
+        data: {
+            successMessage: message,
+            typeMessage: type,
+        },
         session: req.session.user,
-        successMessage: message,
-        errMessage: errMessage,
         layout: false,
     });
 };
 
-let loginPost = async (req, res) => {
+let controlerPostLogin = async (req, res) => {
     let { username, password } = req.body;
-    let result = await userModel.authUser(username, password);
+
+    // Gọi hàm login service và nhận kết quả
+    let result = await serviceAuthLogin(username, password);
     console.log("Session before:", req.session);
-    if (result.success) {
+
+    // Kiểm tra kết quả trả về từ authLoginService
+    if (result.user) {
+        // Nếu trả về user (tức là login thành công)
         let user = result.user;
         if (user.role === "admin") {
             req.session.user = user;
             console.log("Session after:", req.session.user);
             return res.redirect("/dashboard");
         }
-        if (user.role === "user") {
-            req.session.user = user;
-            console.log("Session after:", req.session.user);
-            return res.redirect("/");
-        }
     } else {
-        return res.redirect(`/login?errMessage=${result.errMessage}`);
+        // Xử lý các trường hợp lỗi
+        let message, type;
+        if (result.error === "user_not_found") {
+            message = "Tài khoản không tồn tại!";
+            type = "error";
+        } else if (result.error === "incorrect_password") {
+            message = "Mật khẩu không đúng!";
+            type = "error";
+        }
+
+        // Chuyển hướng về trang login với thông báo lỗi
+        return res.redirect(
+            `/PAGE_Login?message=${encodeURIComponent(message)}&type=${type}`
+        );
     }
 };
 
-let logout = (req, res) => {
+let controllerGetLogout = (req, res) => {
     req.session.destroy();
     console.log("Session after logout:", req.session);
-    return res.redirect("/login");
+    return res.redirect("/dashboard");
 };
 
-export default { getMainPage, getDashboard, loginGet, loginPost, logout };
+export default {
+    controllerGetMainPage,
+    controllerGetDashboard,
+    controllerGetLogin,
+    controlerPostLogin,
+    controllerGetLogout,
+};
