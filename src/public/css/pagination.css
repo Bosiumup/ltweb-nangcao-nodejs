@@ -1,0 +1,80 @@
+/* Tổng thể cho phân trang */
+.pagination {
+    display        : flex;
+    justify-content: center;
+    align-items    : center;
+    margin-top     : 30px;
+    padding        : 15px 0;
+    font-family    : 'Arial', sans-serif;
+}
+
+/* Nút phân trang */
+.pagination button {
+    display         : inline-block;
+    padding         : 10px 15px;
+    margin          : 0 5px;
+    border-radius   : 5px;
+    font-size       : 16px;
+    color           : #007bff;
+    background-color: #f8f9fa;
+    border          : 1px solid #ddd;
+    cursor          : pointer;
+    transition      : background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Nút phân trang khi hover */
+.pagination button:hover {
+    background-color: #007bff;
+    color           : white;
+}
+
+/* Nút phân trang khi được active (đang ở trang hiện tại) */
+.pagination .active {
+    background-color: #007bff;
+    color           : white;
+    border          : 1px solid #007bff;
+}
+
+/* Nút Prev và Next */
+.pagination .btn-prev,
+.pagination .btn-next {
+    padding         : 10px 15px;
+    background-color: #f8f9fa;
+    color           : #007bff;
+    border          : 1px solid #ddd;
+    border-radius   : 5px;
+    font-weight     : bold;
+    cursor          : pointer;
+    transition      : background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover cho Prev và Next */
+.pagination .btn-prev:hover,
+.pagination .btn-next:hover {
+    background-color: #007bff;
+    color           : white;
+}
+
+/* Disable các nút Prev/Next khi không thể nhấn */
+.pagination .disabled {
+    color           : #ccc;
+    cursor          : not-allowed;
+    background-color: #f8f9fa;
+    border-color    : #ddd;
+}
+
+.pagination .disabled:hover {
+    background-color: #f8f9fa;
+    color           : #ccc;
+}
+
+/* Các số trang phân trang */
+.pagination .page-item {
+    display: inline-block;
+}
+
+.pagination .page-item button {
+    text-align : center;
+    line-height: 35px;
+    min-width  : 35px;
+}

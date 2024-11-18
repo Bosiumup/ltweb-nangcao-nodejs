@@ -2,21 +2,39 @@ import userService from "../services/userService";
 import cloudinary from "../config/cloudinaryConfig";
 import fs from "fs";
 
-let controllerGetAllUser = async (req, res) => {
-    let message = req.query.message || null;
-    let type = req.query.type || null;
-    let sort = req.params.sort || "desc";
-    let users = await userService.serviceGetAllUser();
-    return res.render("PAGE_List_User", {
-        data: {
-            title: "Danh sách người dùng",
-            users: users,
-            successMessage: message,
-            typeMessage: type,
-            sortOrder: sort,
-        },
-        session: req.session.user,
-    });
+let controllerAllFunctionUser = async (req, res) => {
+    try {
+        let message = req.query.message || null;
+        let type = req.query.type || null;
+        let sort = req.query.sort || "desc";
+        let page = parseInt(req.query.page) || 1;
+        let search = req.query.search || null;
+
+        let { users, currentPage, totalPages, totalUsers } =
+            await userService.serviceAllFunctionUser(page, sort, search);
+
+        // Kiểm tra nếu không có kết quả tìm kiếm
+        let noResults = users.length === 0; // Nếu không có người dùng, hiển thị thông báo không tìm thấy
+
+        res.render("PAGE_List_User", {
+            data: {
+                title: "Danh sách người dùng",
+                successMessage: message,
+                typeMessage: type,
+                users: users, // Danh sách người dùng (có thể là rỗng nếu không có kết quả tìm kiếm)
+                currentPage: currentPage, // Trang hiện tại
+                totalPages: totalPages, // Tổng số trang
+                totalUsers: totalUsers, // Tổng số người dùng
+                sortOrder: sort, // Tham số sắp xếp
+                search: search, // Tham số tìm kiếm
+                noResults: noResults, // Cờ xác định có kết quả tìm kiếm không
+            },
+            session: req.session.user,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Có lỗi xảy ra khi lấy dữ liệu người dùng.");
+    }
 };
 
 let controllerGetCreateUser = (req, res) => {
@@ -102,30 +120,12 @@ let controllerUpdateAvatar = async (req, res) => {
     );
 };
 
-let controllerOrderUser = async (req, res) => {
-    let { sort } = req.params;
-    try {
-        let users = await userService.serviceOrderUser(sort);
-        return res.render("PAGE_List_User", {
-            data: {
-                title: "Danh sách người dùng",
-                users: users,
-                sortOrder: sort,
-            },
-            session: req.session.user,
-        });
-    } catch (error) {
-        return console.error("Lỗi khi sắp xếp người dùng:", error);
-    }
-};
-
 export default {
-    controllerGetAllUser,
+    controllerAllFunctionUser,
     controllerGetCreateUser,
     controllerCreateNewUser,
     controllerDeleteUserById,
     controllerEditUserById,
     controllerUpdateUserById,
     controllerUpdateAvatar,
-    controllerOrderUser,
 };

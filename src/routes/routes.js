@@ -24,12 +24,12 @@ const initRoutes = (app) => {
     );
 
     // -------------- User views
+    // trả về danh sách tài khoản
+    router.get("/PAGE_List_User", userController.controllerAllFunctionUser);
     // trang cấp tài khoản
     router.get("/PAGE_Create_User", userController.controllerGetCreateUser);
     // trang cập nhật thông tin
     router.get("/PAGE_Edit_User/:id", userController.controllerEditUserById);
-    // trả về danh sách tài khoản
-    router.get("/PAGE_List_User", userController.controllerGetAllUser);
 
     // -------------- Handle requests
 
@@ -51,7 +51,6 @@ const initRoutes = (app) => {
         upload.single("avatar"),
         userController.controllerUpdateAvatar
     );
-    router.get("/PAGE_List_User/:sort", userController.controllerOrderUser);
 
     // -------------- Product requests
     // -------------- Order requests
