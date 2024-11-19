@@ -2,6 +2,7 @@ import express from "express";
 import authMiddleware from "../middleware/authMiddleware";
 import userController from "../controllers/userController";
 import authController from "../controllers/authController";
+import productController from "../controllers/productController";
 import upload from "../config/multerConfig";
 
 const router = express.Router();
@@ -54,6 +55,25 @@ const initRoutes = (app) => {
     router.get("/PAGE_List_User/:sort", userController.controllerOrderUser);
 
     // -------------- Product requests
+    // // thêm sản phẩm
+    router.post("/create-new-product", productController.controllerCreateNewProduct);
+    router.get("/PAGE_Create_Product", productController.controllerGetCreateProduct);
+    // xóa sản phẩm
+    router.post("/delete-product", productController.controllerDeleteProductById);
+    // cập nhật sản phẩm
+    router.post("/update-product", productController.controllerUpdateProductById);
+    router.post(
+        "/update-avatar",
+        upload.single("avatar"),
+        productController.controllerUpdateAvatar
+    );
+    router.get("/PAGE_Edit_Product/:id", productController.controllerEditProductById);
+    // Lấy danh sách sản phẩm
+    router.get("/PAGE_List_Product", productController.controllerGetAllProduct);
+
+
+
+
     // -------------- Order requests
 
     // -------------- Page not found

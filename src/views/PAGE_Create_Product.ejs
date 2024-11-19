@@ -1,0 +1,61 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4"><%= data.title %></h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Trang Thêm Sản Phẩm</li>
+    </ol>
+    <div class="registration-form">
+        <form action="create-new-product" method="POST">
+            <div class="form-group">
+                <label for="name" class="form-label">Tên sản phẩm</label>
+                <input
+                    type="text"
+                    class="form-control item"
+                    name="name"
+                    value="<%= data.name %>"
+                />
+            </div>
+            <div class="form-group">
+                <label for="desciption" class="form-label">Mô tả</label>
+                <input
+                    type="text"
+                    class="form-control item"
+                    name="desciption"
+                    value="<%= data.desciption %>"
+                />
+            </div>
+            <div class="form-group">
+                <label for="imageUrl" class="form-label">Hình ảnh</label>
+                <input
+                  type="file"
+                  class="form-control item"
+                  name="imageUrl"
+                  value="<%= data.imageUrl %>"
+                />
+              </div>
+            <div class="form-group">
+                <button
+                    type="submit"
+                    class="btn btn-block create-account w-100"
+                >
+                    Thêm sản phẩm
+                </button>
+                <a
+                    class="text-decoration-none text-center w-100 d-inline-block mt-3"
+                    href="/PAGE_List_Product"
+                >
+                    <i class="fas fa-arrow-left me-1"></i>
+                    Trang danh sách sản phẩm
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Hiển thị thông báo -->
+<% if (data.successMessage && data.typeMessage) { %>
+<div
+    id="message"
+    class="text-center mt-3 alert message <%= data.typeMessage === 'success' ? 'alert-success' : 'alert-danger' %>"
+>
+    <%= data.successMessage %>
+</div>
+<% } %>

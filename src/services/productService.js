@@ -1,22 +1,67 @@
-let modelGetGroupProduct = async () => {
-    let [rows, fields] = await pool.query("SELECT * FROM nhom");
-    return rows;
-};
-let modelGetAllProduct = async () => {
-    let [rows, fields] = await pool.query("SELECT * FROM sanpham");
-    return rows;
+import Product from "../models/Product";
+
+let serviceGetAllProduct = async () => {
+    return await Product.findAll();
 };
 
-let modelGetProductById = async (masp) => {
-    let [rows, fields] = await pool.query(
-        "SELECT * FROM sanpham WHERE masp = ?",
-        [masp]
-    );
-    return rows[0];
+let serviceCreateNewProduct = async (name, description, imageUrl) => {
+    return await Product.create({
+        name: name,
+        description:"",
+        imageUrl: "",
+    });
 };
+
+let serviceUpdateProductById = async (id, name, description, imageUrl) => {
+    if (!id) {
+        console.log("ID không hợp lệ.");
+    }
+    try {
+        return await Product.update(
+            {
+                name: name,
+                description: description,
+                imageUrl: imageUrl,
+            },
+            {
+                where: { id: id },
+            }
+        );
+    } catch (error) {
+        console.error("Lỗi khi cập nhật người dùng:", error);
+    }
+};
+
+let serviceGetProductById = async (id) => {
+    return await Product.findOne({
+        where: { id: id },
+    });
+};
+
+let serviceDeleteProductById = async (id) => {
+    return await Product.destroy({
+        where: {
+            id: id,
+        },
+    });
+};
+
+
+
+
+
+
+
+
+
 
 export default {
     modelGetGroupProduct,
     modelGetAllProduct,
     modelGetProductById,
+    serviceCreateNewProduct,
+    serviceGetAllProduct,
+    serviceUpdateProductById,
+    serviceGetProductById,
+    serviceDeleteProductById,
 };
