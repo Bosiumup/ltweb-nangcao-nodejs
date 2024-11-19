@@ -9,7 +9,7 @@
                 Dashboard
             </a>
             <div class="sb-sidenav-menu-heading">Quản lý người dùng</div>
-            <a class="nav-link" href="/PAGE_List_User">
+            <a class="nav-link" href="/PAGE_List_User?page=1">
                 <div class="sb-nav-link-icon">
                     <i class="fa-solid fa-user-group"></i>
                 </div>
@@ -22,14 +22,8 @@
                 Cấp tài khoản
             </a>
             <div class="sb-sidenav-menu-heading">Quản lý sản phẩm</div>
-            <a
-                class="nav-link collapsed"
-                href="#"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseTypes"
-                aria-expanded="false"
-                aria-controls="collapseTypes"
-            >
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTypes"
+                aria-expanded="false" aria-controls="collapseTypes">
                 <div class="sb-nav-link-icon">
                     <i class="fa-solid fa-shirt"></i>
                 </div>
@@ -38,30 +32,17 @@
                     <i class="fas fa-angle-down"></i>
                 </div>
             </a>
-            <div
-                class="collapse"
-                id="collapseTypes"
-                aria-labelledby="headingOne"
-                data-bs-parent="#sidenavAccordion"
-            >
+            <div class="collapse" id="collapseTypes" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="layout-static.html"
-                        >Danh sách thể loại</a
-                    >
+                    <a class="nav-link" href="layout-static.html">Danh sách thể loại</a>
                     <a class="nav-link" href="layout-sidenav-light.html">
                         <i class="fa-solid fa-circle-plus me-1"></i>
                         Thêm thể loại
                     </a>
                 </nav>
             </div>
-            <a
-                class="nav-link collapsed"
-                href="#"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseProducts"
-                aria-expanded="false"
-                aria-controls="collapseProducts"
-            >
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseProducts"
+                aria-expanded="false" aria-controls="collapseProducts">
                 <div class="sb-nav-link-icon">
                     <i class="fa-solid fa-shirt"></i>
                 </div>
@@ -70,37 +51,31 @@
                     <i class="fas fa-angle-down"></i>
                 </div>
             </a>
-            <div
-                class="collapse"
-                id="collapseProducts"
-                aria-labelledby="headingTwo"
-                data-bs-parent="#sidenavAccordion"
-            >
+            <div class="collapse" id="collapseProducts" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
+<<<<<<< HEAD
                     <a class="nav-link" href="/PAGE_List_Product"
                         >Danh sách sản phẩm</a
                     >
                     <a class="nav-link" href="/PAGE_Create_Product">
+=======
+                    <a class="nav-link" href="layout-static.html">Danh sách sản phẩm</a>
+                    <a class="nav-link" href="layout-sidenav-light.html">
+>>>>>>> lnmt3
                         <i class="fa-solid fa-circle-plus me-1"></i>
                         Thêm sản phẩm
                     </a>
                 </nav>
             </div>
             <div class="sb-sidenav-menu-heading">Quản lý đơn hàng</div>
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="/PAGE_List_Order?page=1">
                 <div class="sb-nav-link-icon">
                     <i class="fa-solid fa-store"></i>
                 </div>
                 Danh sách đơn hàng
             </a>
-            <a
-                class="nav-link collapsed"
-                href="#"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseOrders"
-                aria-expanded="false"
-                aria-controls="collapseOrders"
-            >
+            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseOrders"
+                aria-expanded="false" aria-controls="collapseOrders">
                 <div class="sb-nav-link-icon">
                     <i class="fa-solid fa-truck-fast"></i>
                 </div>
@@ -109,16 +84,9 @@
                     <i class="fas fa-angle-down"></i>
                 </div>
             </a>
-            <div
-                class="collapse"
-                id="collapseOrders"
-                aria-labelledby="headingThree"
-                data-bs-parent="#sidenavAccordion"
-            >
+            <div class="collapse" id="collapseOrders" aria-labelledby="headingThree" data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="layout-static.html"
-                        >Yêu cầu hủy đơn</a
-                    >
+                    <a class="nav-link" href="layout-static.html">Yêu cầu hủy đơn</a>
                     <a class="nav-link" href="layout-sidenav-light.html">
                         Giao hàng thành công
                     </a>
@@ -133,14 +101,14 @@
             </a>
         </div>
     </div>
-    <% if (session && session.role === "admin") { %>
-    <div class="sb-sidenav-footer text-center">
-        <div class="small">Đã đăng nhập với admin:</div>
-        <%= session.username %>
-    </div>
-    <% } else { %>
-    <div class="sb-sidenav-footer">
-        <div class="small text-uppercase">Chưa đăng nhập admin</div>
-    </div>
-    <% } %>
+    <% if (session && session.role==="admin" ) { %>
+        <div class="sb-sidenav-footer text-center">
+            <div class="small">Đã đăng nhập với admin:</div>
+            <%= session.username %>
+        </div>
+        <% } else { %>
+            <div class="sb-sidenav-footer">
+                <div class="small text-uppercase">Chưa đăng nhập admin</div>
+            </div>
+            <% } %>
 </nav>

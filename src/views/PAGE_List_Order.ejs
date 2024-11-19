@@ -1,0 +1,159 @@
+<style>
+    .search-hover input.custom-hover:focus {
+        box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.808);
+        transition: all 0.1s linear;
+    }
+
+    .form-control {
+        border: none;
+    }
+
+    .form-control:focus {
+        border: none;
+    }
+</style>
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Danh sách tài khoản</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">
+            Bảng chi tiết thông tin tài khoản
+        </li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header bg-white">
+            <div class="my-2 d-flex justify-content-between align-items-center">
+                <div class="position-relative search-hover w-100">
+                    <form action="/PAGE_List_Order" method="get">
+                        <span class="position-absolute search">
+                            <i class="fa fa-search"></i>
+                        </span>
+                        <input type="text" name="search" class="form-control custom-hover"
+                            placeholder="Nhập tên hoặc tài khoản người dùng..." value="<%= data.search %>" />
+                        <button type="submit" hidden></button>
+                    </form>
+                </div>
+
+                <!-- Ẩn phần sắp xếp nếu có tìm kiếm -->
+                <% if (!data.search) { %>
+                    <div class="px-2">
+                        <span id="filterToggle" class="dropdown-toggle fw-normal" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <% if (data.sortOrder==='asc' ) { %> Sắp xếp từ A -> Z
+                                <% } else if (data.sortOrder==='desc' ) { %> Sắp xếp từ Z -> A <% } else { %> Sắp xếp
+                                        theo tên <% } %>
+                                            <ul id="filterMenu" class="dropdown-menu shadow-lg rounded">
+                                                <li>
+                                                    <button type="button" class="dropdown-item"
+                                                        onclick="location.href='/PAGE_List_Order?page=<%= data.currentPage %>&sort=asc'">
+                                                        Từ A <i class="fa-solid fa-arrow-right"></i> Z
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="button" class="dropdown-item"
+                                                        onclick="location.href='/PAGE_List_Order?page=<%= data.currentPage %>&sort=desc'">
+                                                        Từ Z <i class="fa-solid fa-arrow-right"></i> A
+                                                    </button>
+                                                </li>
+                                            </ul>
+                        </span>
+                    </div>
+                    <% } %>
+            </div>
+        </div>
+        <div class="card-body bg-light">
+            <!-- Kiểm tra nếu không có kết quả tìm kiếm -->
+            <% if (data.noResults) { %>
+                <div class="alert alert-warning text-center">
+                    Không tồn tại tên hoặc tài khoản người dùng.
+                </div>
+                <% } else { %>
+                    <div class="table-responsive">
+                        <table class="table table-responsive table-borderless mb-0">
+                            <thead>
+                                <tr class="border-bottom">
+                                    <th scope="col" width="5%">
+                                        <input class="form-check-input" type="checkbox" />
+                                    </th>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Địa chỉ</th>
+                                    <th scope="col">SĐT</th>
+                                    <th scope="col">Trạng thái</th>
+                                    <th scope="col">Id người dùng</th>
+                                    <th scope="col" class="text-center">
+                                        <span>Cài đặt</span>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <% data.orders.forEach(order=> { %>
+                                    <tr>
+                                        <th scope="row">
+                                            <input class="form-check-input" type="checkbox" />
+                                        </th>
+                                        <td>
+                                            <%= order.id %>
+                                        </td>
+
+                                        <td>
+                                            <%= order.address %>
+                                        </td>
+                                        <td>
+                                            <%= order.phone %>
+                                        </td>
+                                        <td>
+                                            <%= order.status %>
+                                        </td>
+                                        <td>
+                                            <%= order.id_user %>
+                                        </td>
+                                        <td style="display: flex; gap: 10px;" class="d-flex align-items-center justify-content-center">
+                                            <a href="/PAGE_Detail_Order/<%=order.id%>" class="view">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                            <a href="/PAGE_Edit_Order/<%=order.id%>">
+                                                <i class="fa-solid fa-gear"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <% } %>
+        </div>
+
+        <!-- Phân trang, chỉ hiển thị nếu có kết quả tìm kiếm -->
+        <% if (!data.noResults && data.orders.length> 0) { %>
+            <div class="pagination d-flex justify-content-end mt-3 me-3">
+                <button type="button" class="btn-prev <%= data.currentPage === 1 ? 'disabled' : '' %>"
+                    <%=data.currentPage===1 ? 'disabled' : '' %>
+                    onclick="location.href='/PAGE_List_Order?page=<%= data.currentPage - 1 %>'">
+                        Prev
+                </button>
+
+                <% for (let i=1; i <=data.totalPages; i++) { %>
+                    <button type="button" class="page-item <%= data.currentPage === i ? 'active' : '' %>"
+                        onclick="location.href='/PAGE_List_Order?page=<%= i %>'">
+                        <%= i %>
+                    </button>
+                    <% } %>
+
+                        <button type="button"
+                            class="btn-next <%= data.currentPage === data.totalPages ? 'disabled' : '' %>"
+                            <%=data.currentPage===data.totalPages ? 'disabled' : '' %>
+                            onclick="location.href='/PAGE_List_Order?page=<%= data.currentPage + 1 %>'">
+                                Next
+                        </button>
+            </div>
+            <% } %>
+    </div>
+</div>
+
+<% if (data.successMessage && data.typeMessage) { %>
+    <div id="message"
+        class="text-center mt-3 alert message <%= data.typeMessage === 'success' ? 'alert-success' : 'alert-danger' %>">
+        <%= data.successMessage %>
+    </div>
+    <% } %>

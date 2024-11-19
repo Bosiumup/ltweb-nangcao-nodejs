@@ -2,7 +2,11 @@ import express from "express";
 import authMiddleware from "../middleware/authMiddleware";
 import userController from "../controllers/userController";
 import authController from "../controllers/authController";
+<<<<<<< HEAD
 import productController from "../controllers/productController";
+=======
+import orderController from "../controllers/orderController";
+>>>>>>> lnmt3
 import upload from "../config/multerConfig";
 
 const router = express.Router();
@@ -25,12 +29,12 @@ const initRoutes = (app) => {
     );
 
     // -------------- User views
+    // trả về danh sách tài khoản
+    router.get("/PAGE_List_User", userController.controllerAllFunctionUser);
     // trang cấp tài khoản
     router.get("/PAGE_Create_User", userController.controllerGetCreateUser);
     // trang cập nhật thông tin
     router.get("/PAGE_Edit_User/:id", userController.controllerEditUserById);
-    // trả về danh sách tài khoản
-    router.get("/PAGE_List_User", userController.controllerGetAllUser);
 
     // -------------- Handle requests
 
@@ -52,7 +56,7 @@ const initRoutes = (app) => {
         upload.single("avatar"),
         userController.controllerUpdateAvatar
     );
-    router.get("/PAGE_List_User/:sort", userController.controllerOrderUser);
+
 
     // -------------- Product requests
     // // thêm sản phẩm
@@ -75,11 +79,16 @@ const initRoutes = (app) => {
 
 
     // -------------- Order requests
+    router.get("/PAGE_List_Order", orderController.controllerAllOrder)
+    router.get("/PAGE_Detail_Order/:id", orderController.controllerDetailOrder)
+    router.get("/PAGE_Edit_Order/:id", orderController.controllerEditOrder)
+    router.post("/update-order", orderController.controllerUpdateOrder)
 
     // -------------- Page not found
     router.use((req, res) => {
         res.status(404).render("errs/PAGE_404", { layout: false });
     });
+
 
     // -------------- Đường dẫn / trỏ đến router
     app.use("/", router);

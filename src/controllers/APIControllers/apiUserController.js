@@ -1,5 +1,17 @@
 import userService from "../../services/APIServices/apiUserService";
 
+let apiRegisterPost = async (req, res) => {
+    let { username, password, fullname, phone } = req.body;
+    if (!username || !password || !fullname || !phone) {
+        return res.status(500).json({
+            errCode: 1,
+            errMessage: "Thiếu thông tin đăng ký!",
+        });
+    }
+    let message = await userService.handleRegisterUser(req.body);
+    return res.status(200).json(message);
+};
+
 let apiLoginPost = async (req, res) => {
     let { username, password } = req.body;
     if (!username || !password) {
@@ -9,6 +21,7 @@ let apiLoginPost = async (req, res) => {
         });
     }
     let message = await userService.handleUserLogin(username, password);
+    console.log("message: ", message);
     req.session.user = message.user;
     return res.status(200).json(message);
 };
@@ -24,24 +37,9 @@ let apiLogoutPost = (req, res) => {
     });
 };
 
-let apiGetAllUsers = async (req, res) => {
-    let message = await userService.getAllUsers();
-    return res.status(200).json(message);
-};
-
 let apiDetailUserGet = async (req, res) => {
     let id = req.query.id;
     let message = await userService.getUserById(id);
-    return res.status(200).json(message);
-};
-
-let apiCreateNewUser = async (req, res) => {
-    let message = await userService.handleCreateNewUser(req.body);
-    return res.status(200).json(message);
-};
-
-let apiDeleteUserById = async (req, res) => {
-    let message = await userService.handleDeleteUserById(req.body.id);
     return res.status(200).json(message);
 };
 
@@ -54,8 +52,6 @@ export default {
     apiDetailUserGet,
     apiLoginPost,
     apiLogoutPost,
-    apiGetAllUsers,
-    apiCreateNewUser,
-    apiDeleteUserById,
+    apiRegisterPost,
     apiUpdateUserById,
 };

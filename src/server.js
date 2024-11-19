@@ -11,7 +11,7 @@ import { initModels } from "./models";
 import cors from "cors";
 
 let app = express();
-app.use(cors({ origin: process.env.URL_REACT })); // Cho phép truy cập từ domain của frontend
+app.use(cors({ origin: process.env.URL_REACT, credentials: true })); // Cho phép truy cập từ domain của frontend
 dotenv.config();
 let port = process.env.PORT;
 app.use(cors());
@@ -43,8 +43,8 @@ app.use(
     })
 );
 initModels();
-initRoutes(app);
 initApiRoutes(app);
+initRoutes(app);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
