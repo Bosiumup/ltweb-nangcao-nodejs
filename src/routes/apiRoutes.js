@@ -9,13 +9,13 @@ const initApiRoutes = (app) => {
 
     // API người dùng
     // Token lấy từ header
-    router.get("/api/getUserInfo", apiUserController.apiGetUserInfo);
+    router.get("/api/fetchGetUserInfo", apiUserController.fetchGetUserInfo);
     // Đăng ký tài khoản
     router.post("/api/registerPost", apiUserController.apiRegisterPost);
     // Đăng nhập
     router.post("/api/loginPost", apiUserController.apiLoginPost);
     // Đăng xuất
-    router.post("/api/logoutPost", apiUserController.apiLogoutPost);
+    // router.post("/api/logoutPost", apiUserController.apiLogoutPost);
 
     // Trả về thông tin tài khoản cụ thể
     router.get("/api/detail-user/:id", apiUserController.apiDetailUserGet);
