@@ -8,6 +8,8 @@ const initApiRoutes = (app) => {
     // -------------- API routes
 
     // API người dùng
+    // Token lấy từ header
+    router.get("/api/getUserInfo", apiUserController.apiGetUserInfo);
     // Đăng ký tài khoản
     router.post("/api/registerPost", apiUserController.apiRegisterPost);
     // Đăng nhập
@@ -24,7 +26,10 @@ const initApiRoutes = (app) => {
     // API sản phẩm
     router.get("/api/list-product", apiProductController.apigetAllProduct);
     router.get("/api/list-type", apiProductController.apigetTypeProduct);
-    router.get("/api/list-product/:id", apiProductController.apigetProductFromType)
+    router.get(
+        "/api/list-product/:id",
+        apiProductController.apigetProductFromType
+    );
 
     // Hiển thị nhóm
     // router.get("/api/groupProduct", apiProductController.apiGetGroupProduct);

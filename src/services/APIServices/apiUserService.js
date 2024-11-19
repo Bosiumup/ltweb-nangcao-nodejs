@@ -1,5 +1,27 @@
 import bcrypt from "bcryptjs";
 import User from "../../models/User";
+import jwt from "jsonwebtoken";
+
+let verifyToken = (token) => {
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, "your-secret-key", (err, decoded) => {
+            if (err) {
+                reject(new Error("Token không hợp lệ!"));
+            } else {
+                resolve(decoded); // Trả về thông tin giải mã từ token (bao gồm userId)
+            }
+        });
+    });
+};
+
+let getUserById = async (userId) => {
+    try {
+        let user = await User.findByPk(userId); // Giả sử bạn đang dùng Sequelize để tìm người dùng theo id
+        return user; // Trả về thông tin người dùng
+    } catch (error) {
+        throw new Error("Không thể tìm thấy người dùng");
+    }
+};
 
 let handleRegisterUser = async (data) => {
     try {
@@ -85,6 +107,8 @@ let handleUpdateUserById = async (data) => {
 };
 
 export default {
+    verifyToken,
+    getUserById,
     handleRegisterUser,
     handleUserLogin,
     handleUpdateUserById,
