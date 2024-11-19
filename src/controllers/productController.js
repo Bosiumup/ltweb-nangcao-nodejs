@@ -54,21 +54,39 @@ let apiGetDetailProduct = async (req, res) => {
     }
 };
 
-let controllerGetAllProduct = async (req, res) => {
-    let message = req.query.message || null;
-    let type = req.query.type || null;
-    let sort = req.params.sort || "desc";
-    let products = await productService.serviceGetAllProduct();
-    return res.render("PAGE_List_Product", {
-        data: {
-            title: "Danh sách sản phẩm",
-            products: products,
-            successMessage: message,
-            typeMessage: type,
-            sortOrder: sort,
-        },
-        session: req.session.user,
-    });
+let controllerAllFunctionProduct = async (req, res) => {
+    try {
+        let message = req.query.message || null;
+        let type = req.query.type || null;
+        let sort = req.query.sort || "desc";
+        let page = parseInt(req.query.page) || 1;
+        let search = req.query.search || null;
+
+        let { products, currentPage, totalPages, totalProducts } =
+            await productService.serviceAllFunctionProduct(page, sort, search);
+
+        // Kiểm tra nếu không có kết quả tìm kiếm
+        let noResults = products.length === 0; // Nếu không có người dùng, hiển thị thông báo không tìm thấy
+
+        res.render("PAGE_List_Product", {
+            data: {
+                title: "Danh sách sản phẩm",
+                successMessage: message,
+                typeMessage: type,
+                products: products, // Danh sách người dùng (có thể là rỗng nếu không có kết quả tìm kiếm)
+                currentPage: currentPage, // Trang hiện tại
+                totalPages: totalPages, // Tổng số trang
+                totalProducts: totalProducts, // Tổng số người dùng
+                sortOrder: sort, // Tham số sắp xếp
+                search: search, // Tham số tìm kiếm
+                noResults: noResults, // Cờ xác định có kết quả tìm kiếm không
+            },
+            session: req.session.user,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Có lỗi xảy ra khi lấy dữ liệu người dùng.");
+    }
 };
 
 
@@ -86,8 +104,8 @@ let controllerGetCreateProduct = (req, res) => {
 };
 
 let controllerCreateNewProduct = async (req, res) => {
-    let { name, description, imageUrl } = req.body;
-    let created = await productService.serviceCreateNewProduct(name, description, imageUrl);
+    let { name, description, imageUrl, price } = req.body;
+    let created = await productService.serviceCreateNewProduct(name, description, imageUrl, price);
     if (!created) {
         return res.redirect(
             "/PAGE_Create_Product?message=Sản phẩm đã tồn tại&type=error"
@@ -116,8 +134,8 @@ let controllerEditProductById = async (req, res) => {
 };
 
 let controllerUpdateProductById = async (req, res) => {
-    let { id, name, description, imageUrl } = req.body;
-    await productService.serviceUpdateProductById(id, name, description, imageUrl);
+    let { id, name, description, imageUrl, price } = req.body;
+    await productService.serviceUpdateProductById(id, name, description, imageUrl, price);
     return res.redirect(
         `/PAGE_Edit_Product/${id}?message=Cập nhật thông tin thành công&type=success`
     );
@@ -160,14 +178,16 @@ let controllerDeleteProductById = async (req, res) => {
 
 
 
-export default {apiGetGroupProduct,
-                apiGetAllProduct,
-                apiGetDetailProduct,
-                controllerGetAllProduct,
-                controllerCreateNewProduct,
-                controllerGetCreateProduct,
-                controllerEditProductById,
-                controllerUpdateAvatar,
-                controllerUpdateProductById,
-                controllerDeleteProductById
-             };
+export default {
+    apiGetGroupProduct,
+    apiGetAllProduct,
+    apiGetDetailProduct,
+    controllerAllFunctionProduct,
+    controllerCreateNewProduct,
+    controllerGetCreateProduct,
+    controllerEditProductById,
+    controllerUpdateAvatar,
+    controllerUpdateProductById,
+    controllerDeleteProductById,
+
+};
