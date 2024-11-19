@@ -17,10 +17,6 @@ const DetailProduct = sequelize.define(
             type: DataTypes.STRING(255),
             allowNull: true,
         },
-        price: {
-            type: DataTypes.STRING(255),
-            allowNull: true,
-        },
     },
     {
         tableName: "detail_products",
