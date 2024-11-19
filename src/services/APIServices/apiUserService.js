@@ -90,7 +90,7 @@ let getAllUsers = async () => {
     }
 };
 
-let handleCreateNewUser = async (data) => {
+let handleRegisterUser = async (data) => {
     try {
         let check = await checkUsername(data.username);
         if (check) {
@@ -109,18 +109,6 @@ let handleCreateNewUser = async (data) => {
                 errMessage: "Thêm người dùng mới thành công!",
             };
         }
-    } catch (error) {
-        return error;
-    }
-};
-
-let handleDeleteUserById = async (id) => {
-    try {
-        await pool.query("DELETE FROM users WHERE id = ?", [id]);
-        return {
-            errCode: 0,
-            errMessage: "Xóa người dùng thành công!",
-        };
     } catch (error) {
         return error;
     }
@@ -166,7 +154,6 @@ export default {
     getUserById,
     getAllUsers,
     handleUserLogin,
-    handleCreateNewUser,
-    handleDeleteUserById,
+    handleRegisterUser,
     handleUpdateUserById,
 };

@@ -10,7 +10,11 @@ let apiLoginPost = async (req, res) => {
     }
     let message = await userService.handleUserLogin(username, password);
     req.session.user = message.user;
-    return res.status(200).json(message);
+    let session = req.session.user;
+    return res.status(200).json({
+        message,
+        session,
+    });
 };
 
 let apiLogoutPost = (req, res) => {
@@ -24,11 +28,6 @@ let apiLogoutPost = (req, res) => {
     });
 };
 
-let apiGetAllUsers = async (req, res) => {
-    let message = await userService.getAllUsers();
-    return res.status(200).json(message);
-};
-
 let apiDetailUserGet = async (req, res) => {
     let id = req.query.id;
     let message = await userService.getUserById(id);
@@ -37,11 +36,6 @@ let apiDetailUserGet = async (req, res) => {
 
 let apiCreateNewUser = async (req, res) => {
     let message = await userService.handleCreateNewUser(req.body);
-    return res.status(200).json(message);
-};
-
-let apiDeleteUserById = async (req, res) => {
-    let message = await userService.handleDeleteUserById(req.body.id);
     return res.status(200).json(message);
 };
 
@@ -54,8 +48,6 @@ export default {
     apiDetailUserGet,
     apiLoginPost,
     apiLogoutPost,
-    apiGetAllUsers,
     apiCreateNewUser,
-    apiDeleteUserById,
     apiUpdateUserById,
 };
