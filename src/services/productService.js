@@ -7,7 +7,7 @@ let serviceGetAllProduct = async () => {
 let serviceCreateNewProduct = async (name, description, imageUrl) => {
     return await Product.create({
         name: name,
-        description:"",
+        description: "",
         imageUrl: "",
     });
 };
@@ -46,19 +46,7 @@ let serviceDeleteProductById = async (id) => {
     });
 };
 
-
-
-
-
-
-
-
-
-
 export default {
-    modelGetGroupProduct,
-    modelGetAllProduct,
-    modelGetProductById,
     serviceCreateNewProduct,
     serviceGetAllProduct,
     serviceUpdateProductById,
