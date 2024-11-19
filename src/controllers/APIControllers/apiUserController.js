@@ -1,5 +1,17 @@
 import userService from "../../services/APIServices/apiUserService";
 
+let apiRegisterPost = async (req, res) => {
+    let { username, password, fullname, phone } = req.body;
+    if (!username || !password || !fullname || !phone) {
+        return res.status(500).json({
+            errCode: 1,
+            errMessage: "Thiếu thông tin đăng ký!",
+        });
+    }
+    let message = await userService.handleRegisterUser(req.body);
+    return res.status(200).json(message);
+};
+
 let apiLoginPost = async (req, res) => {
     let { username, password } = req.body;
     if (!username || !password) {
@@ -34,11 +46,6 @@ let apiDetailUserGet = async (req, res) => {
     return res.status(200).json(message);
 };
 
-let apiCreateNewUser = async (req, res) => {
-    let message = await userService.handleCreateNewUser(req.body);
-    return res.status(200).json(message);
-};
-
 let apiUpdateUserById = async (req, res) => {
     let message = await userService.handleUpdateUserById(req.body);
     return res.status(200).json(message);
@@ -48,6 +55,6 @@ export default {
     apiDetailUserGet,
     apiLoginPost,
     apiLogoutPost,
-    apiCreateNewUser,
+    apiRegisterPost,
     apiUpdateUserById,
 };

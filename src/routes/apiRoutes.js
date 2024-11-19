@@ -7,15 +7,16 @@ const initApiRoutes = (app) => {
     // -------------- API routes
 
     // API người dùng
-
+    // Đăng ký tài khoản
+    router.post("/api/registerPost", apiUserController.apiRegisterPost);
     // Đăng nhập
     router.post("/api/loginPost", apiUserController.apiLoginPost);
     // Đăng xuất
     router.post("/api/logoutPost", apiUserController.apiLogoutPost);
+
     // Trả về thông tin tài khoản cụ thể
     router.get("/api/detail-user/:id", apiUserController.apiDetailUserGet);
-    // Tạo tài khoản
-    router.post("/api/create-user", apiUserController.apiCreateNewUser);
+
     // Sửa tài khoản
     router.put("/api/update-user", apiUserController.apiUpdateUserById);
 
