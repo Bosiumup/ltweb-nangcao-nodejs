@@ -21,12 +21,9 @@ let apiLoginPost = async (req, res) => {
         });
     }
     let message = await userService.handleUserLogin(username, password);
+    console.log("message: ", message);
     req.session.user = message.user;
-    let session = req.session.user;
-    return res.status(200).json({
-        message,
-        session,
-    });
+    return res.status(200).json(message);
 };
 
 let apiLogoutPost = (req, res) => {
