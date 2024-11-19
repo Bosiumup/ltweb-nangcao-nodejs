@@ -1,5 +1,5 @@
 import sequelize from "../config/sequelizeDB";
-// import { DataTypes } from "sequelize";
+import { DataTypes } from "sequelize";
 import User from "./User";
 import Product from "./Product";
 import Order from "./Order";
@@ -95,12 +95,18 @@ const initModels = async () => {
         console.log("Kết nối tới cơ sở dữ liệu thành công!");
 
         // const queryInterface = sequelize.getQueryInterface();
-        // await queryInterface.addColumn("users", "imageUrl", {
+        // await queryInterface.addColumn("products", "price", {
         //     type: DataTypes.STRING(255),
         //     allowNull: true,
         // });
         // console.log(
-        //     "Trường 'imageUrl' đã được thêm vào bảng 'users' thành công!"
+        //     "Trường 'price' đã được thêm vào bảng 'products' thành công!"
+        // );
+
+        // const queryInterface = sequelize.getQueryInterface();
+        // await queryInterface.removeColumn("detail_products", "price");
+        // console.log(
+        //     "Trường 'price' đã được xóa khỏi bảng 'detail_products' thành công!"
         // );
 
         // Đồng bộ các mô hình
