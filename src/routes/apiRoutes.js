@@ -1,5 +1,6 @@
 import express from "express";
 import apiUserController from "../controllers/APIControllers/apiUserController";
+import apiProductController from "../controllers/APIControllers/apiProductController";
 
 const router = express.Router();
 
@@ -24,6 +25,9 @@ const initApiRoutes = (app) => {
     router.put("/api/update-user", apiUserController.apiUpdateUserById);
 
     // API sản phẩm
+    router.get("/api/list-product", apiProductController.apigetAllProduct);
+    router.get("/api/list-type", apiProductController.apigetTypeProduct);
+    router.get("/api/list-product/:id", apiProductController.apigetProductFromType)
 
     // Hiển thị nhóm
     // router.get("/api/groupProduct", apiProductController.apiGetGroupProduct);

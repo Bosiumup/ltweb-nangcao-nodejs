@@ -43,8 +43,8 @@ app.use(
     })
 );
 initModels();
-initRoutes(app);
 initApiRoutes(app);
+initRoutes(app);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
