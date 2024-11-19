@@ -1,5 +1,9 @@
 import bcrypt from "bcryptjs";
+<<<<<<< HEAD
 import User from "../../models/User";
+=======
+// import User from "../models/User";
+>>>>>>> 0c616ddf7426e8cb0d1c03c3e312530c41bd820f
 
 let handleRegisterUser = async (data) => {
     try {
