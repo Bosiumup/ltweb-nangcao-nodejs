@@ -55,7 +55,7 @@ const initRoutes = (app) => {
     );
 
     // -------------- Product requests
-    // // thêm sản phẩm
+    // thêm sản phẩm
     router.post(
         "/create-new-product",
         productController.controllerCreateNewProduct
