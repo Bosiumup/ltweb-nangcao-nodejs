@@ -2,11 +2,8 @@ import express from "express";
 import authMiddleware from "../middleware/authMiddleware";
 import userController from "../controllers/userController";
 import authController from "../controllers/authController";
-<<<<<<< HEAD
 import productController from "../controllers/productController";
-=======
 import orderController from "../controllers/orderController";
->>>>>>> lnmt3
 import upload from "../config/multerConfig";
 
 const router = express.Router();
@@ -57,38 +54,48 @@ const initRoutes = (app) => {
         userController.controllerUpdateAvatar
     );
 
-
     // -------------- Product requests
     // // thêm sản phẩm
-    router.post("/create-new-product", productController.controllerCreateNewProduct);
-    router.get("/PAGE_Create_Product", productController.controllerGetCreateProduct);
+    router.post(
+        "/create-new-product",
+        productController.controllerCreateNewProduct
+    );
+    router.get(
+        "/PAGE_Create_Product",
+        productController.controllerGetCreateProduct
+    );
     // xóa sản phẩm
-    router.post("/delete-product", productController.controllerDeleteProductById);
+    router.post(
+        "/delete-product",
+        productController.controllerDeleteProductById
+    );
     // cập nhật sản phẩm
-    router.post("/update-product", productController.controllerUpdateProductById);
+    router.post(
+        "/update-product",
+        productController.controllerUpdateProductById
+    );
     router.post(
         "/update-avatar",
         upload.single("avatar"),
         productController.controllerUpdateAvatar
     );
-    router.get("/PAGE_Edit_Product/:id", productController.controllerEditProductById);
+    router.get(
+        "/PAGE_Edit_Product/:id",
+        productController.controllerEditProductById
+    );
     // Lấy danh sách sản phẩm
     router.get("/PAGE_List_Product", productController.controllerGetAllProduct);
 
-
-
-
     // -------------- Order requests
-    router.get("/PAGE_List_Order", orderController.controllerAllOrder)
-    router.get("/PAGE_Detail_Order/:id", orderController.controllerDetailOrder)
-    router.get("/PAGE_Edit_Order/:id", orderController.controllerEditOrder)
-    router.post("/update-order", orderController.controllerUpdateOrder)
+    router.get("/PAGE_List_Order", orderController.controllerAllOrder);
+    router.get("/PAGE_Detail_Order/:id", orderController.controllerDetailOrder);
+    router.get("/PAGE_Edit_Order/:id", orderController.controllerEditOrder);
+    router.post("/update-order", orderController.controllerUpdateOrder);
 
     // -------------- Page not found
     router.use((req, res) => {
         res.status(404).render("errs/PAGE_404", { layout: false });
     });
-
 
     // -------------- Đường dẫn / trỏ đến router
     app.use("/", router);
