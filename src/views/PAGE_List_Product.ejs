@@ -20,14 +20,18 @@
         <div class="card-header bg-white">
             <div class="my-2 d-flex justify-content-between align-items-center">
                 <div class="position-relative search-hover w-100">
-                    <form action="" method="">
-                        <span class="position-absolute search"
-                            ><i class="fa fa-search"></i
-                        ></span>
+                    <form action="/PAGE_List_Product" method="get">
+                        <span class="position-absolute search">
+                            <i class="fa fa-search"></i>
+                        </span>
                         <input
+                            type="text"
+                            name="search"  
                             class="form-control custom-hover"
-                            placeholder="Nhập tên sản phẩm"
+                            placeholder="Nhập tên sản phẩm hoặc mô tả"
+                            value="<%= data.search %>" 
                         />
+                        <button type="submit" hidden></button>
                     </form>
                 </div>
                 <div class="px-2">
@@ -48,24 +52,14 @@
                         >
                             <li>
                                 <!-- Sử dụng button thay vì a -->
-                                <button
-                                    type="button"
-                                    class="dropdown-item"
-                                    onclick="window.location.href='/PAGE_List_User/asc'"
-                                >
-                                    Từ A
-                                    <i class="fa-solid fa-arrow-right"></i> Z
+                                <button type="button" class="dropdown-item" onclick="location.href='/PAGE_List_Product?page=<%= data.currentPage %>&sort=asc'">
+                                    Từ A <i class="fa-solid fa-arrow-right"></i> Z
                                 </button>
                             </li>
                             <li>
                                 <!-- Sử dụng button thay vì a -->
-                                <button
-                                    type="button"
-                                    class="dropdown-item"
-                                    onclick="window.location.href='/PAGE_List_User/desc'"
-                                >
-                                    Từ Z
-                                    <i class="fa-solid fa-arrow-right"></i> A
+                                <button type="button" class="dropdown-item" onclick="location.href='/PAGE_List_Product?page=<%= data.currentPage %>&sort=desc'">
+                                    Từ Z <i class="fa-solid fa-arrow-right"></i> A
                                 </button>
                             </li>
                         </ul>
@@ -89,6 +83,10 @@
                             <th scope="col">Hình ảnh</th>
                             <th scope="col">Tên sản phẩm</th>
                             <th scope="col">Mô tả</th>
+<<<<<<< HEAD
+=======
+                            <th scope="col">Giá</th>
+>>>>>>> casitanhung
                             <th scope="col" class="text-center">
                                 <span>Cài đặt</span>
                             </th>
@@ -121,7 +119,12 @@
                             </td>
                             <td><%= product.name %></td>
                             <td><%= product.description %></td>
+<<<<<<< HEAD
 
+=======
+                            <td><%= product.price %></td>
+                           
+>>>>>>> casitanhung
                             <td
                                 class="d-flex align-items-center justify-content-center"
                             >
@@ -159,10 +162,7 @@
 </div>
 
 <% if (data.successMessage && data.typeMessage) { %>
-<div
-    id="message"
-    class="text-center mt-3 alert message <%= data.typeMessage === 'success' ? 'alert-success' : 'alert-danger' %>"
->
-    <%= data.successMessage %>
-</div>
-<% } %>
+    <div id="message" class="text-center mt-3 alert message <%= data.typeMessage === 'success' ? 'alert-success' : 'alert-danger' %>">
+        <%= data.successMessage %>
+    </div>
+    <% } %>
