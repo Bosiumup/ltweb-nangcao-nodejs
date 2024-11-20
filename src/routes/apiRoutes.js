@@ -25,16 +25,10 @@ const initApiRoutes = (app) => {
     // API sản phẩm
     router.get("/api/list-product", apiProductController.apigetAllProduct);
     router.get("/api/list-type", apiProductController.apigetTypeProduct);
-<<<<<<< HEAD
     router.get(
         "/api/list-product/:id",
         apiProductController.apigetProductFromType
     );
-=======
-    router.get("/api/list-product/:id", apiProductController.apigetProductFromType);
-    router.get("/api/detail-product/:id", apiProductController.apigetDetailProduct);
-    router.get("/api/size-stock/:id", apiProductController.apigetSizeStock)
->>>>>>> maico
 
     //API giỏ hàng
     router.post("/api/add-cart", apiCartController.apiaddCart)
