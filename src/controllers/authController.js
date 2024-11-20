@@ -5,6 +5,7 @@ let controllerGetMainPage = (req, res) => {
 let controllerGetDashboard = async (req, res) => {
     let totalCountItemDashboard =
         await authService.serviceGetCountItemDashboard();
+
     return res.render("PAGE_Dashboard", {
         data: {
             listUsers: totalCountItemDashboard.listUsers,

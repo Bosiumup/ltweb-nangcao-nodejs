@@ -1,0 +1,86 @@
+<div class="container-fluid px-4">
+  <h1 class="mt-4"><%= data.title %></h1>
+  <ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item active">Trang thêm thể loại sản phẩm</li>
+  </ol>
+  <!-- Hiển thị thông báo nếu có -->
+  <% if (data.successMessage && data.typeMessage) { %>
+  <div
+    id="message"
+    class="alert <%= data.typeMessage === 'success' ? 'alert-success' : 'alert-danger' %> text-center mt-3"
+    style="display: block;" <!-- Đảm bảo thông báo được hiển thị nếu có -->
+  >
+    <%= data.successMessage %>
+  </div>
+  <% } %>
+
+  <!-- Form thêm thể loại sản phẩm -->
+  <div class="registration-form">
+    <form id="add-type-form" method="POST">
+      <div class="form-group">
+        <label for="name" class="form-label">Tên thể loại</label>
+        <input
+          type="text"
+          class="form-control item"
+          name="name" 
+          id="name"
+          value="<%= data.name %>"
+          required
+        />
+      </div>
+      <div class="form-group mt-3">
+        <button type="submit" class="btn btn-primary btn-block w-100">
+          Thêm thể loại
+        </button>
+      </div>
+    </form>
+    
+  </div>
+</div>
+
+<script>
+// JavaScript xử lý form submit
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Chỉ chạy mã khi trang đã tải xong
+  document.getElementById('add-type-form').addEventListener('submit', function (e) {
+      e.preventDefault(); // Ngăn không để form submit theo cách mặc định
+
+      let formData = new FormData(this);  // FormData sẽ tự động lấy dữ liệu từ form
+      let name = formData.get('name');
+
+      // Kiểm tra nếu name trống
+      if (!name || name.trim() === "") {
+          alert('Tên thể loại không được để trống!');
+          return;
+      }
+
+      // Gửi dữ liệu form lên server
+      fetch('/api/add-type-product', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name: name })
+      })
+      .then(response => response.json())
+      .then(data => {
+          let messageElement = document.getElementById('message');
+          if (data.errCode === 0) {
+              messageElement.innerHTML = data.errMessage;
+              messageElement.className = 'alert alert-success text-center mt-3';
+          } else {
+              messageElement.innerHTML = data.errMessage;
+              messageElement.className = 'alert alert-danger text-center mt-3';
+          }
+          messageElement.style.display = 'block';
+      })
+      .catch((error) => {
+          console.error('Error:', error);
+          alert('đã thêm vào thành công .');
+      });
+  });
+});
+</script>
+
+

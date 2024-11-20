@@ -23,7 +23,7 @@ let serviceAllFunctionProduct = async (page, sortOrder, query = "") => {
                         },
                         {
                             model: TypeProduct,
-                            attributes: ["name"],
+                            attributes: ["id", "name"],
                         },
                     ],
                 });
@@ -61,7 +61,7 @@ let serviceAllFunctionProduct = async (page, sortOrder, query = "") => {
                     },
                     {
                         model: TypeProduct,
-                        attributes: ["name"],
+                        attributes: ["id", "name"],
                     },
                 ],
             });
@@ -134,24 +134,48 @@ let serviceUpdateProductById = async (
     id,
     name,
     description,
-    imageUrl,
-    price
+    price,
+    id_type_product,
+    size,
+    stock
 ) => {
     if (!id) {
         console.log("ID không hợp lệ.");
     }
+
+    // Bắt đầu giao dịch
+    const transaction = await sequelize.transaction();
+
     try {
-        return await Product.update(
+        const updateProduct = await Product.update(
             {
                 name: name,
                 description: description,
-                imageUrl: imageUrl,
                 price: price,
+                id_type_product: id_type_product,
             },
             {
                 where: { id: id },
+                transaction,
             }
         );
+
+        const updateDetailProduct = await DetailProduct.update(
+            {
+                size: size,
+                stock: stock,
+            },
+            {
+                where: { id_product: id },
+                transaction,
+            }
+        );
+
+        // Cam kết giao dịch (commit)
+        await transaction.commit();
+
+        // Trả về thông tin sản phẩm và chi tiết sản phẩm vừa được tạo
+        return { updateProduct, updateDetailProduct };
     } catch (error) {
         console.error("Lỗi khi cập nhật người dùng:", error);
     }
@@ -178,6 +202,16 @@ let serviceUpdateImageProduct = async (id, newAvatarUrl) => {
 let serviceGetProductById = async (id) => {
     return await Product.findOne({
         where: { id: id },
+        include: [
+            {
+                model: DetailProduct,
+                attributes: ["size", "stock"],
+            },
+            {
+                model: TypeProduct,
+                attributes: ["id", "name"],
+            },
+        ],
     });
 };
 

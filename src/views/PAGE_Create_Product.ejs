@@ -41,8 +41,10 @@
                     name="id_type_product"
                     class="form-select"
                 >
-                    <!-- render từ bảng type_products ra -->
-                    <option value="1">Áo thun</option>
+                    <% data.typeProducts && data.typeProducts.forEach((type) =>
+                    { %>
+                    <option value="<%= type.id %>"><%= type.name %></option>
+                    <% }); %>
                 </select>
             </div>
             <div class="form-group mt-3">
@@ -72,10 +74,10 @@
                 </button>
                 <a
                     class="text-decoration-none text-end w-100 d-inline-block mt-3 text-secondary"
-                    href="/PAGE_List_Product"
+                    href="/PAGE_List_Product?page=1"
                 >
                     <i class="fas fa-arrow-left me-1"></i>
-                    Hủy bỏ
+                    Qua trang danh sách sản phẩm
                 </a>
             </div>
         </form>

@@ -25,8 +25,16 @@
                     <label for="phone" class="form-label">Số điện thoại</label>
                     <input type="text" class="form-control item" id="phone" name="phone" value="<%= data.user.phone %>" />
                 </div>
-                <!-- Form input: Quyền -->
+                <!-- Form input: Giới tính -->
                 <div class="form-group">
+                    <label for="gender" class="form-label">Giới tính</label>
+                    <select id="gender" name="gender" class="form-select">
+                        <option value="Nữ" <%= data.user.gender === 'Nữ' ? 'selected' : '' %>>Nữ</option>
+                        <option value="Nam" <%= data.user.gender === 'Nam' ? 'selected' : '' %>>Nam</option>
+                    </select>
+                </div>
+                <!-- Form input: Quyền -->
+                <div class="form-group mt-3">
                     <label for="role" class="form-label">Quyền</label>
                     <select id="role" name="role" class="form-select">
                         <option value="admin" <%= data.user.role === 'admin' ? 'selected' : '' %>>Admin</option>

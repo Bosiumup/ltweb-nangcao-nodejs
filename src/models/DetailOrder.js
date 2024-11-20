@@ -17,6 +17,10 @@ const DetailOrder = sequelize.define(
             type: DataTypes.STRING(255),
             allowNull: true,
         },
+        size: {
+            type: DataTypes.STRING(255),
+            allowNull: true,
+        },
     },
     {
         tableName: "detail_orders",
