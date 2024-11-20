@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import User from "../../models/User";
+<<<<<<< HEAD
 import jwt from "jsonwebtoken";
 
 let verifyToken = (token) => {
@@ -24,6 +25,8 @@ let handleGetUserById = async (userId) => {
         throw new Error("Không thể tìm thấy người dùng");
     }
 };
+=======
+>>>>>>> maico
 
 let handleRegisterUser = async (data) => {
     try {

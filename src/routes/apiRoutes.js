@@ -1,7 +1,7 @@
 import express from "express";
 import apiUserController from "../controllers/APIControllers/apiUserController";
 import apiProductController from "../controllers/APIControllers/apiProductController";
-
+import apiCartController from "../controllers/APIControllers/apiCartController";
 const router = express.Router();
 
 const initApiRoutes = (app) => {
@@ -22,15 +22,22 @@ const initApiRoutes = (app) => {
 
     // Sửa tài khoản
     router.put("/api/update-user", apiUserController.apiUpdateUserById);
-
     // API sản phẩm
     router.get("/api/list-product", apiProductController.apigetAllProduct);
     router.get("/api/list-type", apiProductController.apigetTypeProduct);
+<<<<<<< HEAD
     router.get(
         "/api/list-product/:id",
         apiProductController.apigetProductFromType
     );
+=======
+    router.get("/api/list-product/:id", apiProductController.apigetProductFromType);
+    router.get("/api/detail-product/:id", apiProductController.apigetDetailProduct);
+    router.get("/api/size-stock/:id", apiProductController.apigetSizeStock)
+>>>>>>> maico
 
+    //API giỏ hàng
+    router.post("/api/add-cart", apiCartController.apiaddCart)
     // Hiển thị nhóm
     // router.get("/api/groupProduct", apiProductController.apiGetGroupProduct);
     // // Hiển thị danh sách các sản phẩm
