@@ -2,13 +2,13 @@ import Product from "../models/Product";
 import Fuse from "fuse.js";
 
 let serviceAllFunctionProduct = async (page, sortOrder, query = "") => {
-    let limit = 5; // Số lượng người dùng mỗi trang
+    let limit = 5; // Số lượng sản phẩm mỗi trang
     let offset = (page - 1) * limit; // Vị trí bắt đầu của trang hiện tại
 
     try {
         let count, rows;
 
-        // Truy vấn dữ liệu người dùng từ cơ sở dữ liệu (không có tìm kiếm)
+        // Truy vấn dữ liệu sản phẩm từ cơ sở dữ liệu (không có tìm kiếm)
         if (query) {
             // Tìm kiếm theo từ khóa (sử dụng Fuse.js)
             let { count: totalCount, rows: allProducts } =
@@ -35,8 +35,7 @@ let serviceAllFunctionProduct = async (page, sortOrder, query = "") => {
             let result = await Product.findAndCountAll({
                 limit: limit,
                 offset: offset,
-                order: [["id", sortOrder]], // Sắp xếp theo ID hoặc tên người dùng
-            });
+                order: [["id", sortOrder]], // Sắp xếp theo ID hoặc tên sản phẩm
 
             rows = result.rows; // Danh sách sản phẩm trong phạm vi phân trang
             count = result.count; // Tổng số sản phẩm
@@ -46,10 +45,10 @@ let serviceAllFunctionProduct = async (page, sortOrder, query = "") => {
         let totalPages = Math.ceil(count / limit);
 
         return {
-            products: rows, // Danh sách người dùng cho trang hiện tại (sau khi phân trang và tìm kiếm)
+            products: rows, // Danh sách sản phẩm cho trang hiện tại (sau khi phân trang và tìm kiếm)
             currentPage: page, // Trang hiện tại
             totalPages: totalPages, // Tổng số trang
-            totalProducts: count, // Tổng số người dùng (hoặc kết quả tìm kiếm)
+            totalProducts: count, // Tổng số sản phẩm (hoặc kết quả tìm kiếm)
         };
     } catch (err) {
         throw new Error("Lỗi khi lấy dữ liệu sản phẩm: ".err.message);
