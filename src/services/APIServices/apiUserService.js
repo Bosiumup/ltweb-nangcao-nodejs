@@ -14,10 +14,12 @@ let verifyToken = (token) => {
     });
 };
 
-let getUserById = async (userId) => {
+let handleGetUserById = async (userId) => {
     try {
-        let user = await User.findByPk(userId); // Giả sử bạn đang dùng Sequelize để tìm người dùng theo id
-        return user; // Trả về thông tin người dùng
+        let user = await User.findOne({ where: { id: userId } });
+        user = user.toJSON();
+        delete user.password;
+        return user;
     } catch (error) {
         throw new Error("Không thể tìm thấy người dùng");
     }
@@ -108,7 +110,7 @@ let handleUpdateUserById = async (data) => {
 
 export default {
     verifyToken,
-    getUserById,
+    handleGetUserById,
     handleRegisterUser,
     handleUserLogin,
     handleUpdateUserById,

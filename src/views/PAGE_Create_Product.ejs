@@ -1,59 +1,81 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4"><%= data.title %></h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Trang Thêm Sản Phẩm</li>
+        <li class="breadcrumb-item active">Trang thêm sản phẩm mới</li>
     </ol>
     <div class="registration-form">
-        <form action="create-new-product" method="POST">
+        <form id="update-user-form" action="/create-new-product" method="POST">
             <div class="form-group">
                 <label for="name" class="form-label">Tên sản phẩm</label>
                 <input
                     type="text"
                     class="form-control item"
+                    id="name"
                     name="name"
-                    value="<%= data.name %>"
                 />
             </div>
             <div class="form-group">
                 <label for="description" class="form-label">Mô tả</label>
-                <input
-                    type="text"
+                <textarea
                     class="form-control item"
+                    id="description"
                     name="description"
-                    value="<%= data.description %>"
-                />
+                >
+                </textarea>
             </div>
             <div class="form-group">
-                <label for="imageUrl" class="form-label">Hình ảnh</label>
-                <input
-                  type="file"
-                  class="form-control item"
-                  name="imageUrl"
-                  value="<%= data.imageUrl %>"
-                />
-              </div>
-              <div class="form-group">
                 <label for="price" class="form-label">Giá</label>
                 <input
-                    type="text"
+                    type="number"
                     class="form-control item"
+                    id="price"
                     name="price"
-                    value="<%= data.price %>"
                 />
             </div>
             <div class="form-group">
+                <label for="id_type_product" class="form-label"
+                    >Loại sản phẩm</label
+                >
+                <select
+                    id="id_type_product"
+                    name="id_type_product"
+                    class="form-select"
+                >
+                    <!-- render từ bảng type_products ra -->
+                    <option value="1">Áo thun</option>
+                </select>
+            </div>
+            <div class="form-group mt-3">
+                <label for="size" class="form-label">Size</label>
+                <select id="size" name="size" class="form-select">
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                </select>
+            </div>
+            <div class="form-group mt-3">
+                <label for="stock" class="form-label">Số lượng</label>
+                <input
+                    type="number"
+                    class="form-control item"
+                    id="stock"
+                    name="stock"
+                />
+            </div>
+            <div class="form-group mt-3">
                 <button
                     type="submit"
                     class="btn btn-block create-account w-100"
                 >
-                    Thêm sản phẩm
+                    Thêm mới
                 </button>
                 <a
-                    class="text-decoration-none text-center w-100 d-inline-block mt-3"
+                    class="text-decoration-none text-end w-100 d-inline-block mt-3 text-secondary"
                     href="/PAGE_List_Product"
                 >
                     <i class="fas fa-arrow-left me-1"></i>
-                    Trang danh sách sản phẩm
+                    Hủy bỏ
                 </a>
             </div>
         </form>

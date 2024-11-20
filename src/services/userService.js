@@ -58,6 +58,7 @@ let serviceAllFunctionUser = async (page, sortOrder, query = "") => {
         throw new Error("Lỗi khi lấy dữ liệu người dùng: ".err.message);
     }
 };
+
 let serviceGetUsername = async (username) => {
     return await User.findOne({ where: { username } });
 };

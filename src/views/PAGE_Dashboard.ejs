@@ -1,64 +1,108 @@
+<style>
+    .card.bg-primary {
+        background: linear-gradient(
+            90deg,
+            #6fa3ef,
+            #c1d8f7
+        ); /* Màu xanh nhạt với gradient */
+    }
+
+    .card.bg-danger {
+        background: linear-gradient(
+            90deg,
+            #f76c6c,
+            #fdb8b8
+        ); /* Màu đỏ nhạt với gradient */
+    }
+
+    .card.bg-success {
+        background: linear-gradient(
+            90deg,
+            #68c47e,
+            #a8e7b1
+        ); /* Màu xanh lá nhạt */
+    }
+
+    .card.bg-warning {
+        background: linear-gradient(
+            90deg,
+            #f7c837,
+            #f7e3a4
+        ); /* Màu vàng nhạt */
+    }
+</style>
+
 <div class="container-fluid px-4">
     <h1 class="mt-4">Dashboard</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Chi tiết thông tin tổng quan</li>
+        <li class="breadcrumb-item active">
+            Trang chi tiết thông tin tổng quan
+        </li>
     </ol>
     <div class="row">
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-primary text-white mb-4">
-                <div class="card-body">Người dùng (...)</div>
+            <div class="card bg-primary text-dark mb-4">
+                <div class="card-body">Người dùng (<%= data.totalUsers %>)</div>
                 <div
                     class="card-footer d-flex align-items-center justify-content-between"
                 >
-                    <a class="small text-white stretched-link" href="#"
+                    <a
+                        class="small text-dark stretched-link"
+                        href="/Page_List_User"
                         >Xem chi tiết</a
                     >
-                    <div class="small text-white">
+                    <div class="small text-dark">
                         <i class="fas fa-angle-right"></i>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-danger text-white mb-4">
-                <div class="card-body">Sản phẩm (...)</div>
+            <div class="card bg-danger text-dark mb-4">
+                <div class="card-body">
+                    Sản phẩm (<%= data.totalProducts %>)
+                </div>
                 <div
                     class="card-footer d-flex align-items-center justify-content-between"
                 >
-                    <a class="small text-white stretched-link" href="#"
+                    <a
+                        class="small text-dark stretched-link"
+                        href="/Page_List_Product"
                         >Xem chi tiết</a
                     >
-                    <div class="small text-white">
+                    <div class="small text-dark">
                         <i class="fas fa-angle-right"></i>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-success text-white mb-4">
-                <div class="card-body">Đơn hàng (...)</div>
+            <div class="card bg-success text-dark mb-4">
+                <div class="card-body">Đơn hàng (<%= data.totalOrders %>)</div>
                 <div
                     class="card-footer d-flex align-items-center justify-content-between"
                 >
-                    <a class="small text-white stretched-link" href="#"
+                    <a
+                        class="small text-dark stretched-link"
+                        href="/Page_List_Order"
                         >Xem chi tiết</a
                     >
-                    <div class="small text-white">
+                    <div class="small text-dark">
                         <i class="fas fa-angle-right"></i>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-warning text-white mb-4">
+            <div class="card bg-warning text-dark mb-4">
                 <div class="card-body">Bình luận (...)</div>
                 <div
                     class="card-footer d-flex align-items-center justify-content-between"
                 >
-                    <a class="small text-white stretched-link" href="#"
+                    <a class="small text-dark stretched-link" href="#"
                         >Xem chi tiết</a
                     >
-                    <div class="small text-white">
+                    <div class="small text-dark">
                         <i class="fas fa-angle-right"></i>
                     </div>
                 </div>
@@ -83,21 +127,144 @@
             <i class="fas fa-table me-1"></i>
             Bảng dữ liệu người dùng gần đây
         </div>
-        <div class="card-body"></div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-responsive table-borderless mb-0">
+                    <thead>
+                        <tr class="border-bottom">
+                            <th scope="col">ID</th>
+                            <th scope="col">Ảnh đại diện</th>
+                            <th scope="col">Tài khoản</th>
+                            <th scope="col">Họ tên</th>
+                            <th scope="col">Địa chỉ</th>
+                            <th scope="col">Số điện thoại</th>
+                            <th scope="col">Vai trò</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% data.listUsers.forEach(user => { %>
+                        <tr>
+                            <td><%= user.id %></td>
+                            <td>
+                                <img
+                                    src="<%= user.imageUrl %>"
+                                    alt=""
+                                    style="
+                                        width: 50px;
+                                        height: 50px;
+                                        border-radius: 50%;
+                                    "
+                                />
+                            </td>
+                            <td><%= user.username %></td>
+                            <td><%= user.fullname %></td>
+                            <td><%= user.address %></td>
+                            <td><%= user.phone %></td>
+                            <td><%= user.role %></td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
             Bảng dữ liệu sản phẩm gần đây
         </div>
-        <div class="card-body"></div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-responsive table-borderless mb-0">
+                    <thead>
+                        <tr class="border-bottom">
+                            <th scope="col">ID</th>
+                            <th scope="col">Loại sản phẩm</th>
+                            <th scope="col">Hình ảnh</th>
+                            <th scope="col">Tên sản phẩm</th>
+                            <th scope="col">Mô tả</th>
+                            <th scope="col">Giá</th>
+                            <th scope="col">Size</th>
+                            <th scope="col">Số lượng</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% data.listProducts.forEach(product => { %>
+                        <tr>
+                            <td style="width: 10%"><%= product.id %></td>
+                            <td>
+                                <%= product.TypeProduct &&
+                                product.TypeProduct.name ?
+                                product.TypeProduct.name : 'N/A' %>
+                            </td>
+                            <td>
+                                <img
+                                    src="<%= product.imageUrl %>"
+                                    alt=""
+                                    style="
+                                        width: 50px;
+                                        height: 50px;
+                                        border-radius: 50%;
+                                    "
+                                />
+                            </td>
+                            <td><%= product.name %></td>
+                            <td><%= product.description %></td>
+                            <td><%= product.price %></td>
+                            <td>
+                                <%= product.DetailProducts &&
+                                product.DetailProducts[0] ?
+                                product.DetailProducts[0].size : 'N/A' %>
+                            </td>
+                            <td>
+                                <%= product.DetailProducts &&
+                                product.DetailProducts[0] ?
+                                product.DetailProducts[0].stock : 'N/A' %>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
             Bảng dữ liệu đơn hàng gần đây
         </div>
-        <div class="card-body"></div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-responsive table-borderless mb-0">
+                    <thead>
+                        <tr class="border-bottom">
+                            <th scope="col">ID</th>
+                            <th scope="col">Tên tài khoản</th>
+                            <th scope="col">Địa chỉ</th>
+                            <th scope="col">SĐT</th>
+                            <th scope="col">Trạng thái</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% data.listOrders.forEach(order=> { %>
+                        <tr>
+                            <td><%= order.id %></td>
+                            <td>
+                                <%= order.User && order.User ?
+                                order.User.username : 'N/A' %>
+                            </td>
+                            <td><%= order.address %></td>
+                            <td><%= order.phone %></td>
+                            <td><%= order.status %></td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <div class="card mb-4">
         <div class="card-header">

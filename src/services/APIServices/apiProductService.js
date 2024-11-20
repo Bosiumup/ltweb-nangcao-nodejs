@@ -1,30 +1,43 @@
 import Product from '../../models/Product'
 import DetailProduct from '../../models/DetailProduct'
+import TypeProduct from '../../models/TypeProduct';
 
 let getAllProduct = async () => {
-    let [rows, fields] = await Product.findAll();
+    let rows = await Product.findAll();
     return rows;
 }
 
-let getTypeProduct = async () => {
-    let [rows, fields] = await DetailProduct.findAll();
+let getTypeProductt = async () => {
+    let rows = await TypeProduct.findAll();
     return rows;
-
 }
 
-let getProductFromType = async (id) => {
-    let [rows, fields] = await Product.findAll({
-        where: { id },
-        include: [
-            {
-                model: DetailProduct,
-                attributes: ['price']
-            }
-        ]
+let getProductFromType = async (id_type_product) => {
+    const product = await Product.findOne({
+        include: [{
+            model: TypeProduct,
+            attributes: ['name'] // Chỉ lấy tên và giá sản phẩm
+        }],
+        where: { id_type_product: id_type_product }
     });
-
-    return rows;
+    return product;
 };
 
+let getOneProduct = async (id) => {
+    const product = await Product.findOne({
+        where: { id}
+    });
+    console.log("Kết quả truy vấn:", product); // Kiểm tra kết quả truy vấn
+    return product;
+};
 
-export default { getAllProduct, getTypeProduct, getProductFromType }
+let getSizeStock = async (id_product) => {
+    const product = await DetailProduct.findAll({
+        where: { id_product },
+        attributes: ['size', 'stock']
+    })
+    return product;
+}
+
+
+export default { getAllProduct, getTypeProductt, getProductFromType, getOneProduct, getSizeStock }

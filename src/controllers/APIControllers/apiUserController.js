@@ -51,16 +51,15 @@ let apiLoginPost = async (req, res) => {
     }
 };
 
-let apiLogoutPost = (req, res) => {
-    req.session.destroy(() => {
-        // Xóa cookie ở client chứa session ID (connect.sid là cookie mặc định của express-session)
-        res.clearCookie("connect.sid", { httpOnly: true, secure: false });
-        return res.status(200).json({
-            errCode: 0,
-            errMessage: "Đăng xuất thành công!",
-        });
-    });
-};
+// let apiLogoutPost = (req, res) => {
+//     req.session.destroy(() => {
+//         res.clearCookie("connect.sid", { httpOnly: true, secure: false });
+//         return res.status(200).json({
+//             errCode: 0,
+//             errMessage: "Đăng xuất thành công!",
+//         });
+//     });
+// };
 
 let apiDetailUserGet = async (req, res) => {
     let id = req.query.id;
@@ -73,34 +72,40 @@ let apiUpdateUserById = async (req, res) => {
     return res.status(200).json(message);
 };
 
-let apiGetUserInfo = async (req, res) => {
+let fetchGetUserInfo = async (req, res) => {
     let token = req.headers.authorization?.split(" ")[1]; // Lấy token từ header
     if (!token) {
         return res
             .status(401)
-            .json({ message: "Không có token, yêu cầu xác thực!" });
+            .json({ errCode: 1, errMessage: "Không tìm thấy token!" });
     }
     try {
         // Giải mã token để lấy userId
         let decoded = await userService.verifyToken(token);
         // Lấy thông tin người dùng từ userId (lấy từ payload của token)
-        let user = await userService.getUserById(decoded.userId);
+        let user = await userService.handleGetUserById(decoded.userId);
         if (!user) {
-            return res
-                .status(404)
-                .json({ message: "Không tìm thấy người dùng!" });
+            return res.status(404).json({
+                errCode: 2,
+                errMessage: "Không tìm thấy người dùng!",
+                user: {},
+            });
         }
-        return res.json({ user });
+        return res.status(200).json({
+            errCode: 0,
+            errMessage: "Lấy thông tin chi tiết người dùng thành công",
+            user: user,
+        });
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ errCode: 3, errMessage: error.message });
     }
 };
 
 export default {
     apiDetailUserGet,
     apiLoginPost,
-    apiLogoutPost,
+    // apiLogoutPost,
     apiRegisterPost,
     apiUpdateUserById,
-    apiGetUserInfo,
+    fetchGetUserInfo,
 };
