@@ -2,6 +2,7 @@ import express from "express";
 import apiUserController from "../controllers/APIControllers/apiUserController";
 import apiProductController from "../controllers/APIControllers/apiProductController";
 import apiCartController from "../controllers/APIControllers/apiCartController";
+import apiOrderController from "../controllers/APIControllers/apiOrderController";
 const router = express.Router();
 
 const initApiRoutes = (app) => {
@@ -18,7 +19,7 @@ const initApiRoutes = (app) => {
     // router.post("/api/logoutPost", apiUserController.apiLogoutPost);
 
     // Trả về thông tin tài khoản cụ thể
-    router.get("/api/detail-user/:id", apiUserController.apiDetailUserGet);
+    // router.get("/api/detail-user/:id", apiUserController.apiDetailUserGet);
 
     // Sửa tài khoản
     router.put("/api/update-user", apiUserController.apiUpdateUserById);
@@ -29,9 +30,17 @@ const initApiRoutes = (app) => {
         "/api/list-product/:id",
         apiProductController.apigetProductFromType
     );
+    router.get("/api/detail-product/:id", apiProductController.apigetDetailProduct)
+    router.get("/api/size-stock/:id", apiProductController.apigetSizeStock)
+
 
     //API giỏ hàng
     router.post("/api/add-cart", apiCartController.apiaddCart)
+    router.get("/api/get-cart", apiCartController.apigetCart)
+    router.delete("/api/remove-cart", apiCartController.apiremoveCart)
+
+    //API đơn hàng
+    router.post("/api/add-order", apiOrderController.apiaddOrder)
     // Hiển thị nhóm
     // router.get("/api/groupProduct", apiProductController.apiGetGroupProduct);
     // // Hiển thị danh sách các sản phẩm
