@@ -90,6 +90,22 @@ const initRoutes = (app) => {
         productController.controllerAllFunctionProduct
     );
 
+    // trang thêm loai sản phẩm
+    //  router.get("/PAGE_addtypeproducts", TypeProduct.controllerAddTypeProduct);
+    router.get(
+        "/PAGE_addtypeproducts",
+        TypeProduct.controllerGetCreateTypeProduct
+    );
+    router.get("/PAGE_listtypeproducts", TypeProduct.controllerGetTypeProducts);
+    router.post(
+        "/delete-type-product/:id",
+        TypeProduct.controllerDeleteTypeProduct
+    );
+    router.get(
+        "/edit-type-product/:id",
+        TypeProduct.controllerGetEditTypeProduct
+    );
+
     // -------------- Order requests
     router.get("/PAGE_List_Order", orderController.controllerAllOrder);
     router.get("/PAGE_Detail_Order/:id", orderController.controllerDetailOrder);

@@ -1,4 +1,5 @@
 import productService from "../services/productService";
+import typeProductsServices from "../services/typeProductsServices";
 import cloudinary from "../config/cloudinaryConfig";
 import fs from "fs";
 
@@ -43,14 +44,16 @@ let controllerAllFunctionProduct = async (req, res) => {
     }
 };
 
-let controllerGetCreateProduct = (req, res) => {
+let controllerGetCreateProduct = async (req, res) => {
     let message = req.query.message || null;
     let type = req.query.type || null;
+    let typeProducts = await typeProductsServices.serviceGetAllTypeProduct();
     return res.render("PAGE_Create_Product", {
         data: {
             title: "Thêm sản phẩm",
             successMessage: message,
             typeMessage: type,
+            typeProducts: typeProducts,
         },
         session: req.session.user,
     });
@@ -58,6 +61,7 @@ let controllerGetCreateProduct = (req, res) => {
 
 let controllerCreateNewProduct = async (req, res) => {
     let { name, description, price, id_type_product, size, stock } = req.body;
+    description = description.trim().replace(/\s+/g, " ");
     let created = await productService.serviceCreateNewProduct(
         name,
         description,
@@ -82,10 +86,12 @@ let controllerEditProductById = async (req, res) => {
     let message = req.query.message || null;
     let type = req.query.type || null;
     let product = await productService.serviceGetProductById(id);
+    let typeProducts = await typeProductsServices.serviceGetAllTypeProduct();
     return res.render("PAGE_Edit_Product", {
         data: {
             title: "Chỉnh sửa thông tin",
             product: product,
+            typeProducts: typeProducts,
             successMessage: message,
             typeMessage: type,
         },
@@ -94,13 +100,16 @@ let controllerEditProductById = async (req, res) => {
 };
 
 let controllerUpdateProductById = async (req, res) => {
-    let { id, name, description, imageUrl, price } = req.body;
+    let { id, name, description, price, id_type_product, size, stock } =
+        req.body;
     await productService.serviceUpdateProductById(
         id,
         name,
         description,
-        imageUrl,
-        price
+        price,
+        id_type_product,
+        size,
+        stock
     );
     return res.redirect(
         `/PAGE_Edit_Product/${id}?message=Cập nhật thông tin thành công&type=success`
