@@ -5,6 +5,7 @@ import authController from "../controllers/authController";
 import productController from "../controllers/productController";
 import orderController from "../controllers/orderController";
 import upload from "../config/multerConfig";
+import TypeProduct from "../controllers/TypeProduct";
 
 const router = express.Router();
 
@@ -37,7 +38,7 @@ const initRoutes = (app) => {
 
     // -------------- Auth requests
     // đăng nhập
-    router.post("/login", authController.controlerPostLogin);
+    router.post("/login", authController.controllerPostLogin);
     // đăng xuất
     router.get("/logout", authController.controllerGetLogout);
 
@@ -75,7 +76,7 @@ const initRoutes = (app) => {
         productController.controllerUpdateProductById
     );
     router.post(
-        "/update-avatar",
+        "/update-image-product",
         upload.single("avatar"),
         productController.controllerUpdateAvatar
     );
@@ -84,7 +85,26 @@ const initRoutes = (app) => {
         productController.controllerEditProductById
     );
     // Lấy danh sách sản phẩm
-    router.get("/PAGE_List_Product", productController.controllerGetAllProduct);
+    router.get(
+        "/PAGE_List_Product",
+        productController.controllerAllFunctionProduct
+    );
+
+    // trang thêm loai sản phẩm
+    //  router.get("/PAGE_addtypeproducts", TypeProduct.controllerAddTypeProduct);
+    router.get(
+        "/PAGE_addtypeproducts",
+        TypeProduct.controllerGetCreateTypeProduct
+    );
+    router.get("/PAGE_listtypeproducts", TypeProduct.controllerGetTypeProducts);
+    router.post(
+        "/delete-type-product/:id",
+        TypeProduct.controllerDeleteTypeProduct
+    );
+    router.get(
+        "/edit-type-product/:id",
+        TypeProduct.controllerGetEditTypeProduct
+    );
 
     // -------------- Order requests
     router.get("/PAGE_List_Order", orderController.controllerAllOrder);

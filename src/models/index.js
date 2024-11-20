@@ -95,12 +95,16 @@ const initModels = async () => {
         console.log("Kết nối tới cơ sở dữ liệu thành công!");
 
         // const queryInterface = sequelize.getQueryInterface();
+<<<<<<< HEAD
         // await queryInterface.addColumn("detail_orders", "size", {
+=======
+        // await queryInterface.addColumn("users", "gender", {
+>>>>>>> lnmt3
         //     type: DataTypes.STRING(255),
         //     allowNull: true,
         // });
         // console.log(
-        //     "Trường 'price' đã được thêm vào bảng 'products' thành công!"
+        //     "Trường 'gender' đã được thêm vào bảng 'users' thành công!"
         // );
 
         // const queryInterface = sequelize.getQueryInterface();

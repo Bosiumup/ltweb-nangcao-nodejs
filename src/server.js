@@ -9,7 +9,7 @@ import RedisStore from "connect-redis";
 import { createClient } from "redis";
 import { initModels } from "./models";
 import cors from "cors";
-
+import apiTypeProduct from "./controllers/APIControllers/apiTypeProduct";
 let app = express();
 app.use(cors({ origin: process.env.URL_REACT, credentials: true })); // Cho phép truy cập từ domain của frontend
 dotenv.config();
@@ -17,16 +17,19 @@ let port = process.env.PORT;
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+// Middleware để parse dữ liệu POST
 viewEngine(app);
 // Initialize client.
 let redisClient = createClient();
 redisClient.connect().catch(console.error);
-
 // Initialize store.
 let redisStore = new RedisStore({
     client: redisClient,
     prefix: "myapp:",
 });
+
+
 
 // Initialize session storage.
 app.use(

@@ -89,8 +89,15 @@ let controllerEditUserById = async (req, res) => {
 };
 
 let controllerUpdateUserById = async (req, res) => {
-    let { id, fullname, address, phone, role } = req.body;
-    await userService.serviceUpdateUserById(id, fullname, address, phone, role);
+    let { id, fullname, address, phone, role, gender } = req.body;
+    await userService.serviceUpdateUserById(
+        id,
+        fullname,
+        address,
+        phone,
+        role,
+        gender
+    );
     return res.redirect(
         `/PAGE_Edit_User/${id}?message=Cập nhật thông tin thành công&type=success`
     );
