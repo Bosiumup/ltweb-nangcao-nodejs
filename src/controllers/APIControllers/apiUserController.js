@@ -72,6 +72,11 @@ let apiUpdateUserById = async (req, res) => {
     return res.status(200).json(message);
 };
 
+let apiChangePassword = async (req, res) => {
+    let message = await userService.handleChangePassword(req.body);
+    return res.status(200).json(message);
+};
+
 let fetchGetUserInfo = async (req, res) => {
     let token = req.headers.authorization?.split(" ")[1]; // Lấy token từ header
     if (!token) {
@@ -104,8 +109,8 @@ let fetchGetUserInfo = async (req, res) => {
 export default {
     apiDetailUserGet,
     apiLoginPost,
-    // apiLogoutPost,
     apiRegisterPost,
     apiUpdateUserById,
+    apiChangePassword,
     fetchGetUserInfo,
 };

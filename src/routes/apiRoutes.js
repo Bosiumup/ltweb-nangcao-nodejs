@@ -14,14 +14,18 @@ const initApiRoutes = (app) => {
     router.post("/api/registerPost", apiUserController.apiRegisterPost);
     // Đăng nhập
     router.post("/api/loginPost", apiUserController.apiLoginPost);
-    // Đăng xuất
-    // router.post("/api/logoutPost", apiUserController.apiLogoutPost);
 
     // Trả về thông tin tài khoản cụ thể
-    router.get("/api/detail-user/:id", apiUserController.apiDetailUserGet);
+    // router.get("/api/detail-user/:id", apiUserController.apiDetailUserGet);
 
     // Sửa tài khoản
-    router.put("/api/update-user", apiUserController.apiUpdateUserById);
+    router.put("/api/fetch-update-user", apiUserController.apiUpdateUserById);
+    // Đổi mật khẩu
+    router.put(
+        "/api/fetch-change-password",
+        apiUserController.apiChangePassword
+    );
+
     // API sản phẩm
     router.get("/api/list-product", apiProductController.apigetAllProduct);
     router.get("/api/list-type", apiProductController.apigetTypeProduct);
