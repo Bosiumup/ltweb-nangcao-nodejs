@@ -19,8 +19,6 @@ let controllerAllFunctionProduct = async (req, res) => {
             products = []; // Nếu không có sản phẩm, gán mảng rỗng
         }
 
-        console.log("products:", products);
-
         // Kiểm tra nếu không có kết quả tìm kiếm
         let noResults = products.length === 0; // Nếu không có sản phẩm, hiển thị thông báo không tìm thấy
 
