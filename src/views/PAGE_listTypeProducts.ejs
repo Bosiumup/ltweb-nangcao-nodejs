@@ -1,0 +1,74 @@
+<%- console.log(data.typeProducts); %> <!-- Để kiểm tra dữ liệu trong view -->
+
+<!-- Sử dụng Bootstrap và tùy chỉnh cho bảng -->
+<div class="container mt-5">
+    <h3 class="mb-4">Danh sách loại sản phẩm</h3>
+    <table class="table table-striped table-bordered table-hover custom-table">
+        <thead class="thead-dark">
+            <tr>
+                <th>STT</th>
+                <th>Tên loại sản phẩm</th>
+                <th>Ngày tạo</th>
+                <th>Hành động</th> <!-- Thêm cột Hành động -->
+            </tr>
+        </thead>
+        <tbody>
+            <% if (data.typeProducts && data.typeProducts.length > 0) { %>
+                <% data.typeProducts.forEach(function(typeProduct, index) { %>
+                    <tr>
+                        <!-- Sử dụng index để tạo STT (index + 1) -->
+                        <td><%= index + 1 %></td>
+                        <td><%= typeProduct.name %></td>
+                        <td><%= new Date(typeProduct.createdAt).toLocaleString() %></td>
+                        <td>
+                            <!-- Nút Edit -->
+                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal<%= typeProduct.id %>">
+                                <i class="fas fa-edit"></i> Chỉnh sửa
+                            </button>
+
+                            <!-- Nút Delete (sử dụng phương thức POST để gửi yêu cầu xóa) -->
+                            <form action="/delete-type-product/<%= typeProduct.id %>" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">
+                                    <i class="fas fa-trash-alt"></i> Xóa
+                                </button>
+                            </form>
+
+                            <!-- Modal Chỉnh sửa -->
+                            <div class="modal fade" id="editModal<%= typeProduct.id %>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<%= typeProduct.id %>" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editModalLabel<%= typeProduct.id %>">Chỉnh sửa loại sản phẩm</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="/api/edit-type-product" method="POST">
+                                                <input type="hidden" name="id" value="<%= typeProduct.id %>" />
+                                                <div class="form-group">
+                                                    <label for="name">Tên loại sản phẩm</label>
+                                                    <input type="text" class="form-control" id="name" name="name" value="<%= typeProduct.name %>" required />
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                <% }); %>
+            <% } else { %>
+                <tr>
+                    <td colspan="4" class="text-center">Không có dữ liệu để hiển thị.</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<!-- Thêm Bootstrap JS và jQuery nếu chưa có -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
