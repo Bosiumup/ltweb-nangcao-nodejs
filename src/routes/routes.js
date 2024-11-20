@@ -3,6 +3,8 @@ import authMiddleware from "../middleware/authMiddleware";
 import userController from "../controllers/userController";
 import authController from "../controllers/authController";
 import upload from "../config/multerConfig";
+import TypeProduct from "../controllers/TypeProduct";
+
 
 const router = express.Router();
 
@@ -54,13 +56,21 @@ const initRoutes = (app) => {
     router.get("/PAGE_List_User/:sort", userController.controllerOrderUser);
 
     // -------------- Product requests
+     // trang thêm loai sản phẩm
+    //  router.get("/PAGE_addtypeproducts", TypeProduct.controllerAddTypeProduct);
+    router.get("/PAGE_addtypeproducts", TypeProduct.controllerGetCreateTypeProduct);
+    router.get("/PAGE_listtypeproducts", TypeProduct.controllerGetTypeProducts);
+    router.post('/delete-type-product/:id', TypeProduct.controllerDeleteTypeProduct);
+    router.get('/edit-type-product/:id', TypeProduct.controllerGetEditTypeProduct);
+
+
     // -------------- Order requests
 
     // -------------- Page not found
     router.use((req, res) => {
         res.status(404).render("errs/PAGE_404", { layout: false });
     });
-
+   
     // -------------- Đường dẫn / trỏ đến router
     app.use("/", router);
 };
