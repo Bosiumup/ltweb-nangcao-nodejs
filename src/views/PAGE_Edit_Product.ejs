@@ -5,53 +5,134 @@
             Trang chỉnh sửa thông tin chi tiết
         </li>
     </ol>
-    <div class="registration-form d-flex justify-content-around align-items-center">
-        <!-- Form Cập Nhật Thông Tin Sản Phẩm -->
+    <div
+        class="registration-form d-flex justify-content-around align-items-center"
+    >
+        <!-- Form Cập Nhật Avatar (Hình ảnh) -->
         <div class="card-left w-100">
-            <form id="update-product-form" action="/update-product" method="POST">
+            <form id="update-product-form" action="" method="POST">
                 <input type="hidden" name="id" value="<%= data.product.id %>" />
-                <!-- Form input: Tên đầy đủ -->
                 <div class="form-group">
-                    <label for="fullname" class="form-label">Tên sản phẩm</label>
-                    <input type="text" class="form-control item" id="name" name="name" value="<%= data.product.name %>" />
+                    <label for="name" class="form-label">Tên sản phẩm</label>
+                    <input
+                        type="text"
+                        class="form-control item"
+                        id="name"
+                        name="name"
+                        value="<%= data.product.name %>"
+                    />
                 </div>
-                <!-- Form input: Mô tả -->
                 <div class="form-group">
                     <label for="description" class="form-label">Mô tả</label>
-                    <input type="text" class="form-control item" id="description" name="description" value="<%= data.product.description %>" />
+                    <textarea
+                        class="form-control item"
+                        id="description"
+                        name="description"
+                        value="<%= data.product.description %>"
+                    >
+                    </textarea>
                 </div>
                 <div class="form-group">
-                    <label for="description" class="form-label">Giá</label>
-                    <input type="text" class="form-control item" id="price" name="price" value="<%= data.product.price %>" />
+                    <label for="price" class="form-label">Giá</label>
+                    <input
+                        type="number"
+                        class="form-control item"
+                        id="price"
+                        name="price"
+                        value="<%= data.product.price %>"
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="id_type_product" class="form-label"
+                        >Loại sản phẩm</label
+                    >
+                    <select
+                        id="id_type_product"
+                        name="id_type_product"
+                        class="form-select"
+                    >
+                        <!-- render từ bảng type_products ra -->
+                        <option value="1">Áo thun</option>
+                    </select>
                 </div>
                 <div class="form-group mt-3">
-                    <button type="submit" class="btn btn-block create-account w-100">
+                    <label for="size" class="form-label">Size</label>
+                    <select id="size" name="size" class="form-select">
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                    </select>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="stock" class="form-label">Số lượng</label>
+                    <input
+                        type="number"
+                        class="form-control item"
+                        id="stock"
+                        name="stock"
+                        value="<%= data.product.stock %>"
+                    />
+                </div>
+                <div class="form-group mt-3">
+                    <button
+                        type="submit"
+                        class="btn btn-block create-account w-100"
+                    >
                         Cập nhật
                     </button>
-                    <a class="text-decoration-none text-end w-100 d-inline-block mt-3 text-secondary" href="/PAGE_List_Product">
+                    <a
+                        class="text-decoration-none text-end w-100 d-inline-block mt-3 text-secondary"
+                        href="/PAGE_List_Product"
+                    >
                         <i class="fas fa-arrow-left me-1"></i>
                         Hủy bỏ
                     </a>
                 </div>
             </form>
         </div>
-        <!-- Form Cập Nhật Hình Ảnh(Avatar) -->
+        <!-- Form Cập Nhật Thông Tin Người Dùng (Text) -->
         <div class="cart-right w-100">
-            <form id="update-avatar-form" action="/update-avatar" method="POST" enctype="multipart/form-data">
+            <form
+                id="update-image-product-form"
+                action="/update-image-product"
+                method="POST"
+                enctype="multipart/form-data"
+            >
                 <input type="hidden" name="id" value="<%= data.product.id %>" />
                 <div class="form-group d-flex justify-content-center">
-                    <div class="avatar-container" onclick="document.getElementById('avatar').click();">
+                    <div
+                        class="avatar-container"
+                        onclick="document.getElementById('avatar').click();"
+                    >
                         <div class="avatar-overlay">Chọn hình ảnh</div>
-                        <input type="hidden" name="currentImageUrl" value="<%= data.product.imageUrl %>" />
-                        <input type="file" id="avatar" name="avatar" class="file-input" />
+                        <input
+                            type="hidden"
+                            name="currentImageUrl"
+                            value="<%= data.product.imageUrl %>"
+                        />
+                        <input
+                            type="file"
+                            id="avatar"
+                            name="avatar"
+                            class="file-input"
+                        />
                         <div class="avatar-preview">
-                            <img src="<%= data.product.imageUrl %>" alt="Avatar" id="avatar-img" class="avatar-img" />
+                            <img
+                                src="<%= data.product.imageUrl %>"
+                                alt="Avatar"
+                                id="avatar-img"
+                                class="avatar-img"
+                            />
                         </div>
                     </div>
                 </div>
                 <div class="form-group mt-3">
-                    <button type="submit" class="btn btn-block create-account w-100">
-                        Cập nhật Avatar
+                    <button
+                        type="submit"
+                        class="btn btn-block create-account w-100"
+                    >
+                        Cập nhật hình ảnh
                     </button>
                 </div>
             </form>
@@ -60,24 +141,28 @@
 </div>
 <!-- Hiển thị thông báo -->
 <% if (data.successMessage && data.typeMessage) { %>
-    <div id="message" class="text-center mt-3 alert message <%= data.typeMessage === 'success' ? 'alert-success' : 'alert-danger' %>">
-        <%= data.successMessage %>
-    </div>
+<div
+    id="message"
+    class="text-center mt-3 alert message <%= data.typeMessage === 'success' ? 'alert-success' : 'alert-danger' %>"
+>
+    <%= data.successMessage %>
+</div>
 <% } %>
 
 <script>
     // Lắng nghe sự kiện khi người dùng chọn file ảnh
-    document.getElementById("avatar").addEventListener("change", function (event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const avatarImg = document.getElementById("avatar-img");
-                avatarImg.src = e.target.result;
-                avatarImg.style.display = "block";
-            };
-            reader.readAsDataURL(file);
-        }
-    });
+    document
+        .getElementById("avatar")
+        .addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const avatarImg = document.getElementById("avatar-img");
+                    avatarImg.src = e.target.result;
+                    avatarImg.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 </script>
-

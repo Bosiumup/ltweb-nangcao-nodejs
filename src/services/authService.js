@@ -1,6 +1,8 @@
 import bcrypt from "bcryptjs";
 import User from "../models/User";
 import Product from "../models/Product";
+import TypeProduct from "../models/TypeProduct";
+import DetailProduct from "../models/DetailProduct";
 import Order from "../models/Order";
 import userService from "./userService";
 
@@ -32,14 +34,30 @@ let serviceGetCountItemDashboard = async () => {
         order: [["id", "DESC"]],
         limit: 5,
     });
-    let listProducts = await Product.findAll(
-        { limit: 5 },
-        { order: [["id", "DESC"]] }
-    );
-    let listOrders = await Order.findAll(
-        { limit: 5 },
-        { order: [["id", "DESC"]] }
-    );
+    let listProducts = await Product.findAll({
+        limit: 5,
+        order: [["id", "DESC"]],
+        include: [
+            {
+                model: TypeProduct,
+                attributes: ["name"],
+            },
+            {
+                model: DetailProduct,
+                attributes: ["size", "stock"],
+            },
+        ],
+    });
+    let listOrders = await Order.findAll({
+        limit: 5,
+        order: [["id", "DESC"]],
+        include: [
+            {
+                model: User,
+                attributes: ["username"],
+            },
+        ],
+    });
     return {
         listUsers,
         listProducts,

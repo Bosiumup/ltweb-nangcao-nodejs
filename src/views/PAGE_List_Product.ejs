@@ -14,7 +14,9 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4">Danh sách sản phẩm</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Bảng chi tiết thông tin sản phẩm</li>
+        <li class="breadcrumb-item active">
+            Bảng chi tiết thông tin các sản phẩm
+        </li>
     </ol>
     <div class="card mb-4">
         <div class="card-header bg-white">
@@ -28,141 +30,135 @@
                             type="text"
                             name="search"  
                             class="form-control custom-hover"
-                            placeholder="Nhập tên sản phẩm hoặc mô tả"
+                            placeholder="Nhập tên sản phẩm hoặc mô tả..."
                             value="<%= data.search %>" 
                         />
                         <button type="submit" hidden></button>
                     </form>
                 </div>
-                <div class="px-2">
-                    <span
-                        id="filterToggle"
-                        class="dropdown-toggle fw-normal"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                    >
-                        <% if (data.sortOrder === 'asc') { %> Sắp xếp từ A -> Z
-                        <% } else if (data.sortOrder === 'desc') { %> Sắp xếp từ
-                        Z -> A <% } else { %> Sắp xếp theo tên <% } %>
 
-                        <!-- Menu Dropdown -->
-                        <ul
-                            id="filterMenu"
-                            class="dropdown-menu shadow-lg rounded"
-                        >
-                            <li>
-                                <!-- Sử dụng button thay vì a -->
-                                <button type="button" class="dropdown-item" onclick="location.href='/PAGE_List_Product?page=<%= data.currentPage %>&sort=asc'">
-                                    Từ A <i class="fa-solid fa-arrow-right"></i> Z
-                                </button>
-                            </li>
-                            <li>
-                                <!-- Sử dụng button thay vì a -->
-                                <button type="button" class="dropdown-item" onclick="location.href='/PAGE_List_Product?page=<%= data.currentPage %>&sort=desc'">
-                                    Từ Z <i class="fa-solid fa-arrow-right"></i> A
-                                </button>
-                            </li>
-                        </ul>
-                    </span>
-                </div>
+                <!-- Ẩn phần sắp xếp nếu có tìm kiếm -->
+                <% if (!data.search) { %>
+                    <div class="px-2">
+                        <span id="filterToggle" class="dropdown-toggle fw-normal" data-bs-toggle="dropdown" aria-expanded="false">
+                            <% if (data.sortOrder === 'asc') { %> Sắp xếp từ A -> Z
+                            <% } else if (data.sortOrder === 'desc') { %> Sắp xếp từ Z -> A <% } else { %> Sắp xếp theo tên <% } %>
+                            <ul id="filterMenu" class="dropdown-menu shadow-lg rounded">
+                                <li>
+                                    <button type="button" class="dropdown-item" onclick="location.href='/PAGE_List_Product?page=<%= data.currentPage %>&sort=asc'">
+                                        Từ A <i class="fa-solid fa-arrow-right"></i> Z
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="dropdown-item" onclick="location.href='/PAGE_List_Product?page=<%= data.currentPage %>&sort=desc'">
+                                        Từ Z <i class="fa-solid fa-arrow-right"></i> A
+                                    </button>
+                                </li>
+                            </ul>
+                        </span>
+                    </div>
+                <% } %>
             </div>
         </div>
         <div class="card-body bg-light">
-            <div class="table-responsive">
-                <table class="table table-responsive table-borderless mb-0">
-                    <thead>
-                        <tr class="border-bottom">
-                            <th scope="col" width="5%">
-                                <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                />
-                            </th>
-                            <th scope="col">ID loại sản phẩm</th>
-                            <th scope="col">ID</th>
-                            <th scope="col">Hình ảnh</th>
-                            <th scope="col">Tên sản phẩm</th>
-                            <th scope="col">Mô tả</th>
-<<<<<<< HEAD
-=======
-                            <th scope="col">Giá</th>
->>>>>>> casitanhung
-                            <th scope="col" class="text-center">
-                                <span>Cài đặt</span>
-                            </th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <% data.products.forEach(product => { %>
-                        <tr>
-                            <th scope="row">
-                                <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                />
-                            </th>
-                            <td style="width: 10%">
-                                <%= product.id_type_product %>
-                            </td>
-                            <td style="width: 10%"><%= product.id %></td>
-                            <td>
-                                <img
-                                    src="<%= product.imageUrl %>"
-                                    alt=""
-                                    style="
-                                        width: 50px;
-                                        height: 50px;
-                                        border-radius: 50%;
-                                    "
-                                />
-                            </td>
-                            <td><%= product.name %></td>
-                            <td><%= product.description %></td>
-<<<<<<< HEAD
-
-=======
-                            <td><%= product.price %></td>
-                           
->>>>>>> casitanhung
-                            <td
-                                class="d-flex align-items-center justify-content-center"
-                            >
-                                <a
-                                    class="mx-2"
-                                    href="/PAGE_Edit_Product/<%= product.id %>"
-                                >
-                                    <i
-                                        class="fa-solid fa-user-pen text-info fs-5"
-                                    ></i>
-                                </a>
-                                <form action="/delete-product" method="POST">
-                                    <input
-                                        type="hidden"
-                                        name="productId"
-                                        value="<%= product.id %>"
+            <!-- Kiểm tra nếu không có kết quả tìm kiếm -->
+            <% if (data.noResults) { %>
+                <div class="alert alert-warning text-center">
+                    Không tồn tại sản phẩm.
+                </div>
+            <% } else { %>
+                <div class="table-responsive">
+                    <table class="table table-responsive table-borderless mb-0">
+                        <thead>
+                            <tr class="border-bottom">
+                                <th scope="col" width="5%">
+                                    <input class="form-check-input" type="checkbox" />
+                                </th>
+                                <th scope="col">ID</th>
+                                <th scope="col">Loại</th>
+                                <th scope="col">Hình ảnh</th>
+                                <th scope="col">Tên sản phẩm</th>
+                                <th scope="col">Mô tả</th>
+                                <th scope="col">Giá</th>
+                                <th scope="col">Size</th>
+                                <th scope="col">Số lượng</th>
+                                <th scope="col" class="text-center">
+                                    <span>Cài đặt</span>
+                                </th>
+                            </tr>
+                        </thead>
+                
+                        <tbody>
+                            <% data.products.forEach(product => { %>
+                            <tr>
+                                <th scope="row">
+                                    <input class="form-check-input" type="checkbox" />
+                                </th>
+                                <td style="width: 10%"><%= product.id %></td>
+                                <td>
+                                    <%= product.TypeProduct && product.TypeProduct.name ? product.TypeProduct.name : 'N/A' %>
+                                </td>                                
+                                <td>
+                                    <img
+                                        src="<%= product.imageUrl %>"
+                                        alt=""
+                                        style="width: 50px; height: 50px; border-radius: 50%;"
                                     />
-                                    <button
-                                        type="submit"
-                                        class="border-0 me-2 bg-transparent"
-                                    >
-                                        <i
-                                            class="fa-solid fa-circle-minus text-danger fs-5"
-                                        ></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        <% }) %>
-                    </tbody>
-                </table>
-            </div>
+                                </td>
+                                <td><%= product.name %></td>
+                                <td><%= product.description %></td>
+                                <td><%= product.price %></td>
+                                <td><%= product.DetailProducts && product.DetailProducts[0] ? product.DetailProducts[0].size : 'N/A' %></td>
+                                <td><%= product.DetailProducts && product.DetailProducts[0] ? product.DetailProducts[0].stock : 'N/A' %></td>
+                                <td class="d-flex align-items-center justify-content-center">
+                                    <a class="mx-2" href="/PAGE_Edit_Product/<%= product.id %>">
+                                        <i class="fa-solid fa-user-pen text-info fs-5"></i>
+                                    </a>
+                                    <form action="/delete-product" method="POST">
+                                        <input type="hidden" name="productId" value="<%= product.id %>" />
+                                        <button type="submit" class="border-0 me-2 bg-transparent">
+                                            <i class="fa-solid fa-circle-minus text-danger fs-5"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+                
+            <% } %>
         </div>
+
+        <!-- Phân trang, chỉ hiển thị nếu có kết quả tìm kiếm -->
+        <% if (!data.noResults && data.products.length > 0) { %>
+        <div class="pagination d-flex justify-content-end mt-3 me-3">
+            <button type="button" class="btn-prev <%= data.currentPage === 1 ? 'disabled' : '' %>"
+                <%= data.currentPage === 1 ? 'disabled' : '' %> 
+                onclick="location.href='/PAGE_List_Product?page=<%= data.currentPage - 1 %>'">
+                Prev
+            </button>
+        
+            <% for (let i = 1; i <= data.totalPages; i++) { %>
+                <button type="button" class="page-item <%= data.currentPage === i ? 'active' : '' %>" 
+                    onclick="location.href='/PAGE_List_Product?page=<%= i %>'">
+                    <%= i %>
+                </button>
+            <% } %>
+        
+            <button type="button" class="btn-next <%= data.currentPage === data.totalPages ? 'disabled' : '' %>"
+                <%= data.currentPage === data.totalPages ? 'disabled' : '' %> 
+                onclick="location.href='/PAGE_List_Product?page=<%= data.currentPage + 1 %>'">
+                Next
+            </button>
+        </div>
+        <% } %>
     </div>
 </div>
 
 <% if (data.successMessage && data.typeMessage) { %>
-    <div id="message" class="text-center mt-3 alert message <%= data.typeMessage === 'success' ? 'alert-success' : 'alert-danger' %>">
-        <%= data.successMessage %>
-    </div>
-    <% } %>
+<div id="message" class="text-center mt-3 alert message <%= data.typeMessage === 'success' ? 'alert-success' : 'alert-danger' %>">
+    <%= data.successMessage %>
+</div>
+<% } %>
+
