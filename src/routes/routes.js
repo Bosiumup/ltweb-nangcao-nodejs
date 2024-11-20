@@ -37,7 +37,7 @@ const initRoutes = (app) => {
 
     // -------------- Auth requests
     // đăng nhập
-    router.post("/login", authController.controlerPostLogin);
+    router.post("/login", authController.controllerPostLogin);
     // đăng xuất
     router.get("/logout", authController.controllerGetLogout);
 

@@ -14,9 +14,7 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4">Danh sách sản phẩm</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">
-            Bảng chi tiết thông tin sản phẩm
-        </li>
+        <li class="breadcrumb-item active">Bảng chi tiết thông tin sản phẩm</li>
     </ol>
     <div class="card mb-4">
         <div class="card-header bg-white">
@@ -86,11 +84,11 @@
                                     type="checkbox"
                                 />
                             </th>
+                            <th scope="col">ID loại sản phẩm</th>
                             <th scope="col">ID</th>
                             <th scope="col">Hình ảnh</th>
                             <th scope="col">Tên sản phẩm</th>
                             <th scope="col">Mô tả</th>
-                           
                             <th scope="col" class="text-center">
                                 <span>Cài đặt</span>
                             </th>
@@ -106,7 +104,10 @@
                                     type="checkbox"
                                 />
                             </th>
-                            <td><%= product.id %></td>
+                            <td style="width: 10%">
+                                <%= product.id_type_product %>
+                            </td>
+                            <td style="width: 10%"><%= product.id %></td>
                             <td>
                                 <img
                                     src="<%= product.imageUrl %>"
@@ -120,8 +121,7 @@
                             </td>
                             <td><%= product.name %></td>
                             <td><%= product.description %></td>
-                       
-                           
+
                             <td
                                 class="d-flex align-items-center justify-content-center"
                             >

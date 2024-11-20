@@ -1,5 +1,9 @@
 import bcrypt from "bcryptjs";
+import User from "../models/User";
+import Product from "../models/Product";
+import Order from "../models/Order";
 import userService from "./userService";
+
 let serviceAuthLogin = async (username, password) => {
     // Tìm người dùng theo tên tài khoản
     let user = await userService.serviceGetUsername(username);
@@ -19,4 +23,31 @@ let serviceAuthLogin = async (username, password) => {
     }
 };
 
-export default serviceAuthLogin;
+let serviceGetCountItemDashboard = async () => {
+    let totalCountUser = await User.count({ where: { role: "user" } });
+    let totalCountProduct = await Product.count();
+    let totalCountOrder = await Order.count();
+    let listUsers = await User.findAll({
+        where: { role: "user" },
+        order: [["id", "DESC"]],
+        limit: 5,
+    });
+    let listProducts = await Product.findAll(
+        { limit: 5 },
+        { order: [["id", "DESC"]] }
+    );
+    let listOrders = await Order.findAll(
+        { limit: 5 },
+        { order: [["id", "DESC"]] }
+    );
+    return {
+        listUsers,
+        listProducts,
+        listOrders,
+        totalCountUser,
+        totalCountProduct,
+        totalCountOrder,
+    };
+};
+
+export default { serviceAuthLogin, serviceGetCountItemDashboard };
