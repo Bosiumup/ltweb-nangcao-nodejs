@@ -80,6 +80,7 @@
                                 <th scope="col">Họ tên</th>
                                 <th scope="col">Địa chỉ</th>
                                 <th scope="col">Số điện thoại</th>
+                                <th scope="col">Giới tính</th>
                                 <th scope="col">Vai trò</th>
                                 <th scope="col" class="text-center">
                                     <span>Cài đặt</span>
@@ -101,6 +102,7 @@
                                 <td><%= user.fullname %></td>
                                 <td><%= user.address %></td>
                                 <td><%= user.phone %></td>
+                                <td><%= user.gender %></td>
                                 <td><%= user.role %></td>
                                 <td class="d-flex align-items-center justify-content-center">
                                     <a class="mx-2" href="/PAGE_Edit_User/<%= user.id %>">

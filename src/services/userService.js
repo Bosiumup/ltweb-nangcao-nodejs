@@ -99,7 +99,14 @@ let serviceGetUserById = async (id) => {
     });
 };
 
-let serviceUpdateUserById = async (id, fullname, address, phone, role) => {
+let serviceUpdateUserById = async (
+    id,
+    fullname,
+    address,
+    phone,
+    role,
+    gender
+) => {
     if (!id) {
         console.log("ID không hợp lệ.");
     }
@@ -110,6 +117,7 @@ let serviceUpdateUserById = async (id, fullname, address, phone, role) => {
                 address: address,
                 phone: phone,
                 role: role,
+                gender: gender,
             },
             {
                 where: { id: id },
