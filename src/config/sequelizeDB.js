@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 // Tạo kết nối tới MySQL
-const sequelize = new Sequelize("ltweb_nangcao", "root", "", {
+const sequelize = new Sequelize("ltw_baocao", "root", "", {
     host: "localhost",
     dialect: "mysql",
     logging: false,

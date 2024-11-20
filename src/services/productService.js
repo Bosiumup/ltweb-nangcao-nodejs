@@ -11,11 +11,7 @@ let serviceAllFunctionProduct = async (page, sortOrder, query = "") => {
     try {
         let count, rows;
 
-<<<<<<< HEAD
-        // Truy vấn dữ liệu sản phẩm từ cơ sở dữ liệu (không có tìm kiếm)
-=======
         // Tìm kiếm theo từ khóa
->>>>>>> lnmt3
         if (query) {
             let { count: totalCount, rows: allProducts } =
                 await Product.findAndCountAll({
@@ -57,9 +53,6 @@ let serviceAllFunctionProduct = async (page, sortOrder, query = "") => {
             let result = await Product.findAndCountAll({
                 limit: limit,
                 offset: offset,
-<<<<<<< HEAD
-                order: [["id", sortOrder]], // Sắp xếp theo ID hoặc tên sản phẩm
-=======
                 order: [["id", sortOrder]], // Sắp xếp theo ID
                 include: [
                     {
@@ -72,7 +65,6 @@ let serviceAllFunctionProduct = async (page, sortOrder, query = "") => {
                     },
                 ],
             });
->>>>>>> lnmt3
 
             rows = result.rows || []; // Danh sách sản phẩm
             count = result.count || 0; // Tổng số sản phẩm
@@ -82,21 +74,14 @@ let serviceAllFunctionProduct = async (page, sortOrder, query = "") => {
         let totalPages = Math.ceil(count / limit);
 
         return {
-<<<<<<< HEAD
-            products: rows, // Danh sách sản phẩm cho trang hiện tại (sau khi phân trang và tìm kiếm)
-            currentPage: page, // Trang hiện tại
-            totalPages: totalPages, // Tổng số trang
-            totalProducts: count, // Tổng số sản phẩm (hoặc kết quả tìm kiếm)
-=======
             products: rows, // Danh sách sản phẩm cho trang hiện tại
             currentPage: page, // Trang hiện tại
             totalPages: totalPages, // Tổng số trang
             totalProducts: count, // Tổng số sản phẩm
->>>>>>> lnmt3
         };
     } catch (err) {
         console.error("Lỗi khi lấy dữ liệu sản phẩm: ", err);
-        throw new Error("Lỗi khi lấy dữ liệu sản phẩm: " + err.message);
+throw new Error("Lỗi khi lấy dữ liệu sản phẩm: " + err.message);
     }
 };
 
