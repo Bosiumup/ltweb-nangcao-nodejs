@@ -63,12 +63,17 @@ let apiLoginPost = async (req, res) => {
 
 let apiDetailUserGet = async (req, res) => {
     let id = req.query.id;
-    let message = await userService.getUserById(id);
+    let message = await userService.handleGetUserById(id);
     return res.status(200).json(message);
 };
 
 let apiUpdateUserById = async (req, res) => {
     let message = await userService.handleUpdateUserById(req.body);
+    return res.status(200).json(message);
+};
+
+let apiChangePassword = async (req, res) => {
+    let message = await userService.handleChangePassword(req.body);
     return res.status(200).json(message);
 };
 
@@ -82,6 +87,7 @@ let fetchGetUserInfo = async (req, res) => {
     try {
         // Giải mã token để lấy userId
         let decoded = await userService.verifyToken(token);
+        console.log(decoded)
         // Lấy thông tin người dùng từ userId (lấy từ payload của token)
         let user = await userService.handleGetUserById(decoded.userId);
         if (!user) {
@@ -104,8 +110,8 @@ let fetchGetUserInfo = async (req, res) => {
 export default {
     apiDetailUserGet,
     apiLoginPost,
-    // apiLogoutPost,
     apiRegisterPost,
     apiUpdateUserById,
+    apiChangePassword,
     fetchGetUserInfo,
 };

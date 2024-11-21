@@ -82,10 +82,10 @@ let controllerCreateNewProduct = async (req, res) => {
 };
 
 let controllerEditProductById = async (req, res) => {
-    let { id } = req.params;
+    let { id, idDetail } = req.query;
     let message = req.query.message || null;
     let type = req.query.type || null;
-    let product = await productService.serviceGetProductById(id);
+    let product = await productService.serviceGetProductById(id, idDetail);
     let typeProducts = await typeProductsServices.serviceGetAllTypeProduct();
     return res.render("PAGE_Edit_Product", {
         data: {
@@ -100,19 +100,19 @@ let controllerEditProductById = async (req, res) => {
 };
 
 let controllerUpdateProductById = async (req, res) => {
-    let { id, name, description, price, id_type_product, size, stock } =
+    let { id, id_detail, name, description, price, id_type_product, stock } =
         req.body;
     await productService.serviceUpdateProductById(
         id,
+        id_detail,
         name,
         description,
         price,
         id_type_product,
-        size,
         stock
     );
     return res.redirect(
-        `/PAGE_Edit_Product/${id}?message=Cập nhật thông tin thành công&type=success`
+        `/PAGE_Edit_Product?id=${id}&idDetail=${id_detail}&message=Cập nhật thông tin thành công&type=success`
     );
 };
 

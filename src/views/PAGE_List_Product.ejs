@@ -90,39 +90,41 @@
                 
                         <tbody>
                             <% data.products.forEach(product => { %>
-                            <tr>
-                                <th scope="row">
-                                    <input class="form-check-input" type="checkbox" />
-                                </th>
-                                <td style="width: 10%"><%= product.id %></td>
-                                <td>
-                                    <%= product.TypeProduct && product.TypeProduct.name ? product.TypeProduct.name : 'N/A' %>
-                                </td>                                
-                                <td>
-                                    <img
+                                <% product.DetailProducts.forEach(detailProduct => { %> 
+                                  <tr>
+                                    <th scope="row">
+                                      <input class="form-check-input" type="checkbox" />
+                                    </th>
+                                    <td style="width: 10%"><%= product.id %></td> 
+                                    <td>
+                                      <%= product.TypeProduct.name %> 
+                                    </td>                                
+                                    <td>
+                                      <img
                                         src="<%= product.imageUrl %>"
                                         alt=""
                                         style="width: 50px; height: 50px; border-radius: 50%;"
-                                    />
-                                </td>
-                                <td><%= product.name %></td>
-                                <td><%= product.description %></td>
-                                <td><%= product.price %></td>
-                                <td><%= product.DetailProducts && product.DetailProducts[0] ? product.DetailProducts[0].size : 'N/A' %></td>
-                                <td><%= product.DetailProducts && product.DetailProducts[0] ? product.DetailProducts[0].stock : 'N/A' %></td>
-                                <td class="d-flex align-items-center justify-content-center">
-                                    <a class="mx-2" href="/PAGE_Edit_Product/<%= product.id %>">
+                                      />
+                                    </td>
+                                    <td><%= product.name %></td> 
+                                    <td><%= product.description %></td> 
+                                    <td><%= product.price %></td> 
+                                    <td><%= detailProduct.size %></td>
+                                    <td><%= detailProduct.stock %></td>
+                                    <td class="d-flex align-items-center justify-content-center">
+                                      <a class="mx-2" href="/PAGE_Edit_Product?id=<%= product.id %>&idDetail=<%= detailProduct.id %>">
                                         <i class="fa-solid fa-user-pen text-info fs-5"></i>
-                                    </a>
-                                    <form action="/delete-product" method="POST">
-                                        <input type="hidden" name="productId" value="<%= product.id %>" />
+                                      </a>
+                                      <form action="/delete-product" method="POST">
+                                        <input type="hidden" name="productId" value="<%= detailProduct.id %>" />
                                         <button type="submit" class="border-0 me-2 bg-transparent">
-                                            <i class="fa-solid fa-circle-minus text-danger fs-5"></i>
+                                          <i class="fa-solid fa-circle-minus text-danger fs-5"></i>
                                         </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <% }) %>
+                                      </form>
+                                    </td>
+                                  </tr>
+                                <% }) %>
+                              <% }) %> 
                         </tbody>
                     </table>
                 </div>

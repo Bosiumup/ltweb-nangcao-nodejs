@@ -81,7 +81,7 @@ const initRoutes = (app) => {
         productController.controllerUpdateAvatar
     );
     router.get(
-        "/PAGE_Edit_Product/:id",
+        "/PAGE_Edit_Product/",
         productController.controllerEditProductById
     );
     // Lấy danh sách sản phẩm

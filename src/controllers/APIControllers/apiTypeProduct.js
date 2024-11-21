@@ -90,27 +90,26 @@ let apiDeleteTypeProduct = async (req, res) => {
 };
 let apiEditTypeProduct = async (req, res) => {
     try {
-        const { id, name } = req.body; // Lấy dữ liệu từ request body
-        console.log("Dữ liệu nhận được từ frontend:", req.body);
+        const { id, name } = req.body;
 
         // Kiểm tra nếu tên thể loại rỗng hoặc không hợp lệ
         if (!name || name.trim() === "") {
-            return res.status(400).json({
-                errCode: 1,
-                errMessage: 'Tên thể loại không được để trống!',
-            });
+            return res.status(400).send('Tên thể loại không được để trống!');
         }
 
         // Gọi service để cập nhật loại sản phẩm
         let response = await apitypeProductService.handleEditTypeProduct(id, req.body);
 
-        return res.status(200).json(response);
+        if (response.errCode === 0) {
+            // Thành công, chuyển hướng về trang danh sách
+            return res.redirect('/PAGE_listTypeProducts');
+        } else {
+            // Trả về lỗi nếu có
+            return res.status(400).send(response.errMessage);
+        }
     } catch (error) {
         console.error('Error in apiEditTypeProduct:', error);
-        return res.status(500).json({
-            errCode: -1,
-            errMessage: 'Lỗi hệ thống!',
-        });
+        return res.status(500).send('Lỗi hệ thống!');
     }
 };
 

@@ -25,7 +25,7 @@ let getProductFromType = async (id_type_product) => {
 
 let getOneProduct = async (id) => {
     const product = await Product.findOne({
-        where: { id}
+        where: { id }
     });
     console.log("Kết quả truy vấn:", product); // Kiểm tra kết quả truy vấn
     return product;

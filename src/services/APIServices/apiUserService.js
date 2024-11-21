@@ -89,22 +89,104 @@ let handleUserLogin = async (username, password) => {
 
 let handleUpdateUserById = async (data) => {
     try {
-        if (!data.id || !data.fullname || !data.address || !data.email) {
+        if (!data || !data.id) {
+            return {
+                errCode: 1,
+                errMessage: "Thiếu thông tin cần thiết hoặc ID không hợp lệ!",
+            };
+        }
+
+        // Cập nhật thông tin người dùng
+        let [updateCount] = await User.update(
+            {
+                fullname: data.fullname,
+                phone: data.phone,
+                address: data.address,
+                gender: data.gender,
+            },
+            {
+                where: { id: data.id }, // Kiểm tra ID trước khi truyền vào query
+            }
+        );
+
+        if (updateCount === 0) {
+            return {
+                errCode: 2,
+                errMessage: "Không tìm thấy người dùng với ID này!",
+            };
+        }
+
+        // Lấy lại thông tin người dùng sau khi cập nhật
+        let updatedUser = await User.findOne({
+            where: { id: data.id },
+        });
+
+        return {
+            errCode: 0,
+            errMessage: "Cập nhật thông tin người dùng thành công!",
+            user: updatedUser, // Trả về thông tin người dùng đã cập nhật
+        };
+    } catch (error) {
+        return {
+            errCode: 3,
+            errMessage: "Có lỗi xảy ra khi cập nhật thông tin người dùng.",
+            error: error.message,
+        };
+    }
+};
+
+let handleChangePassword = async (data) => {
+    try {
+        if (!data || !data.id || !data.oldPassword || !data.newPassword) {
             return {
                 errCode: 1,
                 errMessage: "Thiếu thông tin cần thiết!",
             };
         }
-        await pool.query(
-            "UPDATE users SET fullname = ?, address = ?, email = ? WHERE id = ?",
-            [data.fullname, data.address, data.email, data.id]
+
+        // Find the user by ID
+        const user = await User.findOne({ where: { id: data.id } });
+
+        if (!user) {
+            return {
+                errCode: 2,
+                errMessage: "Không tìm thấy người dùng với ID này!",
+            };
+        }
+
+        // Verify the old password (you'll need to hash passwords securely)
+        const isPasswordValid = await bcrypt.compare(
+            data.oldPassword,
+            user.password
         );
+
+        if (!isPasswordValid) {
+            return {
+                errCode: 3,
+                errMessage: "Mật khẩu cũ không chính xác!",
+            };
+        }
+
+        // Hash the new password
+        let salt = bcrypt.genSaltSync(10);
+        const hashedPassword = await bcrypt.hashSync(data.newPassword, salt);
+
+        // Update the user's password
+        await User.update(
+            { password: hashedPassword },
+            { where: { id: data.id } }
+        );
+
         return {
             errCode: 0,
-            errMessage: "Cập nhật thông tin người dùng thành công!",
+            errMessage: "Cập nhật mật khẩu thành công!",
         };
     } catch (error) {
-        return error;
+        return {
+            errCode: 4,
+            errMessage: "Có lỗi xảy ra khi cập nhật mật khẩu.",
+            error: error.message,
+        };
     }
 };
 
@@ -114,4 +196,5 @@ export default {
     handleRegisterUser,
     handleUserLogin,
     handleUpdateUserById,
+    handleChangePassword,
 };
