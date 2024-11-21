@@ -65,7 +65,7 @@ let ServiceOneOrder = async (id) => {
 }
 
 let ServiceDetailOrders = async (id_order) => {
-    return await DetailOrder.findOne({ where: { id_order } });
+    return await DetailOrder.findAll({ where: { id_order } });
 }
 
 let ServiceProductOrders = async (id) => {

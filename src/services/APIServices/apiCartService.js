@@ -1,3 +1,4 @@
+import { where } from 'sequelize';
 import Cart from '../../models/Cart';
 
 const addCart = async (name, price, imageUrl, quantity, size, id_product) => {
@@ -23,7 +24,6 @@ const addCart = async (name, price, imageUrl, quantity, size, id_product) => {
                 size,
                 id_product
             });
-            return { message: 'Thêm sản phẩm vào giỏ hàng thành công', cartItem };
         }
     } catch (error) {
         console.error('Lỗi khi thêm vào giỏ hàng:', error);
@@ -31,4 +31,36 @@ const addCart = async (name, price, imageUrl, quantity, size, id_product) => {
     }
 };
 
-export default { addCart };
+
+const removeCart = async (id_product, size) => {
+    try {
+        let data = await Cart.destroy({ where: { id_product, size } })
+        return data;
+    } catch (error) {
+        console.log("Xóa không thành công", error)
+    }
+}
+
+const getCart = async () => {
+    try {
+        let data = await Cart.findAll()
+        return data;
+    } catch (error) {
+        console.log('Lỗi không lấy được giỏ hàng', error)
+    }
+}
+
+
+const updateQuantity = async (id_product, size, quantity) => {
+    try {
+        const updatedCount = await Cart.update(
+            { quantity },
+            {
+                where: { id_product, size }
+            }
+        );
+    } catch (error) {
+        console.error('Lỗi khi cập nhật:', error);
+    }
+};
+export default { addCart, removeCart, getCart, updateQuantity };

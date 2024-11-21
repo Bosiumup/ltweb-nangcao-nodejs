@@ -5,32 +5,37 @@
             <table class="table table-responsive table-borderless mb-0">
                 <thead>
                     <tr class="border-bottom">
-                        <th scope="col">ID</th>
-                        <th scope="col">Số lượng</th>
+                        <th scope="col">Mã Đơn</th>
                         <th scope="col">Giá</th>
                         <th scope="col">Sản phẩm</th>
-                        <th scope="col">Đơn hàng</th>
+                        <th scope="col">Size</th>
+                        <th scope="col">Số lượng</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <tr>
-                        <td>
-                            <%= data.id%>
-                        </td>
-                        <td>
-                            <%= data.quantity%>
-                        </td>
-                        <td>
-                            <%= data.price%>
-                        </td>
-                        <td>
-                            nữa thêm zô sau ()
-                        </td>
-                        <td>
-                            <%= data.id_order%>
-                        </td>
-                    </tr>
+                    <% for (const product of productData) { %>
+                        <% for (const size in product.sizes) { %>
+                            <tr>
+                                <td>
+                                    <%= id %>
+                                </td>
+                                <td>
+                                    <%= product.sizes[size].price %>
+                                </td>
+                                <td>
+                                    <%= product.product.name %>
+                                </td>
+                                <td>
+                                    <%=size%>
+                                </td>
+                                <td>
+                                    <%= product.sizes[size].quantity %>
+                                </td>
+
+                            </tr>
+                            <% } %>
+                                <% } %>
                 </tbody>
             </table>
         </div>
