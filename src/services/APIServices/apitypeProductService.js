@@ -204,5 +204,6 @@ export default {
     handleCreateNewTypeProduct,
     handleGetAllTypeProducts,
     handleDeleteTypeProductById,
-    handleEditTypeProduct
+    handleEditTypeProduct,
+    getTypeProductById
 };
