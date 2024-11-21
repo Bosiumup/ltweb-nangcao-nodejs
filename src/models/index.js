@@ -111,8 +111,8 @@ const initModels = async () => {
 
         // Đồng bộ các mô hình
         // await sequelize.sync({ force: true });
-    //     await sequelize.sync();
-    //     console.log("Các mô hình đã được đồng bộ!");
+        // await sequelize.sync();
+        // console.log("Các mô hình đã được đồng bộ!");
     } catch (error) {
         console.error("Lỗi kết nối cơ sở dữ liệu:", error);
     }

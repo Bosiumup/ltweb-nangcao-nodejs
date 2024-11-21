@@ -7,10 +7,7 @@ const router = express.Router();
 
 const initApiRoutes = (app) => {
     // -------------- API routes
-<<<<<<< HEAD
     
-=======
->>>>>>> lnmt3
     // API người dùng
     // Token lấy từ header
     router.get("/api/fetchGetUserInfo", apiUserController.fetchGetUserInfo);
