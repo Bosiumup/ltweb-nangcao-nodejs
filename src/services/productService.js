@@ -139,9 +139,12 @@ let serviceCreateNewProduct = async (
             },
             { transaction }
         );
-        return newProduct;
+
         // Cam kết giao dịch (commit)
         await transaction.commit();
+
+        // Trả về thông tin sản phẩm và chi tiết sản phẩm vừa được tạo
+        return { newProduct };
     } catch (error) {
         // Nếu có lỗi, rollback giao dịch
         await transaction.rollback();
