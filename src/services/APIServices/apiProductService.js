@@ -13,7 +13,7 @@ let getTypeProductt = async () => {
 }
 
 let getProductFromType = async (id_type_product) => {
-    const product = await Product.findOne({
+    const product = await Product.findAll({
         include: [{
             model: TypeProduct,
             attributes: ['name'] // Chỉ lấy tên và giá sản phẩm
