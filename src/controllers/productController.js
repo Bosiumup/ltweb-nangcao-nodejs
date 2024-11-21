@@ -115,7 +115,7 @@ let controllerUpdateProductById = async (req, res) => {
 };
 
 let controllerUpdateAvatar = async (req, res) => {
-    let { id, currentImageUrl } = req.body;
+    let { id, id_detail, currentImageUrl } = req.body;
     let newAvatarUrl = currentImageUrl;
     if (req.file) {
         try {
