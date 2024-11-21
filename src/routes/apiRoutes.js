@@ -1,23 +1,17 @@
 import express from "express";
 import apiUserController from "../controllers/APIControllers/apiUserController";
-<<<<<<< HEAD
 import apiProductController from "../controllers/APIControllers/apiProductController";
 import apiCartController from "../controllers/APIControllers/apiCartController";
-=======
->>>>>>> thienpham
 import apiTypeProduct from "../controllers/APIControllers/apiTypeProduct";
 const router = express.Router();
 
 const initApiRoutes = (app) => {
     // -------------- API routes
     // API người dùng
-<<<<<<< HEAD
     // Token lấy từ header
     router.get("/api/fetchGetUserInfo", apiUserController.fetchGetUserInfo);
     // Đăng ký tài khoản
     router.post("/api/registerPost", apiUserController.apiRegisterPost);
-=======
->>>>>>> thienpham
     // Đăng nhập
     router.post("/api/loginPost", apiUserController.apiLoginPost);
 
@@ -33,7 +27,6 @@ const initApiRoutes = (app) => {
     );
 
     // API sản phẩm
-<<<<<<< HEAD
     router.get("/api/list-product", apiProductController.apigetAllProduct);
     router.get("/api/list-type", apiProductController.apigetTypeProduct);
     router.get(
@@ -43,8 +36,6 @@ const initApiRoutes = (app) => {
 
     //API giỏ hàng
     router.post("/api/add-cart", apiCartController.apiaddCart);
-=======
->>>>>>> thienpham
     // Hiển thị nhóm
     // router.get("/api/groupProduct", apiProductController.apiGetGroupProduct);
     // // Hiển thị danh sách các sản phẩm
