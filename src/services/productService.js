@@ -89,16 +89,14 @@ let serviceCreateNewProduct = async (
     name,
     description,
     price,
-    id_type_product,
-    size,
-    stock
+    id_type_product
 ) => {
     // Bắt đầu giao dịch
     const transaction = await sequelize.transaction();
 
     try {
         // Thêm dữ liệu vào bảng Product
-        const newProduct = await Product.create(
+        await Product.create(
             {
                 name: name,
                 description: description,
@@ -109,20 +107,41 @@ let serviceCreateNewProduct = async (
         );
 
         // Thêm dữ liệu vào bảng DetailProduct
-        const newDetailProduct = await DetailProduct.create(
+        await DetailProduct.create(
             {
                 id_product: newProduct.id,
-                size: size,
-                stock: stock,
+                size: "S",
+                stock: "50",
+            },
+            { transaction }
+        );
+        await DetailProduct.create(
+            {
+                id_product: newProduct.id,
+                size: "M",
+                stock: "50",
+            },
+            { transaction }
+        );
+        await DetailProduct.create(
+            {
+                id_product: newProduct.id,
+                size: "L",
+                stock: "50",
+            },
+            { transaction }
+        );
+        await DetailProduct.create(
+            {
+                id_product: newProduct.id,
+                size: "XL",
+                stock: "50",
             },
             { transaction }
         );
 
         // Cam kết giao dịch (commit)
         await transaction.commit();
-
-        // Trả về thông tin sản phẩm và chi tiết sản phẩm vừa được tạo
-        return { newProduct, newDetailProduct };
     } catch (error) {
         // Nếu có lỗi, rollback giao dịch
         await transaction.rollback();

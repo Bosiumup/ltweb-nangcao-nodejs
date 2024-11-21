@@ -60,15 +60,13 @@ let controllerGetCreateProduct = async (req, res) => {
 };
 
 let controllerCreateNewProduct = async (req, res) => {
-    let { name, description, price, id_type_product, size, stock } = req.body;
+    let { name, description, price, id_type_product } = req.body;
     description = description.trim().replace(/\s+/g, " ");
     let created = await productService.serviceCreateNewProduct(
         name,
         description,
         price,
-        id_type_product,
-        size,
-        stock
+        id_type_product
     );
     if (!created) {
         return res.redirect(
