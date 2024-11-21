@@ -134,7 +134,7 @@ let controllerUpdateAvatar = async (req, res) => {
     }
     await productService.serviceUpdateImageProduct(id, newAvatarUrl); // Cập nhật URL ảnh mới
     return res.redirect(
-        `/PAGE_Edit_Product/${id}?message=Cập nhật hình ảnh thành công&type=success`
+        `/PAGE_Edit_Product?id=${id}&idDetail=${id_detail}?message=Cập nhật hình ảnh thành công&type=success`
     );
 };
 
