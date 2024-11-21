@@ -11,7 +11,8 @@
         <!-- Form Cập Nhật Avatar (Hình ảnh) -->
         <div class="card-left w-100">
             <form id="update-product-form" action="/update-product" method="POST">
-                <input type="hidden" name="id" value="<%= data.product.id %>" />
+                <input type="text" name="id" value="<%= data.product.id %>" />
+                <input type="text" name="id_detail" value="<%= data.product.DetailProducts[0].id %>" />
                 <div class="form-group">
                     <label for="name" class="form-label">Tên sản phẩm</label>
                     <input
@@ -63,13 +64,7 @@
                 </div>
                 <div class="form-group mt-3">
                     <label for="size" class="form-label">Size</label>
-                    <select id="size" name="size" class="form-select">
-                        <option value="S" <%= data.product.DetailProducts[0].size === 'S' ? 'selected' : '' %>>S</option>
-                        <option value="M" <%= data.product.DetailProducts[0].size === 'M' ? 'selected' : '' %>>M</option>
-                        <option value="L" <%= data.product.DetailProducts[0].size === 'L' ? 'selected' : '' %>>L</option>
-                        <option value="XL" <%= data.product.DetailProducts[0].size === 'XL' ? 'selected' : '' %>>XL</option>
-                    </select>
-                    
+                    <input disabled type="text" class="form-control item" value="<%= data.product.DetailProducts[0].size %>">
                 </div>
                 <div class="form-group mt-3">
                     <label for="stock" class="form-label">Số lượng</label>

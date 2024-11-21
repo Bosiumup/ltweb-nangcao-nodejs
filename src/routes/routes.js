@@ -56,7 +56,6 @@ const initRoutes = (app) => {
     );
 
     // -------------- Product requests
-<<<<<<< HEAD
     // thêm sản phẩm
     router.post(
         "/create-new-product",
@@ -82,7 +81,7 @@ const initRoutes = (app) => {
         productController.controllerUpdateAvatar
     );
     router.get(
-        "/PAGE_Edit_Product/:id",
+        "/PAGE_Edit_Product/",
         productController.controllerEditProductById
     );
     // Lấy danh sách sản phẩm
@@ -106,15 +105,6 @@ const initRoutes = (app) => {
         "/edit-type-product/:id",
         TypeProduct.controllerGetEditTypeProduct
     );
-=======
-     // trang thêm loai sản phẩm
-    //  router.get("/PAGE_addtypeproducts", TypeProduct.controllerAddTypeProduct);
-    router.get("/PAGE_addtypeproducts", TypeProduct.controllerGetCreateTypeProduct);
-    router.get("/PAGE_listtypeproducts", TypeProduct.controllerGetTypeProducts);
-    router.post('/delete-type-product/:id', TypeProduct.controllerDeleteTypeProduct);
-    router.get('/edit-type-product/:id', TypeProduct.controllerGetEditTypeProduct);
-
->>>>>>> thienpham
 
     // -------------- Order requests
     router.get("/PAGE_List_Order", orderController.controllerAllOrder);

@@ -5,7 +5,7 @@ import sequelize from "../config/sequelizeDB";
 import Fuse from "fuse.js";
 
 let serviceAllFunctionProduct = async (page, sortOrder, query = "") => {
-    let limit = 5; // Số lượng sản phẩm mỗi trang
+    let limit = 12; // Số lượng sản phẩm mỗi trang
     let offset = (page - 1) * limit; // Vị trí bắt đầu của trang hiện tại
 
     try {
@@ -19,7 +19,7 @@ let serviceAllFunctionProduct = async (page, sortOrder, query = "") => {
                     include: [
                         {
                             model: DetailProduct,
-                            attributes: ["size", "stock"],
+                            attributes: ["id", "size", "stock"],
                         },
                         {
                             model: TypeProduct,
@@ -57,7 +57,7 @@ let serviceAllFunctionProduct = async (page, sortOrder, query = "") => {
                 include: [
                     {
                         model: DetailProduct,
-                        attributes: ["size", "stock"],
+                        attributes: ["id", "size", "stock"],
                     },
                     {
                         model: TypeProduct,
@@ -132,11 +132,11 @@ let serviceCreateNewProduct = async (
 
 let serviceUpdateProductById = async (
     id,
+    id_detail,
     name,
     description,
     price,
     id_type_product,
-    size,
     stock
 ) => {
     if (!id) {
@@ -162,11 +162,10 @@ let serviceUpdateProductById = async (
 
         const updateDetailProduct = await DetailProduct.update(
             {
-                size: size,
                 stock: stock,
             },
             {
-                where: { id_product: id },
+                where: { id: id_detail, id_product: id },
                 transaction,
             }
         );
@@ -199,13 +198,14 @@ let serviceUpdateImageProduct = async (id, newAvatarUrl) => {
     }
 };
 
-let serviceGetProductById = async (id) => {
+let serviceGetProductById = async (id, idDetail) => {
     return await Product.findOne({
         where: { id: id },
         include: [
             {
                 model: DetailProduct,
-                attributes: ["size", "stock"],
+                attributes: ["id", "size", "stock"],
+                where: { id: idDetail },
             },
             {
                 model: TypeProduct,
@@ -216,7 +216,7 @@ let serviceGetProductById = async (id) => {
 };
 
 let serviceDeleteProductById = async (id) => {
-    return await Product.destroy({
+    return await DetailProduct.destroy({
         where: {
             id: id,
         },
