@@ -16,4 +16,13 @@ let apiaddOrder = async (req, res) => {
     }
 
 }
-export default { apiaddOrder }
+
+let apigetOrder = async (req, res) => {
+    const id_user = req.body.id_user
+    let data = await orderService.getOrder(id_user)
+    return res.status(200).json({
+        data: data,
+        message: 'Lấy thông tin đơn hàng thành công'
+    })
+}
+export default { apiaddOrder, apigetOrder }

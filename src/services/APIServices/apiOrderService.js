@@ -2,6 +2,8 @@ import Order from '../../models/Order';
 import DetailOrder from '../../models/DetailOrder';
 import PaymentOrder from '../../models/PaymentOrder'
 import Cart from '../../models/Cart'
+import DetailProduct from '../../models/DetailProduct';
+import { Sequelize } from 'sequelize';
 
 let addOrder = async (address1, phone, status, products, id_user, paymentMethod, paymentStatus, totalPayment) => {
     try {
@@ -24,6 +26,7 @@ let addOrder = async (address1, phone, status, products, id_user, paymentMethod,
                 product.id_product,
                 orderId
             );
+            await updateStockProduct(product.id_product, product.size, product.quantity)
         }
 
         await delAllCart();
@@ -62,4 +65,28 @@ let delAllCart = async () => {
     let data = await Cart.destroy({ where: {} })
 }
 
-export default { addOrder, addDetailOrder, addDetailPayment, delAllCart }
+let updateStockProduct = async (id_product, size, stock) => {
+    try {
+        const data = await DetailProduct.update(
+            { stock: Sequelize.literal(`stock - ${stock}`) }, // Cập nhật stock bằng cách trừ đi số lượng đặt hàng
+            { where: { id_product, size } }
+        )
+    } catch (error) {
+        console.log('Lỗi khi cập nhật ', error)
+    }
+}
+
+let getOrder = async (id_user) => {
+    const data = await Order.findAll({
+        where: { id_user: id_user },
+        include: [
+            {
+                model: DetailOrder
+            }
+        ]
+    });
+    return data;
+};
+
+
+export default { addOrder, addDetailOrder, addDetailPayment, delAllCart, getOrder, updateStockProduct }

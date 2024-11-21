@@ -38,12 +38,42 @@ let controllerAllOrder = async (req, res) => {
 let controllerDetailOrder = async (req, res) => {
     let id = req.params.id;
     let data = await orderService.ServiceDetailOrders(id);
-    // let product = await orderService.ServiceProductOrders(data.id_product);
+    let products = {}; // Sử dụng đối tượng để lưu trữ thông tin sản phẩm
+
+    for (const detailOrder of data) {
+        const id_product = detailOrder.dataValues.id_product;
+        const size = detailOrder.dataValues.size;
+        const quantity = detailOrder.dataValues.quantity;
+        const price = detailOrder.dataValues.price;
+
+        // Kiểm tra xem sản phẩm đã tồn tại trong products hay chưa
+        if (!products[id_product]) {
+            products[id_product] = {
+                id: id_product,
+                sizes: {}
+            };
+        }
+
+        // Thêm thông tin size và quantity cho sản phẩm
+        products[id_product].sizes[size] = {
+            quantity,
+            price
+        };
+    }
+
+    // Lấy thông tin sản phẩm chi tiết từ orderService
+    let productData = [];
+    for (const productId in products) {
+        let product = await orderService.ServiceProductOrders(productId);
+        products[productId].product = product; // Thêm thông tin sản phẩm vào products
+        productData.push(products[productId]);
+    }
 
     res.render("PAGE_Detail_Order", {
         title: "Trang chi tiết đơn hàng",
-        data: data,
-        // product: product,
+        data,
+        id,
+        productData, // Truyền mảng productData vào template
         session: req.session.user
     });
 };

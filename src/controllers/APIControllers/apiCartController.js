@@ -39,4 +39,14 @@ let apigetCart = async (req, res) => {
         message: "Lấy giỏ hàng thành công!"
     })
 }
-export default { apiaddCart, apigetCart, apiremoveCart }
+
+let apiupdateCart = async (req, res) => {
+    const { id_product, size, quantity } = req.body.id_product
+    let data = await cartService.updateQuantity(id_product, size, quantity)
+    return res.status(200).json({
+        data: data,
+        errCode: 1,
+        message: 'Cập nhật thành công!'
+    })
+}
+export default { apiaddCart, apigetCart, apiremoveCart, apiupdateCart }

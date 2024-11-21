@@ -49,4 +49,18 @@ const getCart = async () => {
         console.log('Lỗi không lấy được giỏ hàng', error)
     }
 }
-export default { addCart, removeCart, getCart };
+
+
+const updateQuantity = async (id_product, size, quantity) => {
+    try {
+        const updatedCount = await Cart.update(
+            { quantity },
+            {
+                where: { id_product, size }
+            }
+        );
+    } catch (error) {
+        console.error('Lỗi khi cập nhật:', error);
+    }
+};
+export default { addCart, removeCart, getCart, updateQuantity };
