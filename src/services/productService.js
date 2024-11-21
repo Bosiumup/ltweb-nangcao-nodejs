@@ -96,7 +96,7 @@ let serviceCreateNewProduct = async (
 
     try {
         // Thêm dữ liệu vào bảng Product
-        await Product.create(
+        const newProduct = await Product.create(
             {
                 name: name,
                 description: description,
@@ -139,7 +139,7 @@ let serviceCreateNewProduct = async (
             },
             { transaction }
         );
-
+        return newProduct;
         // Cam kết giao dịch (commit)
         await transaction.commit();
     } catch (error) {
