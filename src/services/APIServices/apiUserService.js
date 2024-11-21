@@ -31,7 +31,7 @@ let handleRegisterUser = async (data) => {
         if (check) {
             return {
                 errCode: 1,
-                errMessage: "Tài khoản đã tồn tại trong hệ thống!",
+                errMessage: "Tài khoản đã tồn tại!",
             };
         } else {
             let salt = bcrypt.genSaltSync(10);
@@ -45,7 +45,7 @@ let handleRegisterUser = async (data) => {
             });
             return {
                 errCode: 0,
-                errMessage: "Đăng ký thành thành công!",
+                errMessage: "Đăng ký thành công!",
             };
         }
     } catch (error) {
@@ -65,7 +65,7 @@ let handleUserLogin = async (username, password) => {
                 let match = await bcrypt.compare(password, user.password);
                 if (match) {
                     userData.errCode = 0;
-                    userData.errMessage = "Khớp mật khẩu!";
+                    userData.errMessage = "Đăng nhập thành công!";
                     userData.user = user.toJSON();
                     delete userData.user.password;
                 } else {
@@ -78,8 +78,7 @@ let handleUserLogin = async (username, password) => {
             }
         } else {
             userData.errCode = 3;
-            userData.errMessage =
-                "Tài khoản không có sẵn trong hệ thống. Vui lòng thử lại bằng tài khoản khác!";
+            userData.errMessage = "Tài khoản không tồn tại!";
         }
         return userData;
     } catch (error) {

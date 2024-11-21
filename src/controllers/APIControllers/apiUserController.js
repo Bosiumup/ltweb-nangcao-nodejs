@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 let apiRegisterPost = async (req, res) => {
     let { username, password, fullname, phone } = req.body;
     if (!username || !password || !fullname || !phone) {
-        return res.status(500).json({
+        return res.status(200).json({
             errCode: 1,
             errMessage: "Thiếu thông tin đăng ký!",
         });
@@ -38,28 +38,21 @@ let apiLoginPost = async (req, res) => {
             );
 
             return res.status(200).json({
-                errCode: 0,
-                errMessage: "Đăng nhập thành công!",
+                errCode: message.errCode,
+                errMessage: message.errMessage,
                 token: token, // Gửi token về cho client
                 user: message.user, // Bạn cũng có thể gửi thêm thông tin user nếu cần
             });
         } else {
-            return res.status(400).json(message);
+            return res.status(200).json({
+                errCode: message.errCode,
+                errMessage: message.errMessage,
+            });
         }
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 };
-
-// let apiLogoutPost = (req, res) => {
-//     req.session.destroy(() => {
-//         res.clearCookie("connect.sid", { httpOnly: true, secure: false });
-//         return res.status(200).json({
-//             errCode: 0,
-//             errMessage: "Đăng xuất thành công!",
-//         });
-//     });
-// };
 
 let apiDetailUserGet = async (req, res) => {
     let id = req.query.id;
@@ -87,7 +80,7 @@ let fetchGetUserInfo = async (req, res) => {
     try {
         // Giải mã token để lấy userId
         let decoded = await userService.verifyToken(token);
-        console.log(decoded)
+        console.log(decoded);
         // Lấy thông tin người dùng từ userId (lấy từ payload của token)
         let user = await userService.handleGetUserById(decoded.userId);
         if (!user) {
