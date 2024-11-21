@@ -1,56 +1,152 @@
-import productModel from "../services/productService";
-let apiGetGroupProduct = async (req, res) => {
+import productService from "../services/productService";
+import cloudinary from "../config/cloudinaryConfig";
+import fs from "fs";
+
+let controllerAllFunctionProduct = async (req, res) => {
     try {
-        let groupProduct = await productModel.modelGetGroupProduct();
-        return res.json({
-            success: true,
-            errCode: 1,
-            errMessage: "Lấy nhóm sản phẩm thành công!",
-            groupProduct: groupProduct,
+        let message = req.query.message || null;
+        let type = req.query.type || null;
+        let sort = req.query.sort || "desc";
+        let page = parseInt(req.query.page) || 1;
+        let search = req.query.search || null;
+
+        // Gọi dịch vụ để lấy dữ liệu sản phẩm
+        let { products, currentPage, totalPages, totalProducts } =
+            await productService.serviceAllFunctionProduct(page, sort, search);
+
+        // Kiểm tra nếu products là undefined hoặc rỗng
+        if (!products || products.length === 0) {
+            products = []; // Nếu không có sản phẩm, gán mảng rỗng
+        }
+
+        console.log("products:", products);
+
+        // Kiểm tra nếu không có kết quả tìm kiếm
+        let noResults = products.length === 0; // Nếu không có sản phẩm, hiển thị thông báo không tìm thấy
+
+        res.render("PAGE_List_Product", {
+            data: {
+                title: "Danh sách sản phẩm",
+                successMessage: message,
+                typeMessage: type,
+                products: products, // Danh sách sản phẩm (có thể là rỗng nếu không có kết quả tìm kiếm)
+                currentPage: currentPage, // Trang hiện tại
+                totalPages: totalPages, // Tổng số trang
+                totalProducts: totalProducts, // Tổng số sản phẩm
+                sortOrder: sort, // Tham số sắp xếp
+                search: search, // Tham số tìm kiếm
+                noResults: noResults, // Cờ xác định có kết quả tìm kiếm không
+            },
+            session: req.session.user,
         });
     } catch (error) {
-        return res.json({
-            success: false,
-            errCode: 3,
-            errMessage: "Lỗi khi lấy nhóm sản phẩm!",
-        });
+        console.log(error);
+        res.status(500).send("Có lỗi xảy ra khi lấy dữ liệu sản phẩm.");
     }
 };
 
-let apiGetAllProduct = async (req, res) => {
-    try {
-        let products = await productModel.modelGetAllProduct();
-        return res.json({
-            success: true,
-            errCode: 1,
-            errMessage: "Lấy danh sách sản phẩm thành công!",
-            products: products,
-        });
-    } catch (error) {
-        return res.json({
-            success: false,
-            errCode: 3,
-            errMessage: "Lỗi khi lấy danh sách sản phẩm!",
-        });
+let controllerGetCreateProduct = (req, res) => {
+    let message = req.query.message || null;
+    let type = req.query.type || null;
+    return res.render("PAGE_Create_Product", {
+        data: {
+            title: "Thêm sản phẩm",
+            successMessage: message,
+            typeMessage: type,
+        },
+        session: req.session.user,
+    });
+};
+
+let controllerCreateNewProduct = async (req, res) => {
+    let { name, description, price, id_type_product, size, stock } = req.body;
+    let created = await productService.serviceCreateNewProduct(
+        name,
+        description,
+        price,
+        id_type_product,
+        size,
+        stock
+    );
+    if (!created) {
+        return res.redirect(
+            "/PAGE_Create_Product?message=Sản phẩm đã tồn tại&type=error"
+        );
+    } else {
+        return res.redirect(
+            "/PAGE_Create_Product?message=Thêm sản phẩm thành công thành công&type=success"
+        );
     }
 };
 
-let apiGetDetailProduct = async (req, res) => {
-    let masp = req.query.masp;
-    try {
-        let product = await productModel.modelGetProductById(masp);
-        return res.json({
-            success: true,
-            errCode: 1,
-            errMessage: "Lấy chi tiết sản phẩm thành công!",
+let controllerEditProductById = async (req, res) => {
+    let { id } = req.params;
+    let message = req.query.message || null;
+    let type = req.query.type || null;
+    let product = await productService.serviceGetProductById(id);
+    return res.render("PAGE_Edit_Product", {
+        data: {
+            title: "Chỉnh sửa thông tin",
             product: product,
-        });
-    } catch (error) {
-        return res.json({
-            success: false,
-            errCode: 3,
-            errMessage: "Lỗi khi lấy chi tiết sản phẩm!",
-        });
-    }
+            successMessage: message,
+            typeMessage: type,
+        },
+        session: req.session.user,
+    });
 };
-export default { apiGetGroupProduct, apiGetAllProduct, apiGetDetailProduct };
+
+let controllerUpdateProductById = async (req, res) => {
+    let { id, name, description, imageUrl, price } = req.body;
+    await productService.serviceUpdateProductById(
+        id,
+        name,
+        description,
+        imageUrl,
+        price
+    );
+    return res.redirect(
+        `/PAGE_Edit_Product/${id}?message=Cập nhật thông tin thành công&type=success`
+    );
+};
+
+let controllerUpdateAvatar = async (req, res) => {
+    let { id, currentImageUrl } = req.body;
+    let newAvatarUrl = currentImageUrl;
+    if (req.file) {
+        try {
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: "product",
+            });
+            newAvatarUrl = result.secure_url; // Lấy URL ảnh đã upload lên Cloudinary
+            fs.unlinkSync(req.file.path); // Xóa file ảnh tạm trong server sau khi upload thành công
+        } catch (error) {
+            console.error("Lỗi khi upload ảnh lên Cloudinary:", error);
+            return res.status(500).json({
+                success: false,
+                message: "Lỗi khi upload ảnh lên Cloudinary.",
+            });
+        }
+    }
+    await productService.serviceUpdateImageProduct(id, newAvatarUrl); // Cập nhật URL ảnh mới
+    return res.redirect(
+        `/PAGE_Edit_Product/${id}?message=Cập nhật hình ảnh thành công&type=success`
+    );
+};
+
+let controllerDeleteProductById = async (req, res) => {
+    let { productId } = req.body;
+    await productService.serviceDeleteProductById(productId);
+    return res.redirect(
+        "/PAGE_List_Product?message=Xóa sản phẩm thành công&type=success"
+    );
+};
+
+export default {
+    controllerAllFunctionProduct,
+    controllerCreateNewProduct,
+    controllerGetCreateProduct,
+    controllerEditProductById,
+    controllerUpdateAvatar,
+    controllerUpdateProductById,
+    controllerDeleteProductById,
+};

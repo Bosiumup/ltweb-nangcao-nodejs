@@ -2,6 +2,8 @@ import express from "express";
 import authMiddleware from "../middleware/authMiddleware";
 import userController from "../controllers/userController";
 import authController from "../controllers/authController";
+import productController from "../controllers/productController";
+import orderController from "../controllers/orderController";
 import upload from "../config/multerConfig";
 import TypeProduct from "../controllers/TypeProduct";
 
@@ -26,18 +28,18 @@ const initRoutes = (app) => {
     );
 
     // -------------- User views
+    // trả về danh sách tài khoản
+    router.get("/PAGE_List_User", userController.controllerAllFunctionUser);
     // trang cấp tài khoản
     router.get("/PAGE_Create_User", userController.controllerGetCreateUser);
     // trang cập nhật thông tin
     router.get("/PAGE_Edit_User/:id", userController.controllerEditUserById);
-    // trả về danh sách tài khoản
-    router.get("/PAGE_List_User", userController.controllerGetAllUser);
 
     // -------------- Handle requests
 
     // -------------- Auth requests
     // đăng nhập
-    router.post("/login", authController.controlerPostLogin);
+    router.post("/login", authController.controllerPostLogin);
     // đăng xuất
     router.get("/logout", authController.controllerGetLogout);
 
@@ -53,7 +55,6 @@ const initRoutes = (app) => {
         upload.single("avatar"),
         userController.controllerUpdateAvatar
     );
-    router.get("/PAGE_List_User/:sort", userController.controllerOrderUser);
 
     // -------------- Product requests
      // trang thêm loai sản phẩm
@@ -65,6 +66,10 @@ const initRoutes = (app) => {
 
 
     // -------------- Order requests
+    router.get("/PAGE_List_Order", orderController.controllerAllOrder);
+    router.get("/PAGE_Detail_Order/:id", orderController.controllerDetailOrder);
+    router.get("/PAGE_Edit_Order/:id", orderController.controllerEditOrder);
+    router.post("/update-order", orderController.controllerUpdateOrder);
 
     // -------------- Page not found
     router.use((req, res) => {

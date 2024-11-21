@@ -1,0 +1,64 @@
+<div class="container-fluid px-4">
+    <h2>Cập nhật trạng thái đơn hàng</h2>
+    <div class="card-body bg-light">
+        <div class="table-responsive">
+            <table class="table table-responsive table-borderless mb-0">
+                <thead>
+                    <tr class="border-bottom">
+                        <th scope="col">ID</th>
+                        <th scope="col">Địa chỉ</th>
+                        <th scope="col">SĐT</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col">Id người dùng</th>
+                        <th scope="col">Cài đặt</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>
+                            <%= data.id%>
+                        </td>
+                        <td>
+                            <%= data.address%>
+                        </td>
+                        <td>
+                            <%= data.phone%>
+                        </td>
+                        <form action="/update-order" method="POST">
+                            <input type="hidden" name="id" value="<%= data.id%>">
+                            <td style="width: 200px;">
+                                <select class="form-control" id="orderStatus" name="status">
+                                    <option value="Chờ xác nhận" <%=data.status==='Chờ xác nhận' ? 'selected' : '' %>
+                                        >Chờ
+                                        xác nhận</option>
+                                    <option value="Xác nhận" <%=data.status==='Xác nhận' ? 'selected' : '' %>>Xác nhận
+                                    </option>
+                                    <option value="Đã hủy" <%=data.status==='Đã hủy' ? 'selected' : '' %>>Đã hủy
+                                    </option>
+                                    <option value="Thành công" <%=data.status==='Thành công' ? 'selected' : '' %>>Thành
+                                        công
+                                    </option>
+                                </select>
+                            </td>
+                            <td>
+                                <%= data.id_user%>
+                            </td>
+                            <td>
+                                <button type="submit">Cập nhật</button>
+                            </td>
+                        </form>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<% if (data.successMessage && data.typeMessage) { %>
+    <div id="message"
+        class="text-center mt-3 alert message <%= data.typeMessage === 'success' ? 'alert-success' : 'alert-danger' %>">
+        <%= data.successMessage %>
+    </div>
+    <% } %>

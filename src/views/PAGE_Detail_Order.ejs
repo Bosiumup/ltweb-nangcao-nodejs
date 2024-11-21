@@ -1,0 +1,38 @@
+<div class="container-fluid px-4">
+    <h2>Chi tiết đơn hàng</h2>
+    <div class="card-body bg-light">
+        <div class="table-responsive">
+            <table class="table table-responsive table-borderless mb-0">
+                <thead>
+                    <tr class="border-bottom">
+                        <th scope="col">ID</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col">Sản phẩm</th>
+                        <th scope="col">Đơn hàng</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>
+                            <%= data.id%>
+                        </td>
+                        <td>
+                            <%= data.quantity%>
+                        </td>
+                        <td>
+                            <%= data.price%>
+                        </td>
+                        <td>
+                            nữa thêm zô sau ()
+                        </td>
+                        <td>
+                            <%= data.id_order%>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

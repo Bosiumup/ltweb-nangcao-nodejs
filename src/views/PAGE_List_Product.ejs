@@ -12,17 +12,17 @@
 </style>
 
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Danh sách tài khoản</h1>
+    <h1 class="mt-4">Danh sách sản phẩm</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item active">
-            Bảng chi tiết thông tin tài khoản
+            Bảng chi tiết thông tin các sản phẩm
         </li>
     </ol>
     <div class="card mb-4">
         <div class="card-header bg-white">
             <div class="my-2 d-flex justify-content-between align-items-center">
                 <div class="position-relative search-hover w-100">
-                    <form action="/PAGE_List_User" method="get">
+                    <form action="/PAGE_List_Product" method="get">
                         <span class="position-absolute search">
                             <i class="fa fa-search"></i>
                         </span>
@@ -30,7 +30,7 @@
                             type="text"
                             name="search"  
                             class="form-control custom-hover"
-                            placeholder="Nhập tên hoặc tài khoản người dùng..."
+                            placeholder="Nhập tên sản phẩm hoặc mô tả..."
                             value="<%= data.search %>" 
                         />
                         <button type="submit" hidden></button>
@@ -45,12 +45,12 @@
                             <% } else if (data.sortOrder === 'desc') { %> Sắp xếp từ Z -> A <% } else { %> Sắp xếp theo tên <% } %>
                             <ul id="filterMenu" class="dropdown-menu shadow-lg rounded">
                                 <li>
-                                    <button type="button" class="dropdown-item" onclick="location.href='/PAGE_List_User?page=<%= data.currentPage %>&sort=asc'">
+                                    <button type="button" class="dropdown-item" onclick="location.href='/PAGE_List_Product?page=<%= data.currentPage %>&sort=asc'">
                                         Từ A <i class="fa-solid fa-arrow-right"></i> Z
                                     </button>
                                 </li>
                                 <li>
-                                    <button type="button" class="dropdown-item" onclick="location.href='/PAGE_List_User?page=<%= data.currentPage %>&sort=desc'">
+                                    <button type="button" class="dropdown-item" onclick="location.href='/PAGE_List_Product?page=<%= data.currentPage %>&sort=desc'">
                                         Từ Z <i class="fa-solid fa-arrow-right"></i> A
                                     </button>
                                 </li>
@@ -64,7 +64,7 @@
             <!-- Kiểm tra nếu không có kết quả tìm kiếm -->
             <% if (data.noResults) { %>
                 <div class="alert alert-warning text-center">
-                    Không tồn tại tài khoản người dùng.
+                    Không tồn tại sản phẩm.
                 </div>
             <% } else { %>
                 <div class="table-responsive">
@@ -75,39 +75,47 @@
                                     <input class="form-check-input" type="checkbox" />
                                 </th>
                                 <th scope="col">ID</th>
-                                <th scope="col">Ảnh đại diện</th>
-                                <th scope="col">Tài khoản</th>
-                                <th scope="col">Họ tên</th>
-                                <th scope="col">Địa chỉ</th>
-                                <th scope="col">Số điện thoại</th>
-                                <th scope="col">Vai trò</th>
+                                <th scope="col">Loại</th>
+                                <th scope="col">Hình ảnh</th>
+                                <th scope="col">Tên sản phẩm</th>
+                                <th scope="col">Mô tả</th>
+                                <th scope="col">Giá</th>
+                                <th scope="col">Size</th>
+                                <th scope="col">Số lượng</th>
                                 <th scope="col" class="text-center">
                                     <span>Cài đặt</span>
                                 </th>
                             </tr>
                         </thead>
-
+                
                         <tbody>
-                            <% data.users.forEach(user => { %>
+                            <% data.products.forEach(product => { %>
                             <tr>
                                 <th scope="row">
                                     <input class="form-check-input" type="checkbox" />
                                 </th>
-                                <td><%= user.id %></td>
+                                <td style="width: 10%"><%= product.id %></td>
                                 <td>
-                                    <img src="<%= user.imageUrl %>" alt="" style="width: 50px; height: 50px; border-radius: 50%;" />
+                                    <%= product.TypeProduct && product.TypeProduct.name ? product.TypeProduct.name : 'N/A' %>
+                                </td>                                
+                                <td>
+                                    <img
+                                        src="<%= product.imageUrl %>"
+                                        alt=""
+                                        style="width: 50px; height: 50px; border-radius: 50%;"
+                                    />
                                 </td>
-                                <td><%= user.username %></td>
-                                <td><%= user.fullname %></td>
-                                <td><%= user.address %></td>
-                                <td><%= user.phone %></td>
-                                <td><%= user.role %></td>
+                                <td><%= product.name %></td>
+                                <td><%= product.description %></td>
+                                <td><%= product.price %></td>
+                                <td><%= product.DetailProducts && product.DetailProducts[0] ? product.DetailProducts[0].size : 'N/A' %></td>
+                                <td><%= product.DetailProducts && product.DetailProducts[0] ? product.DetailProducts[0].stock : 'N/A' %></td>
                                 <td class="d-flex align-items-center justify-content-center">
-                                    <a class="mx-2" href="/PAGE_Edit_User/<%= user.id %>">
+                                    <a class="mx-2" href="/PAGE_Edit_Product/<%= product.id %>">
                                         <i class="fa-solid fa-user-pen text-info fs-5"></i>
                                     </a>
-                                    <form action="/delete-user" method="POST">
-                                        <input type="hidden" name="userId" value="<%= user.id %>" />
+                                    <form action="/delete-product" method="POST">
+                                        <input type="hidden" name="productId" value="<%= product.id %>" />
                                         <button type="submit" class="border-0 me-2 bg-transparent">
                                             <i class="fa-solid fa-circle-minus text-danger fs-5"></i>
                                         </button>
@@ -118,28 +126,29 @@
                         </tbody>
                     </table>
                 </div>
+                
             <% } %>
         </div>
 
         <!-- Phân trang, chỉ hiển thị nếu có kết quả tìm kiếm -->
-        <% if (!data.noResults && data.users.length > 0) { %>
+        <% if (!data.noResults && data.products.length > 0) { %>
         <div class="pagination d-flex justify-content-end mt-3 me-3">
             <button type="button" class="btn-prev <%= data.currentPage === 1 ? 'disabled' : '' %>"
                 <%= data.currentPage === 1 ? 'disabled' : '' %> 
-                onclick="location.href='/PAGE_List_User?page=<%= data.currentPage - 1 %>'">
+                onclick="location.href='/PAGE_List_Product?page=<%= data.currentPage - 1 %>'">
                 Prev
             </button>
         
             <% for (let i = 1; i <= data.totalPages; i++) { %>
                 <button type="button" class="page-item <%= data.currentPage === i ? 'active' : '' %>" 
-                    onclick="location.href='/PAGE_List_User?page=<%= i %>'">
+                    onclick="location.href='/PAGE_List_Product?page=<%= i %>'">
                     <%= i %>
                 </button>
             <% } %>
         
             <button type="button" class="btn-next <%= data.currentPage === data.totalPages ? 'disabled' : '' %>"
                 <%= data.currentPage === data.totalPages ? 'disabled' : '' %> 
-                onclick="location.href='/PAGE_List_User?page=<%= data.currentPage + 1 %>'">
+                onclick="location.href='/PAGE_List_Product?page=<%= data.currentPage + 1 %>'">
                 Next
             </button>
         </div>
@@ -152,3 +161,4 @@
     <%= data.successMessage %>
 </div>
 <% } %>
+

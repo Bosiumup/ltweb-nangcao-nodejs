@@ -1,10 +1,21 @@
-import serviceAuthLogin from "../services/authService";
-
+import authService from "../services/authService";
 let controllerGetMainPage = (req, res) => {
     res.redirect("/dashboard");
 };
-let controllerGetDashboard = (req, res) => {
-    return res.render("PAGE_Dashboard", { session: req.session.user });
+let controllerGetDashboard = async (req, res) => {
+    let totalCountItemDashboard =
+        await authService.serviceGetCountItemDashboard();
+    return res.render("PAGE_Dashboard", {
+        data: {
+            listUsers: totalCountItemDashboard.listUsers,
+            listProducts: totalCountItemDashboard.listProducts,
+            listOrders: totalCountItemDashboard.listOrders,
+            totalUsers: totalCountItemDashboard.totalCountUser,
+            totalProducts: totalCountItemDashboard.totalCountProduct,
+            totalOrders: totalCountItemDashboard.totalCountOrder,
+        },
+        session: req.session.user,
+    });
 };
 
 let controllerGetLogin = (req, res) => {
@@ -20,11 +31,11 @@ let controllerGetLogin = (req, res) => {
     });
 };
 
-let controlerPostLogin = async (req, res) => {
+let controllerPostLogin = async (req, res) => {
     let { username, password } = req.body;
 
     // Gọi hàm login service và nhận kết quả
-    let result = await serviceAuthLogin(username, password);
+    let result = await authService.serviceAuthLogin(username, password);
     console.log("Session before:", req.session);
 
     // Kiểm tra kết quả trả về từ authLoginService
@@ -64,6 +75,6 @@ export default {
     controllerGetMainPage,
     controllerGetDashboard,
     controllerGetLogin,
-    controlerPostLogin,
+    controllerPostLogin,
     controllerGetLogout,
 };

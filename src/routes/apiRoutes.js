@@ -9,15 +9,11 @@ const initApiRoutes = (app) => {
     // Đăng nhập
     router.post("/api/loginPost", apiUserController.apiLoginPost);
     // Đăng xuất
-    router.post("/api/logoutPost", apiUserController.apiLogoutPost);
-    // Trả về danh sách tài khoản
-    router.get("/api/list-user", apiUserController.apiGetAllUsers);
+    // router.post("/api/logoutPost", apiUserController.apiLogoutPost);
+
     // Trả về thông tin tài khoản cụ thể
     router.get("/api/detail-user/:id", apiUserController.apiDetailUserGet);
-    // Tạo tài khoản
-    router.post("/api/create-user", apiUserController.apiCreateNewUser);
-    // Xóa tài khoản
-    router.delete("/api/delete-user", apiUserController.apiDeleteUserById);
+
     // Sửa tài khoản
     router.put("/api/update-user", apiUserController.apiUpdateUserById);
     // API sản phẩm

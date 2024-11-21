@@ -1,18 +1,73 @@
 import bcrypt from "bcryptjs";
+import User from "../../models/User";
+import jwt from "jsonwebtoken";
+
+let verifyToken = (token) => {
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, "your-secret-key", (err, decoded) => {
+            if (err) {
+                reject(new Error("Token không hợp lệ!"));
+            } else {
+                resolve(decoded); // Trả về thông tin giải mã từ token (bao gồm userId)
+            }
+        });
+    });
+};
+
+let handleGetUserById = async (userId) => {
+    try {
+        let user = await User.findOne({ where: { id: userId } });
+        user = user.toJSON();
+        delete user.password;
+        return user;
+    } catch (error) {
+        throw new Error("Không thể tìm thấy người dùng");
+    }
+};
+
+let handleRegisterUser = async (data) => {
+    try {
+        let check = await User.findOne({ where: { username: data.username } });
+        if (check) {
+            return {
+                errCode: 1,
+                errMessage: "Tài khoản đã tồn tại trong hệ thống!",
+            };
+        } else {
+            let salt = bcrypt.genSaltSync(10);
+            let hashPassword = bcrypt.hashSync(data.password, salt);
+            await User.create({
+                username: data.username,
+                password: hashPassword,
+                fullname: data.fullname,
+                phone: data.phone,
+                role: "user",
+            });
+            return {
+                errCode: 0,
+                errMessage: "Đăng ký thành thành công!",
+            };
+        }
+    } catch (error) {
+        return error;
+    }
+};
 
 let handleUserLogin = async (username, password) => {
     try {
         let userData = {};
-        let checkUsername = await checkUsername(username);
+        let checkUsername = await User.findOne({
+            where: { username: username },
+        });
         if (checkUsername) {
-            let user = await getUsername(username);
+            let user = await User.findOne({ where: { username: username } });
             if (user) {
                 let match = await bcrypt.compare(password, user.password);
                 if (match) {
                     userData.errCode = 0;
                     userData.errMessage = "Khớp mật khẩu!";
-                    delete user.password;
-                    userData.user = user;
+                    userData.user = user.toJSON();
+                    delete userData.user.password;
                 } else {
                     userData.errCode = 1;
                     userData.errMessage = "Sai mật khẩu!";
@@ -27,113 +82,6 @@ let handleUserLogin = async (username, password) => {
                 "Tài khoản không có sẵn trong hệ thống. Vui lòng thử lại bằng tài khoản khác!";
         }
         return userData;
-    } catch (error) {
-        return error;
-    }
-};
-
-let getUsername = async (username) => {
-    try {
-        let [rows, fields] = await pool.query(
-            "SELECT * FROM users WHERE username = ?",
-            [username]
-        );
-        delete rows[0].password;
-        return rows[0];
-    } catch (error) {
-        return error;
-    }
-};
-
-let checkUsername = async (username) => {
-    try {
-        let [rows, fields] = await pool.query(
-            "SELECT * FROM users WHERE username = ?",
-            [username]
-        );
-        if (rows[0].length > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    } catch (error) {
-        return error;
-    }
-};
-
-let hashUserPassword = async (password) => {
-    try {
-        let salt = bcrypt.genSaltSync(10);
-        return await bcrypt.hashSync(password, salt);
-    } catch (error) {
-        return error;
-    }
-};
-
-let getAllUsers = async () => {
-    try {
-        let [rows] = await pool.query(
-            "SELECT * FROM users WHERE role = 'user'"
-        );
-        if (rows.length === 0) {
-            return { errCode: 1, errMessage: "Không tìm thấy người dùng!" };
-        } else {
-            rows.forEach((user) => delete user.password);
-            return {
-                errCode: 0,
-                errMessage: "Lấy danh sách người dùng thành công!",
-                data: rows,
-            };
-        }
-    } catch (error) {
-        return error;
-    }
-};
-
-let handleCreateNewUser = async (data) => {
-    try {
-        let check = await checkUsername(data.username);
-        if (check) {
-            return {
-                errCode: 1,
-                errMessage: "Tài khoản đã tồn tại trong hệ thống!",
-            };
-        } else {
-            let hashPassword = await hashUserPassword(data.password);
-            await pool.query(
-                "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
-                [username, hashPassword, "user"]
-            );
-            return {
-                errCode: 0,
-                errMessage: "Thêm người dùng mới thành công!",
-            };
-        }
-    } catch (error) {
-        return error;
-    }
-};
-
-let handleDeleteUserById = async (id) => {
-    try {
-        await pool.query("DELETE FROM users WHERE id = ?", [id]);
-        return {
-            errCode: 0,
-            errMessage: "Xóa người dùng thành công!",
-        };
-    } catch (error) {
-        return error;
-    }
-};
-
-let getUserById = async (id) => {
-    try {
-        let [rows, fields] = await pool.query(
-            "SELECT * FROM users WHERE id = ?",
-            [id]
-        );
-        delete rows[0].password;
-        return rows[0];
     } catch (error) {
         return error;
     }
@@ -161,12 +109,9 @@ let handleUpdateUserById = async (data) => {
 };
 
 export default {
-    checkUsername,
-    getUsername,
-    getUserById,
-    getAllUsers,
+    verifyToken,
+    handleGetUserById,
+    handleRegisterUser,
     handleUserLogin,
-    handleCreateNewUser,
-    handleDeleteUserById,
     handleUpdateUserById,
 };
