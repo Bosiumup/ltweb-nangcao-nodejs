@@ -238,7 +238,7 @@ let serviceGetProductById = async (id, idDetail) => {
 };
 
 let serviceDeleteProductById = async (id) => {
-    return await DetailProduct.destroy({
+    return await Product.destroy({
         where: {
             id: id,
         },
